@@ -1,0 +1,1008 @@
+{
+  "collections": {
+    "oracle_038_public_access_terminal": {
+      "name": "oracle_038_public_access_terminal",
+      "theme": "oracle_038_public_access_terminal",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_038_public_access_terminal",
+        "public",
+        "038",
+        "wisdom",
+        "access",
+        "terminal"
+      ],
+      "created_at": "2025-10-04T16:54:28.751528"
+    },
+    "oracle_066_starlink_locket": {
+      "name": "oracle_066_starlink_locket",
+      "theme": "oracle_066_starlink_locket",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "locket",
+        "oracle_066_starlink_locket",
+        "066",
+        "starlink"
+      ],
+      "created_at": "2025-10-04T16:54:28.751806"
+    },
+    "oracle_020_body_buffer": {
+      "name": "oracle_020_body_buffer",
+      "theme": "oracle_020_body_buffer",
+      "text_count": 1,
+      "keywords": [
+        "buffer",
+        "020",
+        "energy",
+        "oracle",
+        "body",
+        "oracle_020_body_buffer"
+      ],
+      "created_at": "2025-10-04T16:54:28.752075"
+    },
+    "oracle_071_wishing_exe": {
+      "name": "oracle_071_wishing_exe",
+      "theme": "oracle_071_wishing_exe",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "exe",
+        "oracle_071_wishing_exe",
+        "wishing",
+        "071"
+      ],
+      "created_at": "2025-10-04T16:54:28.752436"
+    },
+    "oracle_024_chromatic_surge": {
+      "name": "oracle_024_chromatic_surge",
+      "theme": "oracle_024_chromatic_surge",
+      "text_count": 1,
+      "keywords": [
+        "surge",
+        "oracle",
+        "oracle_024_chromatic_surge",
+        "024",
+        "chromatic"
+      ],
+      "created_at": "2025-10-04T16:54:28.752612"
+    },
+    "oracle_050_drag_signal": {
+      "name": "oracle_050_drag_signal",
+      "theme": "oracle_050_drag_signal",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "signal",
+        "oracle_050_drag_signal",
+        "050",
+        "drag"
+      ],
+      "created_at": "2025-10-04T16:54:28.752865"
+    },
+    "oracle_002_quantum_buddy": {
+      "name": "oracle_002_quantum_buddy",
+      "theme": "oracle_002_quantum_buddy",
+      "text_count": 1,
+      "keywords": [
+        "buddy",
+        "oracle",
+        "quantum",
+        "oracle_002_quantum_buddy",
+        "002"
+      ],
+      "created_at": "2025-10-04T16:54:28.753114"
+    },
+    "oracle_012_sync_or_swim": {
+      "name": "oracle_012_sync_or_swim",
+      "theme": "oracle_012_sync_or_swim",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_012_sync_or_swim",
+        "swim",
+        "012",
+        "sync",
+        "or"
+      ],
+      "created_at": "2025-10-04T16:54:28.753283"
+    },
+    "oracle_056_signal_spoof": {
+      "name": "oracle_056_signal_spoof",
+      "theme": "oracle_056_signal_spoof",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "spoof",
+        "signal",
+        "oracle_056_signal_spoof",
+        "056"
+      ],
+      "created_at": "2025-10-04T16:54:28.753447"
+    },
+    "oracle_073_patchwork_prism": {
+      "name": "oracle_073_patchwork_prism",
+      "theme": "oracle_073_patchwork_prism",
+      "text_count": 1,
+      "keywords": [
+        "073",
+        "oracle",
+        "prism",
+        "patchwork",
+        "oracle_073_patchwork_prism"
+      ],
+      "created_at": "2025-10-04T16:54:28.753573"
+    },
+    "oracle_001_crystal_sync": {
+      "name": "oracle_001_crystal_sync",
+      "theme": "oracle_001_crystal_sync",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "001",
+        "wisdom",
+        "crystal",
+        "sync",
+        "oracle_001_crystal_sync"
+      ],
+      "created_at": "2025-10-04T16:54:28.753741"
+    },
+    "oracle_033_riot_exe": {
+      "name": "oracle_033_riot_exe",
+      "theme": "oracle_033_riot_exe",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "exe",
+        "033",
+        "oracle_033_riot_exe",
+        "riot"
+      ],
+      "created_at": "2025-10-04T16:54:28.753911"
+    },
+    "oracle_016_haptic_bloom": {
+      "name": "oracle_016_haptic_bloom",
+      "theme": "oracle_016_haptic_bloom",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "haptic",
+        "oracle_016_haptic_bloom",
+        "wisdom",
+        "bloom",
+        "016"
+      ],
+      "created_at": "2025-10-04T16:54:28.754075"
+    },
+    "oracle_013_data_leak": {
+      "name": "oracle_013_data_leak",
+      "theme": "oracle_013_data_leak",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "leak",
+        "013",
+        "data",
+        "oracle_013_data_leak"
+      ],
+      "created_at": "2025-10-04T16:54:28.754290"
+    },
+    "oracle_044_echogem": {
+      "name": "oracle_044_echogem",
+      "theme": "oracle_044_echogem",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "wisdom",
+        "oracle_044_echogem",
+        "echogem",
+        "044"
+      ],
+      "created_at": "2025-10-04T16:54:28.754450"
+    },
+    "oracle_051_error_message_love": {
+      "name": "oracle_051_error_message_love",
+      "theme": "oracle_051_error_message_love",
+      "text_count": 1,
+      "keywords": [
+        "error",
+        "oracle",
+        "oracle_051_error_message_love",
+        "love",
+        "051",
+        "message"
+      ],
+      "created_at": "2025-10-04T16:54:28.754842"
+    },
+    "oracle_059_zero_day_flare": {
+      "name": "oracle_059_zero_day_flare",
+      "theme": "oracle_059_zero_day_flare",
+      "text_count": 1,
+      "keywords": [
+        "flare",
+        "day",
+        "oracle",
+        "059",
+        "oracle_059_zero_day_flare",
+        "zero"
+      ],
+      "created_at": "2025-10-04T16:54:28.755000"
+    },
+    "oracle_021_soft_shell_protocol": {
+      "name": "oracle_021_soft_shell_protocol",
+      "theme": "oracle_021_soft_shell_protocol",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "protocol",
+        "soft",
+        "oracle_021_soft_shell_protocol",
+        "shell",
+        "021"
+      ],
+      "created_at": "2025-10-04T16:54:28.755164"
+    },
+    "oracle_026_femme_armor": {
+      "name": "oracle_026_femme_armor",
+      "theme": "oracle_026_femme_armor",
+      "text_count": 1,
+      "keywords": [
+        "femme",
+        "oracle",
+        "026",
+        "oracle_026_femme_armor",
+        "armor"
+      ],
+      "created_at": "2025-10-04T16:54:28.755362"
+    },
+    "oracle_040_deadname_ghost": {
+      "name": "oracle_040_deadname_ghost",
+      "theme": "oracle_040_deadname_ghost",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "040",
+        "oracle_040_deadname_ghost",
+        "deadname",
+        "ghost"
+      ],
+      "created_at": "2025-10-04T16:54:28.755639"
+    },
+    "oracle_070_pixel_portal": {
+      "name": "oracle_070_pixel_portal",
+      "theme": "oracle_070_pixel_portal",
+      "text_count": 1,
+      "keywords": [
+        "pixel",
+        "oracle",
+        "070",
+        "oracle_070_pixel_portal",
+        "portal"
+      ],
+      "created_at": "2025-10-04T16:54:28.755808"
+    },
+    "oracle_042_pride_flag_fragment": {
+      "name": "oracle_042_pride_flag_fragment",
+      "theme": "oracle_042_pride_flag_fragment",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "pride",
+        "042",
+        "fragment",
+        "oracle_042_pride_flag_fragment",
+        "flag"
+      ],
+      "created_at": "2025-10-04T16:54:28.755893"
+    },
+    "oracle_034_zine_cluster": {
+      "name": "oracle_034_zine_cluster",
+      "theme": "oracle_034_zine_cluster",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "034",
+        "oracle_034_zine_cluster",
+        "zine",
+        "cluster"
+      ],
+      "created_at": "2025-10-04T16:54:28.756061"
+    },
+    "oracle_039_redacted_log": {
+      "name": "oracle_039_redacted_log",
+      "theme": "oracle_039_redacted_log",
+      "text_count": 1,
+      "keywords": [
+        "oracle_039_redacted_log",
+        "oracle",
+        "log",
+        "039",
+        "redacted"
+      ],
+      "created_at": "2025-10-04T16:54:28.756181"
+    },
+    "oracle_062_moonbeam_modem": {
+      "name": "oracle_062_moonbeam_modem",
+      "theme": "oracle_062_moonbeam_modem",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_062_moonbeam_modem",
+        "cosmic",
+        "062",
+        "modem",
+        "moonbeam"
+      ],
+      "created_at": "2025-10-04T16:54:28.756335"
+    },
+    "oracle_055_overclocked": {
+      "name": "oracle_055_overclocked",
+      "theme": "oracle_055_overclocked",
+      "text_count": 1,
+      "keywords": [
+        "055",
+        "oracle_055_overclocked",
+        "oracle",
+        "overclocked"
+      ],
+      "created_at": "2025-10-04T16:54:28.756536"
+    },
+    "oracle_060_queer_chaos_engine": {
+      "name": "oracle_060_queer_chaos_engine",
+      "theme": "oracle_060_queer_chaos_engine",
+      "text_count": 1,
+      "keywords": [
+        "engine",
+        "chaos",
+        "energy",
+        "oracle",
+        "queer",
+        "oracle_060_queer_chaos_engine",
+        "060"
+      ],
+      "created_at": "2025-10-04T16:54:28.756908"
+    },
+    "oracle_005_neon_tongue": {
+      "name": "oracle_005_neon_tongue",
+      "theme": "oracle_005_neon_tongue",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "005",
+        "oracle_005_neon_tongue",
+        "neon",
+        "tongue"
+      ],
+      "created_at": "2025-10-04T16:54:28.757074"
+    },
+    "oracle_025_queer_firmware": {
+      "name": "oracle_025_queer_firmware",
+      "theme": "oracle_025_queer_firmware",
+      "text_count": 1,
+      "keywords": [
+        "025",
+        "firmware",
+        "oracle",
+        "queer",
+        "oracle_025_queer_firmware"
+      ],
+      "created_at": "2025-10-04T16:54:28.757151"
+    },
+    "oracle_004_404_identity_not_found": {
+      "name": "oracle_004_404_identity_not_found",
+      "theme": "oracle_004_404_identity_not_found",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "404",
+        "found",
+        "not",
+        "identity",
+        "oracle_004_404_identity_not_found",
+        "004"
+      ],
+      "created_at": "2025-10-04T16:54:28.757301"
+    },
+    "oracle_015_the_signal_beyond": {
+      "name": "oracle_015_the_signal_beyond",
+      "theme": "oracle_015_the_signal_beyond",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "signal",
+        "015",
+        "the",
+        "beyond",
+        "oracle_015_the_signal_beyond"
+      ],
+      "created_at": "2025-10-04T16:54:28.757591"
+    },
+    "oracle_074_signal_to_self": {
+      "name": "oracle_074_signal_to_self",
+      "theme": "oracle_074_signal_to_self",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_074_signal_to_self",
+        "074",
+        "signal",
+        "self",
+        "to"
+      ],
+      "created_at": "2025-10-04T16:54:28.757727"
+    },
+    "oracle_045_open_source_kin": {
+      "name": "oracle_045_open_source_kin",
+      "theme": "oracle_045_open_source_kin",
+      "text_count": 1,
+      "keywords": [
+        "open",
+        "oracle_045_open_source_kin",
+        "oracle",
+        "source",
+        "kin",
+        "045"
+      ],
+      "created_at": "2025-10-04T16:54:28.757805"
+    },
+    "oracle_032_dream_cache": {
+      "name": "oracle_032_dream_cache",
+      "theme": "oracle_032_dream_cache",
+      "text_count": 1,
+      "keywords": [
+        "cache",
+        "oracle",
+        "dream",
+        "wisdom",
+        "032",
+        "oracle_032_dream_cache"
+      ],
+      "created_at": "2025-10-04T16:54:28.757973"
+    },
+    "oracle_063_sugar_capacitor": {
+      "name": "oracle_063_sugar_capacitor",
+      "theme": "oracle_063_sugar_capacitor",
+      "text_count": 1,
+      "keywords": [
+        "capacitor",
+        "oracle",
+        "sugar",
+        "oracle_063_sugar_capacitor",
+        "063"
+      ],
+      "created_at": "2025-10-04T16:54:28.758051"
+    },
+    "oracle_019_voltage_drop": {
+      "name": "oracle_019_voltage_drop",
+      "theme": "oracle_019_voltage_drop",
+      "text_count": 1,
+      "keywords": [
+        "energy",
+        "oracle",
+        "019",
+        "drop",
+        "oracle_019_voltage_drop",
+        "voltage",
+        "sacred"
+      ],
+      "created_at": "2025-10-04T16:54:28.758131"
+    },
+    "oracle_068_glitter_code": {
+      "name": "oracle_068_glitter_code",
+      "theme": "oracle_068_glitter_code",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "glitter",
+        "068",
+        "oracle_068_glitter_code",
+        "code"
+      ],
+      "created_at": "2025-10-04T16:54:28.758210"
+    },
+    "oracle_048_corrupted_blessing": {
+      "name": "oracle_048_corrupted_blessing",
+      "theme": "oracle_048_corrupted_blessing",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "blessing",
+        "corrupted",
+        "oracle_048_corrupted_blessing",
+        "048"
+      ],
+      "created_at": "2025-10-04T16:54:28.758291"
+    },
+    "oracle_003_flux_tower": {
+      "name": "oracle_003_flux_tower",
+      "theme": "oracle_003_flux_tower",
+      "text_count": 1,
+      "keywords": [
+        "oracle_003_flux_tower",
+        "tower",
+        "oracle",
+        "flux",
+        "003",
+        "sacred"
+      ],
+      "created_at": "2025-10-04T16:54:28.758459"
+    },
+    "oracle_029_elastic_avatar": {
+      "name": "oracle_029_elastic_avatar",
+      "theme": "oracle_029_elastic_avatar",
+      "text_count": 1,
+      "keywords": [
+        "029",
+        "oracle",
+        "avatar",
+        "elastic",
+        "oracle_029_elastic_avatar"
+      ],
+      "created_at": "2025-10-04T16:54:28.758538"
+    },
+    "oracle_057_broken_synth": {
+      "name": "oracle_057_broken_synth",
+      "theme": "oracle_057_broken_synth",
+      "text_count": 1,
+      "keywords": [
+        "synth",
+        "057",
+        "oracle",
+        "oracle_057_broken_synth",
+        "broken"
+      ],
+      "created_at": "2025-10-04T16:54:28.758615"
+    },
+    "oracle_061_dream_loader": {
+      "name": "oracle_061_dream_loader",
+      "theme": "oracle_061_dream_loader",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "dream",
+        "061",
+        "loader",
+        "oracle_061_dream_loader"
+      ],
+      "created_at": "2025-10-04T16:54:28.758690"
+    },
+    "oracle_046_the_glitch_witch": {
+      "name": "oracle_046_the_glitch_witch",
+      "theme": "oracle_046_the_glitch_witch",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "glitch",
+        "oracle_046_the_glitch_witch",
+        "wisdom",
+        "the",
+        "witch",
+        "046"
+      ],
+      "created_at": "2025-10-04T16:54:28.758767"
+    },
+    "oracle_006_mirror_port": {
+      "name": "oracle_006_mirror_port",
+      "theme": "oracle_006_mirror_port",
+      "text_count": 1,
+      "keywords": [
+        "mirror",
+        "oracle",
+        "oracle_006_mirror_port",
+        "port",
+        "006"
+      ],
+      "created_at": "2025-10-04T16:54:28.758848"
+    },
+    "oracle_009_silent_channel": {
+      "name": "oracle_009_silent_channel",
+      "theme": "oracle_009_silent_channel",
+      "text_count": 1,
+      "keywords": [
+        "silent",
+        "oracle",
+        "channel",
+        "009",
+        "oracle_009_silent_channel"
+      ],
+      "created_at": "2025-10-04T16:54:28.758924"
+    },
+    "oracle_065_neon_prophet": {
+      "name": "oracle_065_neon_prophet",
+      "theme": "oracle_065_neon_prophet",
+      "text_count": 1,
+      "keywords": [
+        "prophet",
+        "oracle",
+        "oracle_065_neon_prophet",
+        "065",
+        "neon"
+      ],
+      "created_at": "2025-10-04T16:54:28.759007"
+    },
+    "oracle_018_silicon_pulse": {
+      "name": "oracle_018_silicon_pulse",
+      "theme": "oracle_018_silicon_pulse",
+      "text_count": 1,
+      "keywords": [
+        "silicon",
+        "oracle",
+        "018",
+        "oracle_018_silicon_pulse",
+        "pulse"
+      ],
+      "created_at": "2025-10-04T16:54:28.759089"
+    },
+    "oracle_052_bug_report": {
+      "name": "oracle_052_bug_report",
+      "theme": "oracle_052_bug_report",
+      "text_count": 1,
+      "keywords": [
+        "report",
+        "oracle",
+        "oracle_052_bug_report",
+        "052",
+        "bug"
+      ],
+      "created_at": "2025-10-04T16:54:28.759164"
+    },
+    "oracle_011_love_pirate": {
+      "name": "oracle_011_love_pirate",
+      "theme": "oracle_011_love_pirate",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "love",
+        "pirate",
+        "011",
+        "oracle_011_love_pirate"
+      ],
+      "created_at": "2025-10-04T16:54:28.759326"
+    },
+    "oracle_017_copper_skin": {
+      "name": "oracle_017_copper_skin",
+      "theme": "oracle_017_copper_skin",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "copper",
+        "017",
+        "oracle_017_copper_skin",
+        "skin"
+      ],
+      "created_at": "2025-10-04T16:54:28.759402"
+    },
+    "oracle_075_utopia_buffer": {
+      "name": "oracle_075_utopia_buffer",
+      "theme": "oracle_075_utopia_buffer",
+      "text_count": 1,
+      "keywords": [
+        "buffer",
+        "oracle",
+        "utopia",
+        "075",
+        "oracle_075_utopia_buffer"
+      ],
+      "created_at": "2025-10-04T16:54:28.759562"
+    },
+    "oracle_023_biotech_braid": {
+      "name": "oracle_023_biotech_braid",
+      "theme": "oracle_023_biotech_braid",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_023_biotech_braid",
+        "braid",
+        "biotech",
+        "023"
+      ],
+      "created_at": "2025-10-04T16:54:28.759644"
+    },
+    "oracle_041_ancestral_playlist": {
+      "name": "oracle_041_ancestral_playlist",
+      "theme": "oracle_041_ancestral_playlist",
+      "text_count": 1,
+      "keywords": [
+        "041",
+        "oracle_041_ancestral_playlist",
+        "oracle",
+        "playlist",
+        "ancestral"
+      ],
+      "created_at": "2025-10-04T16:54:28.759721"
+    },
+    "oracle_036_hard_reset": {
+      "name": "oracle_036_hard_reset",
+      "theme": "oracle_036_hard_reset",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "hard",
+        "oracle_036_hard_reset",
+        "036",
+        "reset"
+      ],
+      "created_at": "2025-10-04T16:54:28.759886"
+    },
+    "oracle_010_signal_jammer": {
+      "name": "oracle_010_signal_jammer",
+      "theme": "oracle_010_signal_jammer",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "signal",
+        "010",
+        "oracle_010_signal_jammer",
+        "jammer"
+      ],
+      "created_at": "2025-10-04T16:54:28.759961"
+    },
+    "oracle_008_pride_transmitter": {
+      "name": "oracle_008_pride_transmitter",
+      "theme": "oracle_008_pride_transmitter",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "pride",
+        "008",
+        "oracle_008_pride_transmitter",
+        "transmitter"
+      ],
+      "created_at": "2025-10-04T16:54:28.760039"
+    },
+    "oracle_014_queer_ping": {
+      "name": "oracle_014_queer_ping",
+      "theme": "oracle_014_queer_ping",
+      "text_count": 1,
+      "keywords": [
+        "ping",
+        "oracle",
+        "queer",
+        "oracle_014_queer_ping",
+        "014"
+      ],
+      "created_at": "2025-10-04T16:54:28.760153"
+    },
+    "oracle_049_jitter_loop": {
+      "name": "oracle_049_jitter_loop",
+      "theme": "oracle_049_jitter_loop",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "jitter",
+        "loop",
+        "049",
+        "oracle_049_jitter_loop"
+      ],
+      "created_at": "2025-10-04T16:54:28.760228"
+    },
+    "oracle_007_voice_modulator": {
+      "name": "oracle_007_voice_modulator",
+      "theme": "oracle_007_voice_modulator",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_007_voice_modulator",
+        "modulator",
+        "voice",
+        "007"
+      ],
+      "created_at": "2025-10-04T16:54:28.760304"
+    },
+    "oracle_072_crush_protocol": {
+      "name": "oracle_072_crush_protocol",
+      "theme": "oracle_072_crush_protocol",
+      "text_count": 1,
+      "keywords": [
+        "072",
+        "oracle",
+        "oracle_072_crush_protocol",
+        "protocol",
+        "crush"
+      ],
+      "created_at": "2025-10-04T16:54:28.760462"
+    },
+    "oracle_054_ctrl_z": {
+      "name": "oracle_054_ctrl_z",
+      "theme": "oracle_054_ctrl_z",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "ctrl",
+        "oracle_054_ctrl_z",
+        "z",
+        "054"
+      ],
+      "created_at": "2025-10-04T16:54:28.760537"
+    },
+    "oracle_035_velvet_drag_file": {
+      "name": "oracle_035_velvet_drag_file",
+      "theme": "oracle_035_velvet_drag_file",
+      "text_count": 1,
+      "keywords": [
+        "035",
+        "oracle",
+        "velvet",
+        "oracle_035_velvet_drag_file",
+        "file",
+        "drag",
+        "sacred"
+      ],
+      "created_at": "2025-10-04T16:54:28.760650"
+    },
+    "oracle_028_overheat_warning": {
+      "name": "oracle_028_overheat_warning",
+      "theme": "oracle_028_overheat_warning",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "warning",
+        "oracle_028_overheat_warning",
+        "028",
+        "overheat"
+      ],
+      "created_at": "2025-10-04T16:54:28.760725"
+    },
+    "oracle_067_hologram_garden": {
+      "name": "oracle_067_hologram_garden",
+      "theme": "oracle_067_hologram_garden",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_067_hologram_garden",
+        "hologram",
+        "garden",
+        "067"
+      ],
+      "created_at": "2025-10-04T16:54:28.760799"
+    },
+    "oracle_022_neurodivergent_loop": {
+      "name": "oracle_022_neurodivergent_loop",
+      "theme": "oracle_022_neurodivergent_loop",
+      "text_count": 1,
+      "keywords": [
+        "oracle_022_neurodivergent_loop",
+        "oracle",
+        "loop",
+        "wisdom",
+        "022",
+        "neurodivergent"
+      ],
+      "created_at": "2025-10-04T16:54:28.760875"
+    },
+    "oracle_031_obsidian_drive": {
+      "name": "oracle_031_obsidian_drive",
+      "theme": "oracle_031_obsidian_drive",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "drive",
+        "obsidian",
+        "031",
+        "oracle_031_obsidian_drive"
+      ],
+      "created_at": "2025-10-04T16:54:28.760952"
+    },
+    "oracle_037_queer_zip": {
+      "name": "oracle_037_queer_zip",
+      "theme": "oracle_037_queer_zip",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "queer",
+        "037",
+        "oracle_037_queer_zip",
+        "zip"
+      ],
+      "created_at": "2025-10-04T16:54:28.761065"
+    },
+    "oracle_064_soft_update": {
+      "name": "oracle_064_soft_update",
+      "theme": "oracle_064_soft_update",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "oracle_064_soft_update",
+        "soft",
+        "064",
+        "update"
+      ],
+      "created_at": "2025-10-04T16:54:28.761140"
+    },
+    "oracle_069_vaporwave_oracle": {
+      "name": "oracle_069_vaporwave_oracle",
+      "theme": "oracle_069_vaporwave_oracle",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "069",
+        "wisdom",
+        "vaporwave",
+        "oracle_069_vaporwave_oracle"
+      ],
+      "created_at": "2025-10-04T16:54:28.761218"
+    },
+    "oracle_030_power_cord_cut": {
+      "name": "oracle_030_power_cord_cut",
+      "theme": "oracle_030_power_cord_cut",
+      "text_count": 1,
+      "keywords": [
+        "cord",
+        "energy",
+        "030",
+        "oracle",
+        "oracle_030_power_cord_cut",
+        "power",
+        "cut"
+      ],
+      "created_at": "2025-10-04T16:54:28.761293"
+    },
+    "oracle_043_404_club": {
+      "name": "oracle_043_404_club",
+      "theme": "oracle_043_404_club",
+      "text_count": 1,
+      "keywords": [
+        "oracle_043_404_club",
+        "oracle",
+        "043",
+        "404",
+        "club"
+      ],
+      "created_at": "2025-10-04T16:54:28.761370"
+    },
+    "oracle_027_transistor_dance": {
+      "name": "oracle_027_transistor_dance",
+      "theme": "oracle_027_transistor_dance",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "dance",
+        "transistor",
+        "oracle_027_transistor_dance",
+        "027"
+      ],
+      "created_at": "2025-10-04T16:54:28.761454"
+    },
+    "oracle_053_patch_note": {
+      "name": "oracle_053_patch_note",
+      "theme": "oracle_053_patch_note",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "note",
+        "patch",
+        "053",
+        "oracle_053_patch_note"
+      ],
+      "created_at": "2025-10-04T16:54:28.761548"
+    },
+    "oracle_058_dark_mode": {
+      "name": "oracle_058_dark_mode",
+      "theme": "oracle_058_dark_mode",
+      "text_count": 1,
+      "keywords": [
+        "oracle_058_dark_mode",
+        "oracle",
+        "058",
+        "dark",
+        "mode"
+      ],
+      "created_at": "2025-10-04T16:54:28.761628"
+    },
+    "oracle_047_cracked_lens": {
+      "name": "oracle_047_cracked_lens",
+      "theme": "oracle_047_cracked_lens",
+      "text_count": 1,
+      "keywords": [
+        "oracle",
+        "lens",
+        "cracked",
+        "047",
+        "oracle_047_cracked_lens"
+      ],
+      "created_at": "2025-10-04T16:54:28.761708"
+    }
+  },
+  "last_updated": "2025-10-04T16:55:13.673057"
+}

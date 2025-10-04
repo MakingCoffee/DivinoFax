@@ -54,10 +54,16 @@ class MockRFIDReader:
     def __init__(self, config: RFIDConfig):
         self.config = config
         self.simulation_cards = config.simulation_cards or [
-            "123456789012",  # Fortune cards
-            "987654321098",
-            "111222333444",
-            "555666777888"
+            "001",  # Crystal Sync
+            "002",  # Quantum Buddy
+            "003",  # Flux Tower
+            "004",  # 404 Identity Not Found
+            "005",  # Neon Tongue
+            "010",  # Signal Jammer
+            "025",  # Queer Firmware
+            "046",  # The Glitch Witch
+            "069",  # Vaporwave Oracle
+            "075"   # Utopia Buffer
         ]
         self.current_card_index = 0
         logger.info("Mock RFID reader initialized")

@@ -19,7 +19,7 @@ import logging
 import signal
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict
 
 from rfid_reader import RFIDReader
 from text_library import TextLibrary
@@ -85,14 +85,19 @@ class Divinofax:
         
         logger.info("Shutdown complete")
     
-    async def process_rfid_reading(self, rfid_code: str) -> Optional[str]:
-        """Process an RFID reading and generate a haiku."""
+    async def process_rfid_reading(self, rfid_code: str) -> Optional[Dict[str, str]]:
+        """Process an RFID reading and generate a haiku with card info."""
         logger.info(f"Processing RFID code: {rfid_code}")
         
         try:
-            # Get relevant text from library based on RFID code
-            inspiration_text = await self.text_library.get_inspiration(rfid_code)
+            # Get oracle card information
+            card_info = await self.text_library.get_oracle_card_info(rfid_code)
+            if not card_info:
+                logger.warning(f"No oracle card info found for RFID: {rfid_code}")
+                return None
             
+            # Get inspiration text for haiku generation
+            inspiration_text = await self.text_library.get_inspiration(rfid_code)
             if not inspiration_text:
                 logger.warning(f"No inspiration text found for RFID: {rfid_code}")
                 return None
@@ -101,8 +106,15 @@ class Divinofax:
             haiku = await self.llm_engine.generate_haiku(inspiration_text, rfid_code)
             
             if haiku:
-                logger.info(f"Generated haiku for {rfid_code}: {haiku}")
-                return haiku
+                result = {
+                    'haiku': haiku,
+                    'title': card_info['title'],
+                    'description': card_info['description'],
+                    'keywords': card_info['keywords'],
+                    'theme': card_info['theme']
+                }
+                logger.info(f"Generated fortune for {rfid_code}: {card_info['title']}")
+                return result
             else:
                 logger.error(f"Failed to generate haiku for {rfid_code}")
                 return None
@@ -111,11 +123,11 @@ class Divinofax:
             logger.error(f"Error processing RFID {rfid_code}: {e}")
             return None
     
-    async def print_fortune(self, haiku: str, rfid_code: str):
-        """Print the fortune haiku to thermal printer."""
+    async def print_fortune(self, fortune_data: Dict[str, str], rfid_code: str):
+        """Print the oracle card fortune to thermal printer."""
         try:
-            await self.thermal_printer.print_fortune(haiku, rfid_code)
-            logger.info(f"Fortune printed successfully for {rfid_code}")
+            await self.thermal_printer.print_oracle_fortune(fortune_data, rfid_code)
+            logger.info(f"Oracle card '{fortune_data['title']}' printed successfully for {rfid_code}")
         except Exception as e:
             logger.error(f"Failed to print fortune for {rfid_code}: {e}")
     
@@ -139,12 +151,12 @@ class Divinofax:
                     # Print "thinking" message
                     await self.thermal_printer.print_message("🌟 Consulting the cosmic energies... 🌟")
                     
-                    # Process the reading and generate haiku
-                    haiku = await self.process_rfid_reading(rfid_code)
+                    # Process the reading and generate oracle card fortune
+                    fortune_data = await self.process_rfid_reading(rfid_code)
                     
-                    if haiku:
-                        # Print the fortune
-                        await self.print_fortune(haiku, rfid_code)
+                    if fortune_data:
+                        # Print the oracle card fortune
+                        await self.print_fortune(fortune_data, rfid_code)
                     else:
                         # Print error message
                         error_msg = "The spirits are unclear today.\nPlease try again later."

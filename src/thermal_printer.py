@@ -368,6 +368,105 @@ class ThermalPrinter:
             self.print_stats["failed_prints"] += 1
             raise
     
+    async def print_oracle_fortune(self, fortune_data: dict, rfid_code: str = ""):
+        """Print a formatted oracle card fortune with title, description, and haiku."""
+        if not self.is_initialized:
+            await self.initialize()
+        
+        try:
+            self.print_stats["total_prints"] += 1
+            
+            # Print header
+            if self.config.use_decorations:
+                await self.printer.print_line("═", self.config.line_width)
+                await self.printer.print_text("🔮 ORACLE FORTUNE 🔮", center=True, bold=True, large=True)
+                await self.printer.print_line("═", self.config.line_width)
+                await self.printer.feed_lines(1)
+            
+            # Print oracle card title
+            await self.printer.print_text(fortune_data['title'].upper(), center=True, bold=True)
+            await self.printer.feed_lines(1)
+            
+            # Print description with proper text wrapping
+            description = fortune_data['description']
+            # Simple word wrap for thermal printer
+            words = description.split()
+            lines = []
+            current_line = []
+            current_length = 0
+            max_length = self.config.line_width - 2  # Leave margin
+            
+            for word in words:
+                if current_length + len(word) + 1 <= max_length:
+                    current_line.append(word)
+                    current_length += len(word) + 1
+                else:
+                    if current_line:
+                        lines.append(' '.join(current_line))
+                    current_line = [word]
+                    current_length = len(word)
+            
+            if current_line:
+                lines.append(' '.join(current_line))
+            
+            for line in lines:
+                await self.printer.print_text(line, center=True)
+            
+            await self.printer.feed_lines(2)
+            
+            # Print decorative separator
+            await self.printer.print_line("~", self.config.line_width)
+            await self.printer.feed_lines(1)
+            
+            # Print haiku with special formatting
+            haiku_lines = fortune_data['haiku'].split('\n')
+            for i, line in enumerate(haiku_lines):
+                line = line.strip()
+                if line:
+                    # Center each line of the haiku
+                    await self.printer.print_text(line, center=True, bold=(i == 1))  # Middle line bold
+                    await asyncio.sleep(0.2)  # Small delay between lines
+            
+            await self.printer.feed_lines(2)
+            await self.printer.print_line("~", self.config.line_width)
+            
+            # Print keywords if available
+            if fortune_data['keywords']:
+                await self.printer.feed_lines(1)
+                keywords_text = f"Keywords: {fortune_data['keywords']}"
+                await self.printer.print_text(keywords_text, center=True)
+            
+            await self.printer.feed_lines(1)
+            
+            # Print timestamp
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            await self.printer.print_text(f"Divined: {timestamp}", center=True)
+            
+            if rfid_code:
+                # Show a readable form of the RFID for tel: URIs
+                display_code = rfid_code if len(rfid_code) <= 8 else rfid_code[-8:]
+                await self.printer.print_text(f"Card: {display_code}", center=True)
+            
+            await self.printer.feed_lines(1)
+            
+            # Print footer
+            if self.config.use_decorations:
+                await self.printer.print_text("✨ Trust in the journey ✨", center=True)
+                await self.printer.print_line("─", self.config.line_width)
+                await self.printer.print_text("DIVINOFAX ORACLE", center=True, bold=True)
+                await self.printer.print_line("═", self.config.line_width)
+            
+            # Final paper feed
+            await self.printer.feed_lines(4)
+            
+            self.print_stats["successful_prints"] += 1
+            logger.info(f"Oracle fortune '{fortune_data['title']}' printed successfully for RFID {rfid_code}")
+            
+        except Exception as e:
+            logger.error(f"Failed to print oracle fortune: {e}")
+            self.print_stats["failed_prints"] += 1
+            raise
+    
     async def print_startup_banner(self):
         """Print startup banner when system starts."""
         if not self.is_initialized:

@@ -156,12 +156,17 @@ class TextLibrary:
                 with open(text_file, 'r', encoding='utf-8') as f:
                     content = f.read().strip()
                 
-                # Split content into individual texts
-                texts = [
-                    text.strip() 
-                    for text in content.split('\n\n') 
-                    if len(text.strip()) >= self.config.min_text_length
-                ]
+                # Check if this is an oracle card (structured format)
+                if self._is_oracle_card_format(content):
+                    # For oracle cards, store the complete content as a single text
+                    texts = [content] if len(content.strip()) >= self.config.min_text_length else []
+                else:
+                    # For other text files, split content into individual texts
+                    texts = [
+                        text.strip() 
+                        for text in content.split('\n\n') 
+                        if len(text.strip()) >= self.config.min_text_length
+                    ]
                 
                 if texts:
                     # Extract keywords from the theme name and content
@@ -181,6 +186,58 @@ class TextLibrary:
                     
             except Exception as e:
                 logger.error(f"Failed to load text collection {text_file}: {e}")
+    
+    def _is_oracle_card_format(self, content: str) -> bool:
+        """Check if content matches oracle card format (Title: ... \n\n description \n\n Keywords: ...)"""
+        lines = content.strip().split('\n')
+        if len(lines) < 3:
+            return False
+            
+        # Check for Title: at the beginning
+        if not lines[0].startswith('Title:'):
+            return False
+            
+        # Check for Keywords: at the end (allowing for some variation)
+        for line in reversed(lines):
+            if line.strip():
+                if line.startswith('Keywords:'):
+                    return True
+                break
+                
+        return False
+    
+    def parse_oracle_card(self, content: str) -> Dict[str, str]:
+        """Parse oracle card content into title, description, and keywords."""
+        lines = content.strip().split('\n')
+        
+        title = "Unknown Card"
+        description = "No description"
+        keywords = ""
+        
+        # Extract title
+        if lines and lines[0].startswith('Title:'):
+            title = lines[0][6:].strip()  # Remove "Title: " prefix
+        
+        # Extract description (middle content, excluding title and keywords lines)
+        description_lines = []
+        keywords_found = False
+        
+        for line in lines[1:]:  # Skip title line
+            if line.startswith('Keywords:'):
+                keywords = line[9:].strip()  # Remove "Keywords: " prefix
+                keywords_found = True
+                break
+            elif line.strip():  # Non-empty line that's not keywords
+                description_lines.append(line.strip())
+        
+        if description_lines:
+            description = ' '.join(description_lines)
+        
+        return {
+            'title': title,
+            'description': description, 
+            'keywords': keywords
+        }
     
     def _extract_keywords(self, theme: str, texts: List[str]) -> List[str]:
         """Extract keywords from theme and text content."""
@@ -258,19 +315,41 @@ class TextLibrary:
         except Exception as e:
             logger.error(f"Failed to save RFID mappings: {e}")
     
+    def _normalize_rfid_code(self, rfid_code: str) -> str:
+        """Convert raw RFID number to tel: format for mapping lookup."""
+        # If it's already in tel: format, return as-is
+        if rfid_code.startswith('tel:'):
+            return rfid_code
+        
+        # If it's a 3-digit number, convert to tel: format
+        if rfid_code.isdigit() and len(rfid_code) == 3:
+            return f"tel:{rfid_code}"
+        
+        # For other formats, try to extract 3-digit number
+        import re
+        match = re.search(r'\d{3}', rfid_code)
+        if match:
+            return f"tel:{match.group()}"
+        
+        # If no conversion possible, return original
+        return rfid_code
+    
     async def get_inspiration(self, rfid_code: str) -> Optional[str]:
         """Get inspiration text for a specific RFID code."""
         if not self.is_initialized:
             await self.initialize()
         
+        # Normalize RFID code to tel: format for mapping lookup
+        normalized_code = self._normalize_rfid_code(rfid_code)
+        
         # Get theme for this RFID code
-        theme = self.rfid_mappings.get(rfid_code, self.config.default_theme)
+        theme = self.rfid_mappings.get(normalized_code, self.config.default_theme)
         
         # If theme doesn't exist, use default or random
         if theme not in self.collections:
             if self.collections:
                 theme = random.choice(list(self.collections.keys()))
-                logger.info(f"Theme '{theme}' not found for RFID {rfid_code}, using random theme: {theme}")
+                logger.info(f"Theme '{theme}' not found for RFID {rfid_code} (normalized: {normalized_code}), using random theme: {theme}")
             else:
                 logger.error("No text collections available")
                 return None
@@ -287,12 +366,61 @@ class TextLibrary:
             text = random.choice(collection.texts)
             random.seed()  # Reset seed
         
+        # If this is an oracle card format, extract only the description for inspiration
+        if self._is_oracle_card_format(text):
+            card_info = self.parse_oracle_card(text)
+            text = card_info['description']
+        
         # Truncate if too long
         if len(text) > self.config.max_text_length:
             text = text[:self.config.max_text_length] + "..."
         
         logger.info(f"Selected text from theme '{theme}' for RFID {rfid_code}")
         return text
+    
+    async def get_oracle_card_info(self, rfid_code: str) -> Optional[Dict[str, str]]:
+        """Get complete oracle card information for a specific RFID code."""
+        if not self.is_initialized:
+            await self.initialize()
+        
+        # Normalize RFID code to tel: format for mapping lookup
+        normalized_code = self._normalize_rfid_code(rfid_code)
+        
+        # Get theme for this RFID code
+        theme = self.rfid_mappings.get(normalized_code, self.config.default_theme)
+        
+        # If theme doesn't exist, use default or random
+        if theme not in self.collections:
+            if self.collections:
+                theme = random.choice(list(self.collections.keys()))
+                logger.info(f"Theme '{theme}' not found for RFID {rfid_code} (normalized: {normalized_code}), using random theme: {theme}")
+            else:
+                logger.error("No text collections available")
+                return None
+        
+        collection = self.collections[theme]
+        
+        # Get the first (and likely only) text from the collection
+        if not collection.texts:
+            logger.error(f"No texts in collection '{theme}'")
+            return None
+            
+        text = collection.texts[0]  # Oracle cards should only have one complete text
+        
+        # Check if this is an oracle card format and parse it
+        if self._is_oracle_card_format(text):
+            card_info = self.parse_oracle_card(text)
+            card_info['theme'] = theme
+            logger.info(f"Retrieved oracle card '{card_info['title']}' for RFID {rfid_code}")
+            return card_info
+        else:
+            # Fallback for non-oracle card formats
+            return {
+                'title': theme.replace('_', ' ').title(),
+                'description': text[:200] + "..." if len(text) > 200 else text,
+                'keywords': ", ".join(collection.keywords),
+                'theme': theme
+            }
     
     def add_rfid_mapping(self, rfid_code: str, theme: str):
         """Add or update RFID code to theme mapping."""
@@ -344,16 +472,43 @@ async def test_text_library():
     print(f"\nLibrary stats: {library.get_library_stats()}")
     print(f"Available themes: {library.get_available_themes()}")
     
+    # Test oracle card parsing first
+    test_oracle_content = """Title: Crystal Sync
+
+Union of mineral wisdom and digital precision; attunement to the Earth's steady rhythm. Align routines and heart with a stable inner frequency to restore balance and timing.
+
+Keywords: alignment, timing, stability, attunement, ancestral guidance"""
+    
+    print(f"\n--- Testing Oracle Card Parsing ---")
+    if library._is_oracle_card_format(test_oracle_content):
+        parsed = library.parse_oracle_card(test_oracle_content)
+        print(f"Title: {parsed['title']}")
+        print(f"Description: {parsed['description']}")
+        print(f"Keywords: {parsed['keywords']}")
+    else:
+        print("Not detected as oracle card format")
+    
     # Test getting inspiration for different RFID codes
-    test_codes = ["123456789012", "987654321098", "unknown_code"]
+    test_codes = ["tel:001", "tel:002", "unknown_code"]
     
     for rfid_code in test_codes:
         print(f"\n--- Testing RFID: {rfid_code} ---")
+        
+        # Test traditional inspiration method
         inspiration = await library.get_inspiration(rfid_code)
         if inspiration:
-            print(f"Inspiration text: {inspiration[:100]}...")
+            print(f"Inspiration text (first 100 chars): {inspiration[:100]}...")
         else:
             print("No inspiration found")
+        
+        # Test new oracle card info method
+        card_info = await library.get_oracle_card_info(rfid_code)
+        if card_info:
+            print(f"Oracle Card Title: {card_info['title']}")
+            print(f"Description: {card_info['description'][:100]}...")
+            print(f"Keywords: {card_info['keywords']}")
+        else:
+            print("No oracle card info found")
     
     await library.shutdown()
     print("\nTest complete!")
