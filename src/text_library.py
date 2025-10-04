@@ -69,7 +69,7 @@ class TextLibrary:
         if not self.is_initialized:
             logger.info("Initializing text library...")
             
-            await self._create_sample_texts()
+            await self._create_sample_texts()  # Now disabled internally
             await self._load_collections()
             await self._load_rfid_mappings()
             
@@ -87,6 +87,9 @@ class TextLibrary:
     
     async def _create_sample_texts(self):
         """Create sample text collections if they don't exist."""
+        # Disabled for oracle cards - no sample text creation
+        return
+        
         data_dir = Path(self.config.data_directory)
         
         # Sample text collections with mystical themes
@@ -207,11 +210,12 @@ class TextLibrary:
             try:
                 with open(mappings_file, 'r') as f:
                     self.rfid_mappings = json.load(f)
-                logger.info(f"Loaded {len(self.rfid_mappings)} RFID mappings")
+                logger.info(f"Loaded {len(self.rfid_mappings)} RFID mappings from file")
+                return  # Exit early if we loaded from file
             except Exception as e:
                 logger.error(f"Failed to load RFID mappings: {e}")
         
-        # Create default mappings for sample RFID codes
+        # Only create default mappings if no file exists and no mappings loaded
         if not self.rfid_mappings and self.collections:
             themes = list(self.collections.keys())
             sample_rfids = ["123456789012", "987654321098", "111222333444", "555666777888"]

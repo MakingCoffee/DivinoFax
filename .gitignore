@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environment
+venv/
+env/
+
+# Logs
+*.log
+divinofax.log
+thermal_output.txt
+
+# Temporary files
+*.tmp
+*~
+
+# MacOS
+.DS_Store
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local configuration overrides
+config/divinofax.local.yaml
+
+# Model files (too large for git)
+models/
+*.gguf
+*.bin
+*.model
+
+# Discovered RFID mapping files (generated during setup)
+discovered_rfid_tags.json
+rfid_tag_mapping.txt

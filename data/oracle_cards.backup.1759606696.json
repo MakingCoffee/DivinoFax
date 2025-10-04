@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "The Fool",
+    "description": "Represents new beginnings, innocence, and spontaneous adventure. This card signifies the start of a journey filled with unlimited potential and naive optimism. The Fool encourages taking leaps of faith and embracing the unknown with childlike wonder.",
+    "rfid_tag": "123456789001",
+    "keywords": [
+      "new beginnings",
+      "adventure",
+      "potential",
+      "innocence",
+      "journey"
+    ],
+    "active": true
+  },
+  {
+    "id": 2,
+    "title": "The Magician",
+    "description": "Symbolizes manifestation, resourcefulness, and the power to turn ideas into reality. The Magician has all the tools needed to succeed and represents the ability to channel divine energy into the physical world through focused will and intention.",
+    "rfid_tag": null,
+    "keywords": [
+      "manifestation",
+      "power",
+      "resourcefulness",
+      "will",
+      "creation"
+    ],
+    "active": true
+  },
+  {
+    "id": 3,
+    "title": "The High Priestess",
+    "description": "Embodies intuition, sacred knowledge, and the subconscious mind. She represents the mysterious feminine divine and the importance of listening to your inner voice. The High Priestess guards the threshold between the conscious and unconscious realms.",
+    "rfid_tag": null,
+    "keywords": [
+      "intuition",
+      "mystery",
+      "feminine divine",
+      "subconscious",
+      "wisdom"
+    ],
+    "active": true
+  }
+]

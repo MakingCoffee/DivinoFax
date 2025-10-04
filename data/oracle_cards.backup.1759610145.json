@@ -1,0 +1,1052 @@
+[
+  {
+    "id": 1,
+    "title": "Crystal Sync",
+    "description": "Union of mineral wisdom and digital precision; attunement to the Earth's steady rhythm. Align routines and heart with a stable inner frequency to restore balance and timing.",
+    "rfid_tag": null,
+    "keywords": [
+      "alignment",
+      "timing",
+      "stability",
+      "attunement",
+      "ancestral guidance"
+    ],
+    "active": true
+  },
+  {
+    "id": 2,
+    "title": "Quantum Buddy",
+    "description": "Soul bonds that defy distance; entangled friendship loyalty and synchronicity. Nurture destined connections and trust the invisible threads that hold you.",
+    "rfid_tag": null,
+    "keywords": [
+      "connection",
+      "loyalty",
+      "synchronicity",
+      "chosen family",
+      "partnership"
+    ],
+    "active": true
+  },
+  {
+    "id": 3,
+    "title": "Flux Tower",
+    "description": "Sacred impermanence and transformative change. Embrace upheaval as purposeful evolution and ride the currents toward an authentic new form.",
+    "rfid_tag": null,
+    "keywords": [
+      "change",
+      "transition",
+      "breakthrough",
+      "evolution",
+      "release"
+    ],
+    "active": true
+  },
+  {
+    "id": 4,
+    "title": "404: Identity Not Found",
+    "description": "Freedom in the undefined self. Let identities dissolve so a truer fluid expression can emerge without rushing to new rigid labels.",
+    "rfid_tag": null,
+    "keywords": [
+      "identity",
+      "uncertainty",
+      "fluidity",
+      "self-inquiry",
+      "becoming"
+    ],
+    "active": true
+  },
+  {
+    "id": 5,
+    "title": "Neon Tongue",
+    "description": "Authentic expression in living color. Find or invent the language symbols or art that let your truth be seen and understood.",
+    "rfid_tag": null,
+    "keywords": [
+      "communication",
+      "voice",
+      "visibility",
+      "creativity",
+      "naming"
+    ],
+    "active": true
+  },
+  {
+    "id": 6,
+    "title": "Mirror Port",
+    "description": "A threshold of radical self-honesty. Life mirrors reveal truths; face yourself with compassion to step into clarity and growth.",
+    "rfid_tag": null,
+    "keywords": [
+      "reflection",
+      "truth",
+      "self-awareness",
+      "insight",
+      "threshold"
+    ],
+    "active": true
+  },
+  {
+    "id": 7,
+    "title": "Voice Modulator",
+    "description": "Shapeshifting and authenticity in speech. Notice how you code-switch and turn the dial toward your true voice while using versatility with integrity.",
+    "rfid_tag": null,
+    "keywords": [
+      "communication",
+      "authenticity",
+      "adaptability",
+      "boundaries",
+      "self-expression"
+    ],
+    "active": true
+  },
+  {
+    "id": 8,
+    "title": "Pride Transmitter",
+    "description": "Broadcasted self-love and community. Share who you are and connect with supportive networks; your signal strengthens others.",
+    "rfid_tag": null,
+    "keywords": [
+      "community",
+      "visibility",
+      "self-acceptance",
+      "solidarity",
+      "celebration"
+    ],
+    "active": true
+  },
+  {
+    "id": 9,
+    "title": "Silent Channel",
+    "description": "Power of quiet and inner listening. Step back from noise to receive subtle guidance and let truth emerge in the pause.",
+    "rfid_tag": null,
+    "keywords": [
+      "stillness",
+      "listening",
+      "intuition",
+      "rest",
+      "patience"
+    ],
+    "active": true
+  },
+  {
+    "id": 10,
+    "title": "Signal Jammer",
+    "description": "Disruptive static that protects and resets. Reduce toxic inputs set boundaries and let temporary interference lead to clarity.",
+    "rfid_tag": null,
+    "keywords": [
+      "interference",
+      "boundaries",
+      "detox",
+      "reset",
+      "clarity"
+    ],
+    "active": true
+  },
+  {
+    "id": 11,
+    "title": "Love Pirate",
+    "description": "Rebellious romance and redistribution of care. Take courageous ethical risks for love and reclaim your heart's resources.",
+    "rfid_tag": null,
+    "keywords": [
+      "passion",
+      "risk",
+      "romance",
+      "generosity",
+      "reclamation"
+    ],
+    "active": true
+  },
+  {
+    "id": 12,
+    "title": "Sync or Swim",
+    "description": "Coordination and timing as survival. Align with people and rhythms to move from struggle to flow; unity makes progress possible.",
+    "rfid_tag": null,
+    "keywords": [
+      "synchronization",
+      "teamwork",
+      "timing",
+      "adaptation",
+      "flow"
+    ],
+    "active": true
+  },
+  {
+    "id": 13,
+    "title": "Data Leak",
+    "description": "Revelation through sudden truth. Hidden information spills out—handle it with integrity and let transparency cleanse and clarify.",
+    "rfid_tag": null,
+    "keywords": [
+      "revelation",
+      "honesty",
+      "exposure",
+      "transparency",
+      "catharsis"
+    ],
+    "active": true
+  },
+  {
+    "id": 14,
+    "title": "Queer Ping",
+    "description": "Small signals that find kindred spirits. Reach out sincerely; like attracts like and quiet pings are returned.",
+    "rfid_tag": null,
+    "keywords": [
+      "outreach",
+      "connection",
+      "hope",
+      "initiation",
+      "recognition"
+    ],
+    "active": true
+  },
+  {
+    "id": 15,
+    "title": "The Signal Beyond",
+    "description": "Guidance from something greater; synchronicities align your path. Trust the big picture and stay open to awe and purpose.",
+    "rfid_tag": null,
+    "keywords": [
+      "destiny",
+      "guidance",
+      "synchronicity",
+      "wholeness",
+      "purpose"
+    ],
+    "active": true
+  },
+  {
+    "id": 16,
+    "title": "Haptic Bloom",
+    "description": "Sensory awakening and embodied presence. Reconnect with tactile joy and bodily wisdom; nurture new experiences through presence and vulnerability.",
+    "rfid_tag": null,
+    "keywords": [
+      "sensory awakening",
+      "embodiment",
+      "presence",
+      "vulnerability",
+      "connection"
+    ],
+    "active": true
+  },
+  {
+    "id": 17,
+    "title": "Copper Skin",
+    "description": "Resilient vulnerability through integration. Grow stronger while staying sensitive; honor boundaries that conduct warmth and connection.",
+    "rfid_tag": null,
+    "keywords": [
+      "resilience",
+      "integration",
+      "boundaries",
+      "strength & softness",
+      "empathy"
+    ],
+    "active": true
+  },
+  {
+    "id": 18,
+    "title": "Silicon Pulse",
+    "description": "Harmony between life and technology. Listen for the heartbeat within routine and align organic rhythm with digital cadence.",
+    "rfid_tag": null,
+    "keywords": [
+      "rhythm",
+      "integration",
+      "vitality",
+      "authenticity",
+      "routine"
+    ],
+    "active": true
+  },
+  {
+    "id": 19,
+    "title": "Voltage Drop",
+    "description": "Sacred pause to prevent burnout. Power down conserve energy and set limits so renewal can occur.",
+    "rfid_tag": null,
+    "keywords": [
+      "rest",
+      "recovery",
+      "limits",
+      "conservation",
+      "self-preservation"
+    ],
+    "active": true
+  },
+  {
+    "id": 20,
+    "title": "Body Buffer",
+    "description": "Gentle protection of your energy. Create compassionate boundaries and personal space to hear your own heartbeat.",
+    "rfid_tag": null,
+    "keywords": [
+      "boundaries",
+      "self-care",
+      "protection",
+      "personal space",
+      "energy hygiene"
+    ],
+    "active": true
+  },
+  {
+    "id": 21,
+    "title": "Soft Shell Protocol",
+    "description": "Flexible tender resilience. Adopt comforting rituals and soft defenses that let you heal without hardening.",
+    "rfid_tag": null,
+    "keywords": [
+      "gentle resilience",
+      "healing rituals",
+      "flexible boundaries",
+      "tenderness",
+      "self-compassion"
+    ],
+    "active": true
+  },
+  {
+    "id": 22,
+    "title": "Neurodivergent Loop",
+    "description": "Wisdom in repetition and unique patterns. Honor your processing style; transform loops into strength and insight.",
+    "rfid_tag": null,
+    "keywords": [
+      "neurodiversity",
+      "patterns",
+      "acceptance",
+      "ritual",
+      "insight"
+    ],
+    "active": true
+  },
+  {
+    "id": 23,
+    "title": "Biotech Braid",
+    "description": "Integration and collaborative harmony. Weave diverse strands—self tools and community—into a cohesive whole.",
+    "rfid_tag": null,
+    "keywords": [
+      "integration",
+      "synergy",
+      "unity",
+      "collaboration",
+      "intersectionality"
+    ],
+    "active": true
+  },
+  {
+    "id": 24,
+    "title": "Chromatic Surge",
+    "description": "Creative catharsis and true colors unleashed. Release pent-up emotion or art and let authentic expression transform the scene.",
+    "rfid_tag": null,
+    "keywords": [
+      "release",
+      "authenticity",
+      "self-expression",
+      "breakthrough",
+      "renewal"
+    ],
+    "active": true
+  },
+  {
+    "id": 25,
+    "title": "Queer Firmware",
+    "description": "Rewriting the code of identity. Honor your authentic program and overwrite imposed scripts with self-authorship.",
+    "rfid_tag": null,
+    "keywords": [
+      "authentic identity",
+      "liberation",
+      "self-authorship",
+      "nonconformity",
+      "pride"
+    ],
+    "active": true
+  },
+  {
+    "id": 26,
+    "title": "Femme Armor",
+    "description": "Power through authentic soft expression. Let grace and femininity be your shield and strength.",
+    "rfid_tag": null,
+    "keywords": [
+      "empowered femininity",
+      "authentic expression",
+      "confidence",
+      "self-acceptance",
+      "protection"
+    ],
+    "active": true
+  },
+  {
+    "id": 27,
+    "title": "Transistor Dance",
+    "description": "Elegance in transition and flux. Start–stop moments form a larger harmony; move fluidly between states.",
+    "rfid_tag": null,
+    "keywords": [
+      "transition",
+      "fluidity",
+      "harmony",
+      "change",
+      "becoming"
+    ],
+    "active": true
+  },
+  {
+    "id": 28,
+    "title": "Overheat Warning",
+    "description": "Heed signs of overload. Cool down rebalance and prioritize maintenance before burnout occurs.",
+    "rfid_tag": null,
+    "keywords": [
+      "burnout prevention",
+      "balance",
+      "moderation",
+      "recalibration",
+      "self-care"
+    ],
+    "active": true
+  },
+  {
+    "id": 29,
+    "title": "Elastic Avatar",
+    "description": "Fluid identity and adaptable expression. Stretch into new forms while staying anchored to your constant core.",
+    "rfid_tag": null,
+    "keywords": [
+      "adaptability",
+      "fluid identity",
+      "resilience",
+      "experimentation",
+      "core self"
+    ],
+    "active": true
+  },
+  {
+    "id": 30,
+    "title": "Power Cord Cut",
+    "description": "Liberation through detachment. Unplug from draining ties to restore autonomy energy and peace.",
+    "rfid_tag": null,
+    "keywords": [
+      "release",
+      "boundaries",
+      "independence",
+      "renewal",
+      "detachment"
+    ],
+    "active": true
+  },
+  {
+    "id": 31,
+    "title": "Obsidian Drive",
+    "description": "Keeper of deep memory and collective grief. Transform sorrow into strength by honoring what was lost and reclaiming resilience through remembrance.",
+    "rfid_tag": null,
+    "keywords": [
+      "memory",
+      "grief",
+      "resilience",
+      "healing",
+      "honor"
+    ],
+    "active": true
+  },
+  {
+    "id": 32,
+    "title": "Dream Cache",
+    "description": "Inherited intuition and ancestral wisdom stored in the soul. Trust inner guidance that whispers through dreams and the voices of those before you.",
+    "rfid_tag": null,
+    "keywords": [
+      "intuition",
+      "ancestry",
+      "wisdom",
+      "inner voice",
+      "guidance"
+    ],
+    "active": true
+  },
+  {
+    "id": 33,
+    "title": "Riot.exe",
+    "description": "Echo of uprising and courageous defiance. Channel righteous anger into action; your resistance is part of a lineage of liberation.",
+    "rfid_tag": null,
+    "keywords": [
+      "rebellion",
+      "courage",
+      "activism",
+      "justice",
+      "empowerment"
+    ],
+    "active": true
+  },
+  {
+    "id": 34,
+    "title": "Zine Cluster",
+    "description": "Grassroots storytelling and DIY creation. Express truth authentically; your handmade magic inspires connection and change.",
+    "rfid_tag": null,
+    "keywords": [
+      "creativity",
+      "storytelling",
+      "authenticity",
+      "expression",
+      "community"
+    ],
+    "active": true
+  },
+  {
+    "id": 35,
+    "title": "Velvet Drag File",
+    "description": "Transformation through performance and sacred play. Embrace self-expression as ritual; performance can reveal your truest self.",
+    "rfid_tag": null,
+    "keywords": [
+      "self-expression",
+      "transformation",
+      "performance",
+      "authenticity",
+      "empowerment"
+    ],
+    "active": true
+  },
+  {
+    "id": 36,
+    "title": "Hard Reset",
+    "description": "Powerful restoration and reclamation of what was erased. Begin again with truth as your foundation and courage as your guide.",
+    "rfid_tag": null,
+    "keywords": [
+      "renewal",
+      "reclamation",
+      "truth",
+      "change",
+      "rebirth"
+    ],
+    "active": true
+  },
+  {
+    "id": 37,
+    "title": "Queer.zip",
+    "description": "Compressed multitudes seeking expansion. Unpack your layers; each hidden part enriches your authentic wholeness.",
+    "rfid_tag": null,
+    "keywords": [
+      "identity",
+      "wholeness",
+      "complexity",
+      "integration",
+      "freedom"
+    ],
+    "active": true
+  },
+  {
+    "id": 38,
+    "title": "Public Access Terminal",
+    "description": "Collective memory and open wisdom. Seek connection and shared knowledge; your story strengthens the archive of community.",
+    "rfid_tag": null,
+    "keywords": [
+      "community",
+      "wisdom",
+      "shared history",
+      "connection",
+      "knowledge"
+    ],
+    "active": true
+  },
+  {
+    "id": 39,
+    "title": "Redacted Log",
+    "description": "Silenced truths yearning for voice. Read between the lines and speak what has been hidden to reclaim your narrative.",
+    "rfid_tag": null,
+    "keywords": [
+      "truth",
+      "silence",
+      "revelation",
+      "honesty",
+      "healing"
+    ],
+    "active": true
+  },
+  {
+    "id": 40,
+    "title": "Deadname Ghost",
+    "description": "Lingering past identity seeking peace. Honor your transformation with compassion and lay old selves gently to rest.",
+    "rfid_tag": null,
+    "keywords": [
+      "identity",
+      "release",
+      "forgiveness",
+      "healing",
+      "transformation"
+    ],
+    "active": true
+  },
+  {
+    "id": 41,
+    "title": "Ancestral Playlist",
+    "description": "Music as memory and lineage. Listen to the art and songs that bridge generations; creativity connects hearts through time.",
+    "rfid_tag": null,
+    "keywords": [
+      "music",
+      "memory",
+      "heritage",
+      "connection",
+      "inspiration"
+    ],
+    "active": true
+  },
+  {
+    "id": 42,
+    "title": "Pride Flag Fragment",
+    "description": "Evolution of self and belonging. You are a vibrant piece of a growing whole—honor your fragment and the larger tapestry it colors.",
+    "rfid_tag": null,
+    "keywords": [
+      "identity",
+      "growth",
+      "pride",
+      "community",
+      "evolution"
+    ],
+    "active": true
+  },
+  {
+    "id": 43,
+    "title": "404 Club",
+    "description": "Memorial for the lost and unseen. Remember and honor what has vanished; love persists even through absence.",
+    "rfid_tag": null,
+    "keywords": [
+      "remembrance",
+      "grief",
+      "memorial",
+      "healing",
+      "legacy"
+    ],
+    "active": true
+  },
+  {
+    "id": 44,
+    "title": "EchoGem",
+    "description": "Reverberations of the past shaping the present. Recognize recurring patterns and ancestral lessons guiding your choices.",
+    "rfid_tag": null,
+    "keywords": [
+      "memory",
+      "patterns",
+      "ancestral wisdom",
+      "reflection",
+      "learning"
+    ],
+    "active": true
+  },
+  {
+    "id": 45,
+    "title": "Open Source Kin",
+    "description": "Chosen family and collaborative legacy. Build and nurture connections rooted in love mentorship and mutual creation.",
+    "rfid_tag": null,
+    "keywords": [
+      "community",
+      "kinship",
+      "solidarity",
+      "legacy",
+      "support"
+    ],
+    "active": true
+  },
+  {
+    "id": 46,
+    "title": "The Glitch Witch",
+    "description": "Rebellion-as-revelation; transmute errors into wisdom and break confining rules to create a truer path from elegant chaos.",
+    "rfid_tag": null,
+    "keywords": [
+      "rebellion",
+      "transmutation",
+      "authenticity",
+      "creation",
+      "outsider power"
+    ],
+    "active": true
+  },
+  {
+    "id": 47,
+    "title": "Cracked Lens",
+    "description": "Perspective through fracture; a broken view reveals hidden layers and paradoxes inviting deconstruction and clearer truth.",
+    "rfid_tag": null,
+    "keywords": [
+      "perspective shift",
+      "paradox",
+      "deconstruction",
+      "clarity",
+      "truth"
+    ],
+    "active": true
+  },
+  {
+    "id": 48,
+    "title": "Corrupted Blessing",
+    "description": "Mixed grace—gift and challenge entwined; accept complexity and find the lesson where light and shadow coexist.",
+    "rfid_tag": null,
+    "keywords": [
+      "duality",
+      "acceptance",
+      "lesson",
+      "shadow & light",
+      "faith"
+    ],
+    "active": true
+  },
+  {
+    "id": 49,
+    "title": "Jitter Loop",
+    "description": "Recurring cycles and anxious repetition; awareness plus a deliberate new move can interrupt the loop and free you.",
+    "rfid_tag": null,
+    "keywords": [
+      "patterns",
+      "anxiety",
+      "awareness",
+      "disruption",
+      "choice"
+    ],
+    "active": true
+  },
+  {
+    "id": 50,
+    "title": "Drag Signal",
+    "description": "Guerrilla broadcast of authenticity; end the silence and proudly transmit who you are to call in your people.",
+    "rfid_tag": null,
+    "keywords": [
+      "visibility",
+      "pride",
+      "self-expression",
+      "liberation",
+      "courage"
+    ],
+    "active": true
+  },
+  {
+    "id": 51,
+    "title": "Error Message: Love",
+    "description": "When love doesn't compute; treat heartbreak and misfires as debugging cues to heal beliefs and stay open to mystery.",
+    "rfid_tag": null,
+    "keywords": [
+      "heartbreak",
+      "healing",
+      "beliefs",
+      "mystery",
+      "growth"
+    ],
+    "active": true
+  },
+  {
+    "id": 52,
+    "title": "Bug Report",
+    "description": "Name the flaw to change it; truthful diagnosis—personal or systemic—begins the program of transformation.",
+    "rfid_tag": null,
+    "keywords": [
+      "honesty",
+      "diagnosis",
+      "accountability",
+      "change",
+      "integrity"
+    ],
+    "active": true
+  },
+  {
+    "id": 53,
+    "title": "Patch Note",
+    "description": "Integration after upheaval; update your story with lessons learned and step forward as a wiser version.",
+    "rfid_tag": null,
+    "keywords": [
+      "integration",
+      "healing",
+      "evolution",
+      "lessons",
+      "renewal"
+    ],
+    "active": true
+  },
+  {
+    "id": 54,
+    "title": "Ctrl+Z",
+    "description": "Regret and the wish to undo; practice forgiveness keep the lesson and create anew rather than rewinding the past.",
+    "rfid_tag": null,
+    "keywords": [
+      "regret",
+      "forgiveness",
+      "acceptance",
+      "learning",
+      "fresh start"
+    ],
+    "active": true
+  },
+  {
+    "id": 55,
+    "title": "Overclocked",
+    "description": "Running too hot; brilliance needs balance—cool down set limits and protect sustainable power.",
+    "rfid_tag": null,
+    "keywords": [
+      "burnout",
+      "balance",
+      "limits",
+      "rest",
+      "sustainability"
+    ],
+    "active": true
+  },
+  {
+    "id": 56,
+    "title": "Signal Spoof",
+    "description": "Masks mixed signals and strategy; use discernment and cleverness without losing connection to your true self.",
+    "rfid_tag": null,
+    "keywords": [
+      "discernment",
+      "illusion",
+      "strategy",
+      "authenticity",
+      "boundaries"
+    ],
+    "active": true
+  },
+  {
+    "id": 57,
+    "title": "Broken Synth",
+    "description": "Beauty through imperfection; let scars and sorrow become music—create truth from what cracked you open.",
+    "rfid_tag": null,
+    "keywords": [
+      "vulnerability",
+      "creativity",
+      "authenticity",
+      "alchemy",
+      "healing"
+    ],
+    "active": true
+  },
+  {
+    "id": 58,
+    "title": "Dark Mode",
+    "description": "Choose restorative shadow; retreat from glare set boundaries and listen for subtler inner truths.",
+    "rfid_tag": null,
+    "keywords": [
+      "rest",
+      "introspection",
+      "shadow work",
+      "boundaries",
+      "restoration"
+    ],
+    "active": true
+  },
+  {
+    "id": 59,
+    "title": "Zero-Day Flare",
+    "description": "Sudden revelation and revolt; an unforeseen spark exposes truth and catalyzes rapid transformation.",
+    "rfid_tag": null,
+    "keywords": [
+      "revelation",
+      "disruption",
+      "awakening",
+      "courage",
+      "change"
+    ],
+    "active": true
+  },
+  {
+    "id": 60,
+    "title": "Queer Chaos Engine",
+    "description": "Radical authenticity as creative fuel; harness liberated nonconforming energy to build new worlds and systems.",
+    "rfid_tag": null,
+    "keywords": [
+      "authenticity",
+      "creation",
+      "rebellion",
+      "innovation",
+      "power"
+    ],
+    "active": true
+  },
+  {
+    "id": 61,
+    "title": "Dream Loader",
+    "description": "Subconscious uploads guiding desire; honor recurring dreams and translate soul-level programs into waking steps.",
+    "rfid_tag": null,
+    "keywords": [
+      "dreams",
+      "intuition",
+      "blueprints",
+      "synchronicity",
+      "integration"
+    ],
+    "active": true
+  },
+  {
+    "id": 62,
+    "title": "Moonbeam Modem",
+    "description": "Tune your inner antenna to quiet cosmic signals; trust luminous whispers that arrive in stillness and night.",
+    "rfid_tag": null,
+    "keywords": [
+      "intuition",
+      "silence",
+      "downloads",
+      "cosmic guidance",
+      "receptivity"
+    ],
+    "active": true
+  },
+  {
+    "id": 63,
+    "title": "Sugar Capacitor",
+    "description": "Store genuine sweetness as power; small joys and kindness charge your spirit for darker hours.",
+    "rfid_tag": null,
+    "keywords": [
+      "joy",
+      "kindness",
+      "resilience",
+      "nourishment",
+      "hope"
+    ],
+    "active": true
+  },
+  {
+    "id": 64,
+    "title": "Soft Update",
+    "description": "Gentle silent healing; subtle nightly patches integrate lessons and improve you without disruption.",
+    "rfid_tag": null,
+    "keywords": [
+      "healing",
+      "patience",
+      "evolution",
+      "grace",
+      "consistency"
+    ],
+    "active": true
+  },
+  {
+    "id": 65,
+    "title": "Neon Prophet",
+    "description": "Blazing clarity and obvious signs; a message you can't ignore—be the beacon or follow its glow.",
+    "rfid_tag": null,
+    "keywords": [
+      "revelation",
+      "signs",
+      "truth",
+      "visibility",
+      "leadership"
+    ],
+    "active": true
+  },
+  {
+    "id": 66,
+    "title": "Starlink Locket",
+    "description": "Unbroken connection across distance; invisible threads of love and destiny guide you home.",
+    "rfid_tag": null,
+    "keywords": [
+      "connection",
+      "hope",
+      "destiny",
+      "longing",
+      "guidance"
+    ],
+    "active": true
+  },
+  {
+    "id": 67,
+    "title": "Hologram Garden",
+    "description": "Nurture the inner landscape; imagination and intangible beauty can heal and inspire real life.",
+    "rfid_tag": null,
+    "keywords": [
+      "imagination",
+      "inner world",
+      "solace",
+      "creativity",
+      "ritual"
+    ],
+    "active": true
+  },
+  {
+    "id": 68,
+    "title": "Glitter Code",
+    "description": "Hidden pattern in apparent chaos; decode synchronicities and small sparkles pointing to deeper order.",
+    "rfid_tag": null,
+    "keywords": [
+      "synchronicity",
+      "pattern",
+      "meaning",
+      "attention",
+      "intuition"
+    ],
+    "active": true
+  },
+  {
+    "id": 69,
+    "title": "Vaporwave Oracle",
+    "description": "Nostalgia as messenger; glean gentle wisdom from memories without getting lost in yesterday.",
+    "rfid_tag": null,
+    "keywords": [
+      "nostalgia",
+      "reflection",
+      "comfort",
+      "insight",
+      "balance"
+    ],
+    "active": true
+  },
+  {
+    "id": 70,
+    "title": "Pixel Portal",
+    "description": "A tiny detail opens a vast path; treat the mundane as a doorway to unexpected opportunity.",
+    "rfid_tag": null,
+    "keywords": [
+      "curiosity",
+      "opportunity",
+      "threshold",
+      "wonder",
+      "openness"
+    ],
+    "active": true
+  },
+  {
+    "id": 71,
+    "title": "Wishing.exe",
+    "description": "Clarify desires and manifest with integrity; intention is code—write it carefully and act on it.",
+    "rfid_tag": null,
+    "keywords": [
+      "intention",
+      "manifestation",
+      "clarity",
+      "responsibility",
+      "focus"
+    ],
+    "active": true
+  },
+  {
+    "id": 72,
+    "title": "Crush Protocol",
+    "description": "The circuitry of attraction and heartbreak; notice your patterns and let love refine your heart.",
+    "rfid_tag": null,
+    "keywords": [
+      "love",
+      "vulnerability",
+      "patterns",
+      "growth",
+      "resilience"
+    ],
+    "active": true
+  },
+  {
+    "id": 73,
+    "title": "Patchwork Prism",
+    "description": "Integration through kintsugi light; your mosaic of scars and stories refracts a unique spectrum.",
+    "rfid_tag": null,
+    "keywords": [
+      "wholeness",
+      "integration",
+      "healing",
+      "self-acceptance",
+      "beauty"
+    ],
+    "active": true
+  },
+  {
+    "id": 74,
+    "title": "Signal to Self",
+    "description": "Your answer returns from within; tune out noise and trust the echo of your own true voice.",
+    "rfid_tag": null,
+    "keywords": [
+      "inner voice",
+      "self-trust",
+      "clarity",
+      "sovereignty",
+      "validation"
+    ],
+    "active": true
+  },
+  {
+    "id": 75,
+    "title": "Utopia Buffer",
+    "description": "Ideals held in reserve becoming real by increments; keep hope and align daily acts with the vision.",
+    "rfid_tag": null,
+    "keywords": [
+      "ideals",
+      "hope",
+      "progress",
+      "patience",
+      "alignment"
+    ],
+    "active": true
+  }
+]

@@ -17,7 +17,7 @@ import asyncio
 import logging
 import time
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -78,9 +78,14 @@ class MockThermalPrinter:
         
         logger.info(f"Mock print: {text[:50]}...")
     
-    async def print_line(self):
+    async def print_line(self, char: str = None, width: int = None):
         """Print a decorative line."""
-        await self.print_text(self.config.divider)
+        if char is None:
+            char = "═"
+        if width is None:
+            width = self.config.line_width
+        line = char * width
+        await self.print_text(line)
     
     async def feed_lines(self, lines: int = 3):
         """Feed paper forward."""
