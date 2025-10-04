@@ -1,0 +1,82 @@
+# Divinofax Configuration File
+# =============================
+# 
+# This file configures all aspects of the Divinofax fortune-telling system.
+# Modify these settings to customize your installation.
+
+system:
+  log_level: INFO
+  log_file: divinofax.log
+  max_log_size: 10485760  # 10MB
+  startup_timeout: 30.0
+  shutdown_timeout: 10.0
+  debug_mode: false
+  simulation_mode: false  # Global simulation override
+  save_rfid_history: true
+  max_history_entries: 1000
+
+pico:
+  port: /dev/ttyACM0  # USB serial port for Pico
+  baudrate: 115200
+  timeout: 2.0
+  command_timeout: 5.0
+  heartbeat_interval: 10.0
+  retry_count: 3
+  rfid_enabled: true
+  rfid_read_interval: 0.5  # How often to check for cards
+  lights_enabled: true
+  startup_light_sequence: true
+  reading_light_color: blue     # Light when reading RFID
+  processing_light_color: purple  # Light when generating haiku
+  success_light_color: green    # Light when printing
+  error_light_color: red       # Light on error
+  simulation_mode: false
+
+rfid:
+  reset_pin: 22
+  read_timeout: 1.0  # Seconds to wait for a card
+  debounce_time: 2.0  # Seconds to wait before reading same card again
+  retry_count: 3
+  simulation_mode: false
+  simulation_cards:
+    - "123456789012"
+    - "987654321098" 
+    - "111222333444"
+    - "555666777888"
+
+text_library:
+  data_directory: data/texts
+  index_file: data/text_index.json
+  rfid_mappings_file: data/rfid_mappings.json
+  max_text_length: 500  # Maximum length for inspiration text
+  min_text_length: 50   # Minimum length for useful text
+  random_selection: true
+  default_theme: cosmic_wisdom
+
+llm:
+  model_path: models/llama-2-7b-chat.Q4_0.gguf  # Quantized for Pi
+  backup_model_path: models/llama-2-7b.Q2_K.gguf  # Even smaller backup
+  n_ctx: 1024      # Context window (smaller for Pi)
+  n_threads: 4      # Pi 4 has 4 cores
+  n_gpu_layers: 0   # No GPU on Pi
+  max_tokens: 150   # Haikus are short
+  temperature: 0.8
+  top_p: 0.9
+  repeat_penalty: 1.1
+  strict_haiku_format: true
+  allow_near_haiku: true  # Allow 5-7-5 syllable variations
+  simulation_mode: false
+
+printer:
+  port: /dev/ttyS0  # Default UART port on Pi
+  baudrate: 9600
+  timeout: 3.0
+  heat_time: 80        # Heat time for darker printing
+  heat_interval: 12    # Time between heating cycles
+  print_density: 15    # Print darkness (0-31)
+  line_width: 32       # Characters per line
+  font_size: normal  # normal, small, large
+  use_decorations: true
+  fortune_header: "🔮 YOUR FORTUNE 🔮"
+  simulation_mode: false
+  output_file: thermal_output.txt

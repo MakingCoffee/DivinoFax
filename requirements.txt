@@ -1,0 +1,42 @@
+# Divinofax Dependencies
+# ======================
+
+# Core Python packages
+asyncio-compat>=0.1.2
+dataclasses>=0.6; python_version<"3.7"
+
+# Configuration management
+PyYAML>=6.0
+pydantic>=1.10.0
+
+# Hardware interfaces
+pyserial>=3.5
+RPi.GPIO>=0.7.1; platform_machine=="armv7l" or platform_machine=="aarch64"
+spidev>=3.5; platform_machine=="armv7l" or platform_machine=="aarch64"
+
+# RFID support
+mfrc522>=0.0.7; platform_machine=="armv7l" or platform_machine=="aarch64"
+simplemfrc522>=1.4; platform_machine=="armv7l" or platform_machine=="aarch64"
+
+# LLM support  
+llama-cpp-python>=0.2.11
+numpy>=1.21.0
+torch>=2.0.0; platform_machine=="aarch64"  # For ARM64 Pi only
+
+# Thermal printer support
+Pillow>=9.0.0
+python-escpos>=3.0a8
+
+# Logging and monitoring
+colorama>=0.4.4
+rich>=12.0.0
+
+# Development and testing
+pytest>=7.0.0
+pytest-asyncio>=0.20.0
+black>=22.0.0
+flake8>=4.0.0
+
+# Optional: Web interface (future enhancement)
+# fastapi>=0.85.0
+# uvicorn[standard]>=0.18.0
