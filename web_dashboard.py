@@ -198,8 +198,8 @@ def api_logs():
 def api_wifi_status():
     """Get current WiFi connection status."""
     try:
-        # Get current WiFi connection
-        result = run_command("nmcli -t -f NAME,TYPE,DEVICE connection show --active 2>/dev/null | grep wifi")
+        # Get current WiFi connection (check for 802-11-wireless type)
+        result = run_command("nmcli -t -f NAME,TYPE,DEVICE connection show --active 2>/dev/null | grep 802-11-wireless")
         connected = bool(result)
 
         # Get IP address
