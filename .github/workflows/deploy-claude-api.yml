@@ -1,0 +1,189 @@
+name: Deploy Claude API to Pi
+
+on:
+  push:
+    branches: [ main, claude/zealous-poincare ]
+    paths:
+      - 'src/**'
+      - 'config/**'
+      - 'web_dashboard.py'
+      - 'templates/**'
+      - 'test_claude_integration.py'
+      - '.github/workflows/deploy-claude-api.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Verify secrets are available
+        env:
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        run: |
+          if [ -z "$CLAUDE_API_KEY" ]; then
+            echo "❌ Error: CLAUDE_API_KEY secret not found"
+            echo "Set it in: Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          echo "✓ CLAUDE_API_KEY is configured"
+          echo "  Key preview: ${CLAUDE_API_KEY:0:20}..."
+
+      - name: Deploy to Raspberry Pi
+        env:
+          PI_USER: oracle
+          PI_HOST: 10.0.0.95
+          PI_PATH: /home/oracle/divinofax
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          SSH_KEY: ${{ secrets.PI_SSH_KEY }}
+        run: |
+          # Setup SSH key if available
+          if [ -n "$SSH_KEY" ]; then
+            mkdir -p ~/.ssh
+            echo "$SSH_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H $PI_HOST >> ~/.ssh/known_hosts 2>/dev/null
+          fi
+
+          echo "📤 Deploying code to Pi..."
+          rsync -az --delete \
+            --exclude='.git' \
+            --exclude='__pycache__' \
+            --exclude='*.pyc' \
+            --exclude='.venv' \
+            --exclude='venv' \
+            --exclude='models/*.gguf' \
+            --exclude='*.log' \
+            --exclude='thermal_output.txt' \
+            . "$PI_USER@$PI_HOST:$PI_PATH/"
+
+          echo "✓ Code deployed to $PI_USER@$PI_HOST:$PI_PATH"
+
+      - name: Configure environment and restart service
+        env:
+          PI_USER: oracle
+          PI_HOST: 10.0.0.95
+          PI_PATH: /home/oracle/divinofax
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          SSH_KEY: ${{ secrets.PI_SSH_KEY }}
+        run: |
+          ssh $PI_USER@$PI_HOST << 'EOF'
+            # Set environment variable for Claude API
+            if ! grep -q "CLAUDE_API_KEY" ~/.bashrc; then
+              echo "export CLAUDE_API_KEY=\"$CLAUDE_API_KEY\"" >> ~/.bashrc
+              echo "✓ API key added to ~/.bashrc"
+            fi
+
+            # Source the updated bashrc
+            source ~/.bashrc
+            export CLAUDE_API_KEY="$CLAUDE_API_KEY"
+
+            # Verify deployment
+            cd /home/oracle/divinofax
+            echo "✓ Code deployed successfully"
+            echo "  Files: $(find . -name '*.py' | wc -l) Python files"
+            echo "  Config: $(ls config/divinofax.yaml 2>/dev/null && echo 'present' || echo 'missing')"
+
+            # Restart service (try different approaches)
+            echo "🔄 Restarting service..."
+
+            # Try systemd user service first
+            if systemctl --user is-enabled divinofax 2>/dev/null; then
+              systemctl --user restart divinofax
+              sleep 2
+              if systemctl --user is-active divinofax > /dev/null; then
+                echo "✓ User systemd service restarted"
+              else
+                echo "⚠️  Service restart may have issues - check logs"
+              fi
+            # Try system service
+            elif sudo systemctl is-enabled divinofax 2>/dev/null; then
+              sudo systemctl restart divinofax
+              sleep 2
+              echo "✓ System service restarted"
+            else
+              echo "ℹ️  Service not found - may need manual restart"
+              echo "   Run: sudo systemctl restart divinofax"
+            fi
+
+            # Brief health check
+            echo ""
+            echo "📊 Deployment Status:"
+            echo "  API Key configured: $([ -n \"$CLAUDE_API_KEY\" ] && echo 'YES' || echo 'NO')"
+            echo "  Dashboard running: $(curl -s http://localhost:5000 > /dev/null && echo 'YES' || echo 'checking')"
+          EOF
+
+      - name: Verify Claude API is working
+        env:
+          PI_HOST: 10.0.0.95
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        run: |
+          echo "🧪 Testing Claude API integration..."
+          ssh oracle@$PI_HOST << 'EOF'
+            cd /home/oracle/divinofax
+            export CLAUDE_API_KEY="$CLAUDE_API_KEY"
+
+            # Quick test of config loading
+            python3 << 'PYTEST'
+import sys
+sys.path.insert(0, 'src')
+from config import DivinofaxConfig
+
+# Load config
+config = DivinofaxConfig('config/divinofax.yaml')
+
+# Check Claude API is enabled
+if config.llm.use_claude_api:
+  print("✓ Claude API is enabled")
+  if config.llm.claude_api_key:
+    print(f"✓ API key loaded: {config.llm.claude_api_key[:20]}...")
+  else:
+    print("⚠️  API key not loaded from environment")
+else:
+  print("⚠️  Claude API is disabled in config")
+
+print(f"✓ Model: {config.llm.claude_model}")
+PYTEST
+          EOF
+
+      - name: Deployment success
+        run: |
+          echo ""
+          echo "✅ Deployment Complete!"
+          echo ""
+          echo "📡 Access the dashboard:"
+          echo "   http://10.0.0.95:5000"
+          echo ""
+          echo "⚙️  Next steps:"
+          echo "   1. Open dashboard in browser"
+          echo "   2. Scroll to 'Configuration' section"
+          echo "   3. Verify 'Claude API Setup' shows 'Configured'"
+          echo ""
+          echo "💰 Monitor costs:"
+          echo "   https://console.anthropic.com/account/usage"
+          echo ""
+
+      - name: Deployment failure notification
+        if: failure()
+        run: |
+          echo ""
+          echo "❌ Deployment failed. Troubleshooting:"
+          echo ""
+          echo "1. Verify SSH access to Pi:"
+          echo "   ssh oracle@10.0.0.95"
+          echo ""
+          echo "2. Check GitHub Secrets:"
+          echo "   Settings → Secrets and variables → Actions"
+          echo "   Required: CLAUDE_API_KEY"
+          echo "   Optional: PI_SSH_KEY (for key-based auth)"
+          echo ""
+          echo "3. Check Pi connectivity:"
+          echo "   ping 10.0.0.95"
+          echo ""
+          echo "4. Manual deployment as fallback:"
+          echo "   bash deploy_claude_api.sh"
