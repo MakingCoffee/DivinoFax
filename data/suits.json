@@ -1,0 +1,54 @@
+{
+  "suits": {
+    "1": {
+      "name": "The Signal",
+      "number": 1,
+      "card_range": [1, 15],
+      "theme": "Transmission. Recognition. Identity in broadcast.",
+      "essence": "Every message is a mirror",
+      "description": "The Signal is the first pulse — the declaration that you exist, even if the system wasn't built to hear you. This suit holds the magic of communication, language, visibility, and refusal. It's about broadcasting your truth, jamming false narratives, and listening for the quiet ping of recognition in the dark.\n\nTo work with The Signal is to locate yourself — not as a fixed identity, but as an evolving transmission: unstable, sacred, and still loading.",
+      "keywords": ["transmission", "communication", "visibility", "identity", "broadcast", "recognition"],
+      "color": "cyan"
+    },
+    "2": {
+      "name": "The Circuit",
+      "number": 2,
+      "card_range": [16, 30],
+      "theme": "Embodiment. Transformation. Sensation in motion.",
+      "essence": "Every ache is a message",
+      "description": "The Circuit is the suit of the body — where change is felt, not theorized. It maps identity through flesh, emotion through pulse, and truth through texture. This is where dysphoria, euphoria, fatigue, and power live.\n\nTo work with The Circuit is to meet yourself in sensation — to feel your truth beneath the skin, and let your transformation unfold through the bodymind interface.",
+      "keywords": ["embodiment", "transformation", "sensation", "body", "feeling", "motion"],
+      "color": "magenta"
+    },
+    "3": {
+      "name": "The Archive",
+      "number": 3,
+      "card_range": [31, 45],
+      "theme": "Memory. Lineage. Preservation through witness.",
+      "essence": "Every card is a file left open",
+      "description": "The Archive is where queer memory lives — encoded in grief, songs, photos, rituals, resistance, and love. It is the suit of remembrance and retrieval, of stories once erased and voices now restored. Here, the past is not passive; it pulses with insight, longing, and warning.\n\nTo work with The Archive is to hold what came before — to grieve, to remember, and to build your future from the truths they tried to erase. This is the suit of ancestry, of DIY spellbooks, of sacred ghosts and saved files.",
+      "keywords": ["memory", "lineage", "archive", "preservation", "witness", "history"],
+      "color": "yellow"
+    },
+    "4": {
+      "name": "The Glitch",
+      "number": 4,
+      "card_range": [46, 60],
+      "theme": "Interruption. Rebellion. Truth through disruption.",
+      "essence": "Every disruption is a door",
+      "description": "The Glitch is the holy malfunction — the moment the system stutters and something real breaks through. These cards speak in static, jagged beauty, and misfit wisdom. They honor rupture as revelation, error as insight, and queerness as the code rewrite.\n\nTo work with The Glitch is to embrace uncertainty, to find magic in what's broken, and to trust that what doesn't conform might be exactly what sets you free.",
+      "keywords": ["glitch", "disruption", "rebellion", "error", "malfunction", "truth"],
+      "color": "red"
+    },
+    "5": {
+      "name": "The Sync",
+      "number": 5,
+      "card_range": [61, 75],
+      "theme": "Resonance. Alignment. Becoming through rhythm.",
+      "essence": "Every heartbeat is a bridge",
+      "description": "The Sync is sacred harmony—the moment your inner frequency locks in with something larger. These cards speak in pulses, in shared beats, in the quiet satisfaction of flow. They honor connection without erasure, individuality within interdependence, and the fluid choreography of queer kinship.\n\nThe Sync celebrates chosen alignment, collaborative creation, and the fluid choreography of queer kinship.",
+      "keywords": ["sync", "resonance", "alignment", "rhythm", "harmony", "connection"],
+      "color": "green"
+    }
+  }
+}

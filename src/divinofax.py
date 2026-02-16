@@ -26,6 +26,10 @@ from text_library import TextLibrary
 from llm_engine import LlamaEngine
 from thermal_printer import ThermalPrinter
 from config import DivinofaxConfig
+from moon_phase import MoonPhaseCalculator
+from astrology import AstrologyCalculator
+from suit_context import SuitContext
+from rfid_mapper import RFIDCardMapper
 
 # Configure logging
 logging.basicConfig(
@@ -46,13 +50,19 @@ class Divinofax:
         """Initialize the Divinofax system."""
         self.config = DivinofaxConfig(config_path)
         self.running = False
-        
+
         # Initialize components
         self.rfid_reader = RFIDReader(self.config.rfid)
         self.text_library = TextLibrary(self.config.text_library)
         self.llm_engine = LlamaEngine(self.config.llm)
         self.thermal_printer = ThermalPrinter(self.config.printer)
-        
+
+        # Initialize celestial and suit context
+        self.moon_calculator = MoonPhaseCalculator()
+        self.astrology_calculator = AstrologyCalculator()
+        self.suit_context = SuitContext("data/suits.json")
+        self.rfid_mapper = RFIDCardMapper("data/rfid_mappings.json")
+
         logger.info("Divinofax initialized successfully")
     
     async def startup(self):
@@ -86,47 +96,82 @@ class Divinofax:
         logger.info("Shutdown complete")
     
     async def process_rfid_reading(self, rfid_code: str) -> Optional[Dict[str, str]]:
-        """Process an RFID reading and generate a haiku with card info."""
+        """Process an RFID reading and generate a haiku with celestial context."""
         logger.info(f"Processing RFID code: {rfid_code}")
-        
+
         try:
             # Get oracle card information
             card_info = await self.text_library.get_oracle_card_info(rfid_code)
             if not card_info:
                 logger.warning(f"No oracle card info found for RFID: {rfid_code}")
                 return None
-            
+
             # Get inspiration text for haiku generation
             inspiration_text = await self.text_library.get_inspiration(rfid_code)
             if not inspiration_text:
                 logger.warning(f"No inspiration text found for RFID: {rfid_code}")
                 return None
-            
-            # Generate haiku using LLM
-            haiku = await self.llm_engine.generate_haiku(inspiration_text, rfid_code)
-            
+
+            # Calculate current moon phase
+            moon_context = self.moon_calculator.get_current_phase()
+            logger.info(f"Current moon phase: {moon_context['name']}")
+
+            # Calculate current zodiac sign
+            astro_context = self.astrology_calculator.get_current_zodiac()
+            logger.info(f"Current zodiac sign: {astro_context['name']}")
+
+            # Get suit information for the card
+            card_number = self.rfid_mapper.uid_hex_to_card(rfid_code)
+            suit_info = None
+            if card_number:
+                suit_info = self.suit_context.get_suit_by_card(card_number)
+                if suit_info:
+                    logger.info(f"Card {card_number} belongs to suit: {suit_info['name']}")
+
+            # Generate haiku using LLM with celestial context
+            haiku = await self.llm_engine.generate_haiku(
+                inspiration_text,
+                rfid_code,
+                moon_context=moon_context,
+                astro_context=astro_context
+            )
+
             if haiku:
                 result = {
                     'haiku': haiku,
                     'title': card_info['title'],
                     'description': card_info['description'],
                     'keywords': card_info['keywords'],
-                    'theme': card_info['theme']
+                    'theme': card_info['theme'],
+                    'suit': suit_info,
+                    'moon': moon_context,
+                    'zodiac': astro_context
                 }
                 logger.info(f"Generated fortune for {rfid_code}: {card_info['title']}")
                 return result
             else:
                 logger.error(f"Failed to generate haiku for {rfid_code}")
                 return None
-                
+
         except Exception as e:
             logger.error(f"Error processing RFID {rfid_code}: {e}")
             return None
     
     async def print_fortune(self, fortune_data: Dict[str, str], rfid_code: str):
-        """Print the oracle card fortune to thermal printer."""
+        """Print the oracle card fortune to thermal printer with celestial context."""
         try:
-            await self.thermal_printer.print_oracle_fortune(fortune_data, rfid_code)
+            # Extract celestial context from fortune data
+            moon_context = fortune_data.get('moon')
+            astro_context = fortune_data.get('zodiac')
+            suit_context = fortune_data.get('suit')
+
+            await self.thermal_printer.print_oracle_fortune(
+                fortune_data,
+                rfid_code,
+                moon_context=moon_context,
+                astro_context=astro_context,
+                suit_context=suit_context
+            )
             logger.info(f"Oracle card '{fortune_data['title']}' printed successfully for {rfid_code}")
         except Exception as e:
             logger.error(f"Failed to print fortune for {rfid_code}: {e}")

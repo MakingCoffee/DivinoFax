@@ -369,7 +369,8 @@ class ThermalPrinter:
             raise
     
     async def print_oracle_fortune(self, fortune_data: dict, rfid_code: str = "",
-                                   moon_context: dict = None, astro_context: dict = None):
+                                   moon_context: dict = None, astro_context: dict = None,
+                                   suit_context: dict = None):
         """Print a complete oracle fortune with card, celestial, and poetic context."""
         if not self.is_initialized:
             await self.initialize()
@@ -421,21 +422,35 @@ class ThermalPrinter:
 
             await self.printer.feed_lines(1)
 
-            # Print suit information
-            if fortune_data.get('suit'):
-                await self.printer.print_text(f"Suit: {fortune_data['suit']}", center=True)
+            # Print suit information with essence
+            if suit_context:
+                await self.printer.print_text(f"Suit: {suit_context['name']}", center=True, bold=True)
+                if suit_context.get('essence'):
+                    await self.printer.print_text(f"✦ {suit_context['essence']}", center=True)
+                await self.printer.feed_lines(1)
+            elif fortune_data.get('suit'):
+                # Fallback for old format
+                await self.printer.print_text(f"Suit: {fortune_data['suit']}", center=True, bold=True)
+                if fortune_data.get('suit_essence'):
+                    await self.printer.print_text(f"✦ {fortune_data['suit_essence']}", center=True)
                 await self.printer.feed_lines(1)
 
-            # Print moon phase
+            # Print moon phase with theme
             if moon_context and moon_context.get('name'):
                 moon_text = f"🌙 {moon_context['name'].upper()}"
-                await self.printer.print_text(moon_text, center=True)
+                await self.printer.print_text(moon_text, center=True, bold=True)
+                if moon_context.get('theme'):
+                    await self.printer.print_text(f"✦ {moon_context['theme']}", center=True)
                 await self.printer.feed_lines(1)
 
-            # Print astrological sign
+            # Print astrological sign with element
             if astro_context and astro_context.get('name'):
                 astro_text = f"♈ {astro_context['name'].upper()}"
-                await self.printer.print_text(astro_text, center=True)
+                if astro_context.get('element'):
+                    astro_text += f" ({astro_context['element']})"
+                await self.printer.print_text(astro_text, center=True, bold=True)
+                if astro_context.get('theme'):
+                    await self.printer.print_text(f"✦ {astro_context['theme']}", center=True)
                 await self.printer.feed_lines(1)
 
             # Print decorative separator
