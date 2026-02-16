@@ -18,10 +18,10 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def run_command(cmd):
+def run_command(cmd, timeout=5):
     """Run a shell command and return output."""
     try:
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=5)
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
         return result.stdout.strip()
     except Exception as e:
         return str(e)
@@ -204,21 +204,24 @@ def api_wifi_status():
 def api_wifi_networks():
     """Scan and return available WiFi networks."""
     try:
-        # Scan for WiFi networks
-        result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null")
+        # First, rescan to get fresh results
+        run_command("nmcli dev wifi rescan 2>/dev/null", timeout=10)
+
+        # Scan for WiFi networks with full output format for better parsing
+        result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null", timeout=15)
 
         networks = []
         seen = set()
         for line in result.split('\n'):
             if line.strip():
                 parts = line.split(':')
-                if len(parts) >= 2:
+                if len(parts) >= 1:
                     ssid = parts[0].strip()
                     security = parts[1].strip() if len(parts) > 1 else "Open"
-                    # Avoid duplicates
-                    if ssid and ssid not in seen:
+                    # Include networks even if SSID is empty string (hidden networks)
+                    if ssid not in seen:
                         networks.append({
-                            "ssid": ssid,
+                            "ssid": ssid if ssid else "(Hidden Network)",
                             "security": security
                         })
                         seen.add(ssid)
@@ -226,7 +229,7 @@ def api_wifi_networks():
         return jsonify({"networks": networks})
     except Exception as e:
         logger.error(f"Error scanning WiFi networks: {e}")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e), "networks": []}), 200
 
 
 @app.route('/api/config/wifi/connect', methods=['POST'])
