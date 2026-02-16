@@ -129,4 +129,5 @@ def api_logs():
 
 if __name__ == '__main__':
     # Run on all interfaces on port 5000
+    # This script is meant to run on the Raspberry Pi, not on macOS
     app.run(host='0.0.0.0', port=5000, debug=True)
