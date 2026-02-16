@@ -411,7 +411,7 @@ class ThermalPrinter:
             await self.printer.print_text(f"{card_title.upper()}{card_num_text}", center=True, bold=True)
             await self.printer.feed_lines(1)
 
-            # Print card description (short version)
+            # Print card description (full wrapped text, not truncated)
             description = fortune_data.get('description', '')
             if description:
                 # Wrap description to fit printer width
@@ -438,8 +438,8 @@ class ThermalPrinter:
                 if current_line:
                     lines.append(' '.join(current_line))
 
-                # Print up to 3 lines of description (was 2)
-                for line in lines[:3]:
+                # Print all wrapped description lines (no truncation)
+                for line in lines:
                     await self.printer.print_text(line, center=True)
                     await asyncio.sleep(0.05)
 

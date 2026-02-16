@@ -72,13 +72,18 @@ class AstrologyCalculator:
                 elif month == end_month and day <= end_day:
                     return sign
             else:
-                if month == start_month and day >= start_day:
-                    if month == end_month and day <= end_day:
-                        return sign
-                elif month == end_month and day <= end_day:
-                    if month == start_month and day >= start_day:
-                        return sign
+                # For non-wrapping signs, check both single-month and multi-month cases
+                if month == start_month and day >= start_day and month != end_month:
+                    # Starting month, but not the ending month
+                    return sign
+                elif month == end_month and day <= end_day and month != start_month:
+                    # Ending month, but not the starting month
+                    return sign
+                elif month == start_month == end_month and start_day <= day <= end_day:
+                    # Single month sign
+                    return sign
                 elif start_month < month < end_month:
+                    # In between months
                     return sign
 
         # Fallback (shouldn't reach here)
