@@ -347,6 +347,12 @@
             border: 1px solid #f5c6cb;
         }
 
+        .message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
         @media (max-width: 600px) {
             .status-section,
             .stats-grid,
@@ -626,9 +632,33 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    showMessage('wifiMessage', data.message, 'success');
+                    showMessage('wifiMessage', data.message, 'info');
                     document.getElementById('wifiPassword').value = '';
-                    setTimeout(loadWiFiStatus, 2000);
+
+                    // Poll for connection status every 3 seconds
+                    let attempts = 0;
+                    const checkConnection = setInterval(async () => {
+                        attempts++;
+                        try {
+                            const statusResponse = await fetch('/api/config/wifi/connection-status');
+                            const statusData = await statusResponse.json();
+
+                            if (statusData.status === 'connected') {
+                                showMessage('wifiMessage', '✅ ' + statusData.message, 'success');
+                                clearInterval(checkConnection);
+                                loadWiFiStatus();
+                            } else if (statusData.status === 'failed') {
+                                showMessage('wifiMessage', statusData.message, 'error');
+                                clearInterval(checkConnection);
+                            } else if (attempts > 20) {
+                                // Stop checking after 60 seconds
+                                showMessage('wifiMessage', '⏱️ Connection timed out', 'error');
+                                clearInterval(checkConnection);
+                            }
+                        } catch (e) {
+                            console.error('Error checking status:', e);
+                        }
+                    }, 3000);
                 } else {
                     showMessage('wifiMessage', data.error || 'Connection failed', 'error');
                 }

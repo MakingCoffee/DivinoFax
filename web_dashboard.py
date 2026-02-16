@@ -254,47 +254,61 @@ def api_wifi_connect():
         if not ssid:
             return jsonify({"error": "SSID required"}), 400
 
-        # First, remove any existing connection with this SSID to avoid conflicts
-        run_command(f'sudo nmcli connection delete "{ssid}" 2>/dev/null', timeout=5)
-        time.sleep(0.5)
+        # Connection request received - start async connection attempt in background
+        # This prevents the request from timing out during nmcli operations
+        logger.info(f"Initiating WiFi connection to {ssid}")
 
-        # Connect using nmcli with proper security settings
+        # Build the connection command with timeout to prevent hanging
         if password:
-            cmd = f'sudo nmcli device wifi connect "{ssid}" password "{password}" 2>&1'
-        else:
-            cmd = f'sudo nmcli device wifi connect "{ssid}" 2>&1'
-
-        result = run_command(cmd, timeout=15)
-
-        if "successfully activated" in result.lower() or "activated" in result.lower():
-            return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
-        elif "error" in result.lower() or "failed" in result.lower():
-            # Try alternate connection method with full parameters
-            logger.warning(f"First connection attempt failed for {ssid}, trying with explicit security parameters")
-
             # Escape password for shell safety
             safe_password = password.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
-
-            # Try using nmcli with full connection parameters (with sudo)
-            alt_cmd = f'sudo nmcli connection add type wifi ifname "*" con-name "{ssid}" ssid "{ssid}" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "{safe_password}" 2>&1'
-            alt_result = run_command(alt_cmd, timeout=15)
-
-            if "added successfully" in alt_result.lower() or "error" not in alt_result.lower():
-                # Now activate the connection
-                activate_cmd = f'sudo nmcli connection up "{ssid}" 2>&1'
-                activate_result = run_command(activate_cmd, timeout=15)
-                if "activated" in activate_result.lower():
-                    return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
-                else:
-                    return jsonify({"error": f"Connection created but activation failed: {activate_result}"}), 500
-            else:
-                return jsonify({"error": f"Connection failed: {result}\nAlternate attempt: {alt_result}"}), 500
+            inner_cmd = f'sudo nmcli device wifi connect "{ssid}" password "{safe_password}"'
         else:
-            return jsonify({"error": result}), 500
+            inner_cmd = f'sudo nmcli device wifi connect "{ssid}"'
+
+        # Use timeout command to prevent nmcli from hanging indefinitely
+        # Start in background to prevent blocking
+        cmd = f'timeout 25 {inner_cmd} > /tmp/wifi_connect.log 2>&1 &'
+
+        run_command(cmd, timeout=2)
+
+        # Return immediately with status message
+        return jsonify({
+            "success": True,
+            "message": f"🔄 Connecting to {ssid}... (check status in 30 seconds)",
+            "status": "pending"
+        })
 
     except Exception as e:
-        logger.error(f"Error connecting to WiFi: {e}")
+        logger.error(f"Error initiating WiFi connection: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/config/wifi/connection-status', methods=['GET'])
+def api_wifi_connection_status():
+    """Check the status of the WiFi connection attempt."""
+    try:
+        # Try to read the log file if it exists
+        if os.path.exists('/tmp/wifi_connect.log'):
+            with open('/tmp/wifi_connect.log', 'r') as f:
+                log_content = f.read()
+
+            if "activated" in log_content.lower():
+                return jsonify({"status": "connected", "message": "✅ Connected successfully"})
+            elif "error" in log_content.lower() or "failed" in log_content.lower():
+                return jsonify({"status": "failed", "message": f"❌ Connection failed: {log_content[-200:]}"})
+            else:
+                return jsonify({"status": "pending", "message": "🔄 Still connecting..."})
+        else:
+            # Check if we're actually connected
+            status_result = run_command("nmcli connection show --active 2>/dev/null | grep wifi | wc -l", timeout=5)
+            if status_result and int(status_result) > 0:
+                return jsonify({"status": "connected", "message": "✅ WiFi connected"})
+            else:
+                return jsonify({"status": "disconnected", "message": "❌ Not connected"})
+    except Exception as e:
+        logger.error(f"Error checking WiFi status: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 
 # LLM Configuration Endpoints
