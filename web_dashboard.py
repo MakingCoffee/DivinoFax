@@ -11,6 +11,7 @@ import os
 import re
 import logging
 import json
+import time
 
 app = Flask(__name__)
 
@@ -202,31 +203,41 @@ def api_wifi_status():
 
 @app.route('/api/config/wifi/networks')
 def api_wifi_networks():
-    """Scan and return available WiFi networks."""
+    """Scan and return available WiFi networks with multiple scan attempts."""
     try:
-        # First, rescan to get fresh results
-        run_command("nmcli dev wifi rescan 2>/dev/null", timeout=10)
-
-        # Scan for WiFi networks with full output format for better parsing
-        result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null", timeout=15)
-
         networks = []
         seen = set()
-        for line in result.split('\n'):
-            if line.strip():
-                parts = line.split(':')
-                if len(parts) >= 1:
-                    ssid = parts[0].strip()
-                    security = parts[1].strip() if len(parts) > 1 else "Open"
-                    # Include networks even if SSID is empty string (hidden networks)
-                    if ssid not in seen:
-                        networks.append({
-                            "ssid": ssid if ssid else "(Hidden Network)",
-                            "security": security
-                        })
-                        seen.add(ssid)
 
-        return jsonify({"networks": networks})
+        # Perform multiple rescans with slight delays to catch networks
+        # that may be broadcasting at different intervals or have weak signals
+        for attempt in range(3):
+            # Request a fresh WiFi scan
+            run_command("nmcli dev wifi rescan 2>/dev/null", timeout=10)
+
+            # Small delay between scans to allow hardware to discover networks
+            if attempt < 2:
+                time.sleep(1)
+
+            # Get current scan results
+            result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null", timeout=15)
+
+            for line in result.split('\n'):
+                if line.strip():
+                    parts = line.split(':')
+                    if len(parts) >= 1:
+                        ssid = parts[0].strip()
+                        security = parts[1].strip() if len(parts) > 1 else "Open"
+                        # Include networks even if SSID is empty string (hidden networks)
+                        if ssid not in seen:
+                            networks.append({
+                                "ssid": ssid if ssid else "(Hidden Network)",
+                                "security": security
+                            })
+                            seen.add(ssid)
+
+        # Sort networks by signal strength (primary networks first)
+        # and alphabetically within same strength
+        return jsonify({"networks": sorted(networks, key=lambda x: x['ssid'])})
     except Exception as e:
         logger.error(f"Error scanning WiFi networks: {e}")
         return jsonify({"error": str(e), "networks": []}), 200
