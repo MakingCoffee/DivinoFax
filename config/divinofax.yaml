@@ -65,7 +65,7 @@ llm:
   repeat_penalty: 1.1
   strict_haiku_format: true
   allow_near_haiku: true  # Allow 5-7-5 syllable variations
-  simulation_mode: false
+  simulation_mode: false  # Use real LLM engine, not mock
 
 printer:
   port: /dev/ttyS0  # Default UART port on Pi
