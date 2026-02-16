@@ -456,8 +456,8 @@
     </div>
 
     <script>
-        // Refresh status every 5 seconds
-        setInterval(updateStatus, 5000);
+        // Refresh status every 10 seconds (reduced from 5 to lower Pi CPU load)
+        setInterval(updateStatus, 10000);
         updateStatus(); // Initial load
 
         async function updateStatus() {
@@ -617,10 +617,7 @@
                 return;
             }
 
-            if (!password) {
-                showMessage('wifiMessage', 'Please enter a password', 'error');
-                return;
-            }
+            // Password is optional - some networks are open
 
             try {
                 const response = await fetch('/api/config/wifi/connect', {

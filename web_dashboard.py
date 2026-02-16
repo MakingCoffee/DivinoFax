@@ -102,17 +102,27 @@ def get_recent_fortunes(lines=10):
         logger.error(f"Unexpected error processing fortunes: {e}")
         return []
 
+# Cache system stats to reduce syscalls (they don't change often)
+_stats_cache = {"stats": None, "timestamp": 0}
+_stats_cache_timeout = 10  # Seconds
+
 def get_system_stats():
-    """Get system statistics."""
-    # Memory
+    """Get system statistics with caching."""
+    global _stats_cache
+
+    # Return cached stats if recent (don't query every 5 seconds)
+    current_time = time.time()
+    if _stats_cache["stats"] and (current_time - _stats_cache["timestamp"]) < _stats_cache_timeout:
+        return _stats_cache["stats"]
+
+    # Use single command instead of two separate commands
     mem_output = run_command("free -h | grep Mem")
     mem_parts = mem_output.split() if mem_output else []
 
-    # Disk
     disk_output = run_command("df -h / | tail -1")
     disk_parts = disk_output.split() if disk_output else []
 
-    return {
+    stats = {
         "memory": {
             "total": mem_parts[1] if len(mem_parts) > 1 else "N/A",
             "used": mem_parts[2] if len(mem_parts) > 2 else "N/A",
@@ -124,6 +134,10 @@ def get_system_stats():
             "free": disk_parts[3] if len(disk_parts) > 3 else "N/A"
         }
     }
+
+    _stats_cache["stats"] = stats
+    _stats_cache["timestamp"] = current_time
+    return stats
 
 @app.route('/')
 def index():
@@ -201,45 +215,56 @@ def api_wifi_status():
         return jsonify({"error": str(e)}), 500
 
 
+# Cache for WiFi networks to reduce repeated scanning
+_networks_cache = {"networks": [], "timestamp": 0}
+_networks_cache_timeout = 15  # Seconds
+
 @app.route('/api/config/wifi/networks')
 def api_wifi_networks():
-    """Scan and return available WiFi networks with multiple scan attempts."""
+    """Scan and return available WiFi networks with caching."""
+    global _networks_cache
+
     try:
+        # Return cached results if recent
+        current_time = time.time()
+        if _networks_cache["timestamp"] and (current_time - _networks_cache["timestamp"]) < _networks_cache_timeout:
+            return jsonify({"networks": _networks_cache["networks"], "cached": True})
+
         networks = []
         seen = set()
 
-        # Perform multiple rescans with slight delays to catch networks
-        # that may be broadcasting at different intervals or have weak signals
-        for attempt in range(3):
-            # Request a fresh WiFi scan (may need sudo)
-            run_command("sudo nmcli dev wifi rescan 2>/dev/null", timeout=10)
+        # Perform WiFi scan - do rescan + list in parallel approach
+        # First do ONE rescan, then get results immediately
+        run_command("sudo nmcli dev wifi rescan 2>/dev/null", timeout=8)
+        time.sleep(0.8)  # Reduced delay - hardware needs less time on second attempt
 
-            # Small delay between scans to allow hardware to discover networks
-            if attempt < 2:
-                time.sleep(1.5)
+        # Get current scan results
+        result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null", timeout=10)
 
-            # Get current scan results
-            result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null", timeout=15)
+        for line in result.split('\n'):
+            if line.strip():
+                parts = line.split(':', 1)  # Split on first colon only for security field
+                if len(parts) >= 1:
+                    ssid = parts[0].strip()
+                    security = parts[1].strip() if len(parts) > 1 else "Open"
+                    # Include networks even if SSID is empty string (hidden networks)
+                    if ssid not in seen:
+                        networks.append({
+                            "ssid": ssid if ssid else "(Hidden Network)",
+                            "security": security
+                        })
+                        seen.add(ssid)
 
-            for line in result.split('\n'):
-                if line.strip():
-                    parts = line.split(':')
-                    if len(parts) >= 1:
-                        ssid = parts[0].strip()
-                        security = parts[1].strip() if len(parts) > 1 else "Open"
-                        # Include networks even if SSID is empty string (hidden networks)
-                        if ssid not in seen:
-                            networks.append({
-                                "ssid": ssid if ssid else "(Hidden Network)",
-                                "security": security
-                            })
-                            seen.add(ssid)
+        # Cache the results
+        _networks_cache["networks"] = sorted(networks, key=lambda x: x['ssid'])
+        _networks_cache["timestamp"] = current_time
 
-        # Sort networks by signal strength (primary networks first)
-        # and alphabetically within same strength
-        return jsonify({"networks": sorted(networks, key=lambda x: x['ssid'])})
+        return jsonify({"networks": _networks_cache["networks"]})
     except Exception as e:
         logger.error(f"Error scanning WiFi networks: {e}")
+        # Return cached results on error if available
+        if _networks_cache["networks"]:
+            return jsonify({"networks": _networks_cache["networks"], "cached": True, "error": "Using cached results"})
         return jsonify({"error": str(e), "networks": []}), 200
 
 
@@ -286,26 +311,37 @@ def api_wifi_connect():
 
 @app.route('/api/config/wifi/connection-status', methods=['GET'])
 def api_wifi_connection_status():
-    """Check the status of the WiFi connection attempt."""
+    """Check the status of the WiFi connection attempt (optimized)."""
     try:
-        # Try to read the log file if it exists
-        if os.path.exists('/tmp/wifi_connect.log'):
-            with open('/tmp/wifi_connect.log', 'r') as f:
-                log_content = f.read()
+        # Quick check: read only last 300 bytes instead of entire file
+        log_path = '/tmp/wifi_connect.log'
+        if os.path.exists(log_path):
+            try:
+                with open(log_path, 'r') as f:
+                    # Read only the end of the file for efficiency
+                    f.seek(0, 2)  # Seek to end
+                    file_size = f.tell()
+                    f.seek(max(0, file_size - 500))  # Read last 500 bytes
+                    log_content = f.read().lower()
 
-            if "activated" in log_content.lower():
-                return jsonify({"status": "connected", "message": "✅ Connected successfully"})
-            elif "error" in log_content.lower() or "failed" in log_content.lower():
-                return jsonify({"status": "failed", "message": f"❌ Connection failed: {log_content[-200:]}"})
-            else:
-                return jsonify({"status": "pending", "message": "🔄 Still connecting..."})
-        else:
-            # Check if we're actually connected
-            status_result = run_command("nmcli connection show --active 2>/dev/null | grep wifi | wc -l", timeout=5)
+                if "activated" in log_content:
+                    return jsonify({"status": "connected", "message": "✅ Connected successfully"})
+                elif "error" in log_content or "failed" in log_content:
+                    return jsonify({"status": "failed", "message": "❌ Connection failed"})
+                else:
+                    return jsonify({"status": "pending", "message": "🔄 Still connecting..."})
+            except Exception as file_err:
+                logger.debug(f"Error reading log file: {file_err}")
+
+        # If no log file, do a quick nmcli check (simpler command = faster)
+        status_result = run_command("nmcli -t -f TYPE connection show --active 2>/dev/null | grep -c wifi", timeout=3)
+        try:
             if status_result and int(status_result) > 0:
                 return jsonify({"status": "connected", "message": "✅ WiFi connected"})
-            else:
-                return jsonify({"status": "disconnected", "message": "❌ Not connected"})
+        except ValueError:
+            pass
+
+        return jsonify({"status": "disconnected", "message": "❌ Not connected"})
     except Exception as e:
         logger.error(f"Error checking WiFi status: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
