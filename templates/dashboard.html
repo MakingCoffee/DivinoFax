@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔮 DivinoFax Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .status-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .status-indicator {
+            font-size: 3em;
+            margin-bottom: 10px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-start {
+            background-color: #4CAF50;
+        }
+
+        .btn-start:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-stop {
+            background-color: #f44336;
+        }
+
+        .btn-stop:hover {
+            background-color: #da190b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+        }
+
+        .btn-restart {
+            background-color: #2196F3;
+        }
+
+        .btn-restart:hover {
+            background-color: #0b7dda;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .stat-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .stat-content {
+            color: #555;
+            line-height: 1.8;
+            font-family: monospace;
+            font-size: 0.95em;
+        }
+
+        .fortunes-section {
+            margin-top: 30px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 20px;
+        }
+
+        .fortunes-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .fortune-item {
+            background: #f9f9f9;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .fortune-card {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .fortune-time {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .no-fortunes {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .loading {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .status-section,
+            .stats-grid,
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔮 DivinoFax Control</h1>
+            <p>Oracle Fortune Telling System</p>
+        </div>
+
+        <div class="status-section">
+            <div class="status-card">
+                <div class="status-indicator" id="statusIcon">⏳</div>
+                <div class="status-text" id="statusText">Loading...</div>
+                <div class="controls">
+                    <button class="btn-start" onclick="startSystem()">▶ Start</button>
+                    <button class="btn-stop" onclick="stopSystem()">⏹ Stop</button>
+                    <button class="btn-restart" onclick="restartSystem()">🔄 Restart</button>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <h3 style="margin-bottom: 15px; color: #333;">Last Updated</h3>
+                <div id="lastUpdate" style="font-size: 0.9em; color: #666; line-height: 1.6;">
+                    <div>Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-title">💾 Memory</div>
+                <div class="stat-content" id="memoryStats">
+                    Loading...
+                </div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-title">📁 Storage</div>
+                <div class="stat-content" id="diskStats">
+                    Loading...
+                </div>
+            </div>
+        </div>
+
+        <div class="fortunes-section">
+            <div class="fortunes-title">📜 Recent Fortunes</div>
+            <div id="fortunesList" class="loading">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        // Refresh status every 5 seconds
+        setInterval(updateStatus, 5000);
+        updateStatus(); // Initial load
+
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+
+                // Update status
+                const statusIcon = document.getElementById('statusIcon');
+                const statusText = document.getElementById('statusText');
+
+                if (data.running) {
+                    statusIcon.textContent = '🟢';
+                    statusText.textContent = 'System Running';
+                    statusText.style.color = '#4CAF50';
+                } else {
+                    statusIcon.textContent = '🔴';
+                    statusText.textContent = 'System Stopped';
+                    statusText.style.color = '#f44336';
+                }
+
+                // Update timestamp
+                const lastUpdate = document.getElementById('lastUpdate');
+                const date = new Date(data.timestamp);
+                lastUpdate.innerHTML = `
+                    <div>Status: ${data.status}</div>
+                    <div style="font-size: 0.9em; margin-top: 5px;">Updated: ${date.toLocaleTimeString()}</div>
+                `;
+
+                // Update stats
+                const memoryStats = document.getElementById('memoryStats');
+                memoryStats.innerHTML = `
+                    Total: ${data.stats.memory.total}<br>
+                    Used: ${data.stats.memory.used}<br>
+                    Free: ${data.stats.memory.free}
+                `;
+
+                const diskStats = document.getElementById('diskStats');
+                diskStats.innerHTML = `
+                    Total: ${data.stats.disk.total}<br>
+                    Used: ${data.stats.disk.used}<br>
+                    Free: ${data.stats.disk.free}
+                `;
+
+                // Update fortunes
+                const fortunesList = document.getElementById('fortunesList');
+                if (data.recent_fortunes && data.recent_fortunes.length > 0) {
+                    fortunesList.innerHTML = data.recent_fortunes.map(fortune => `
+                        <div class="fortune-item">
+                            <div class="fortune-card">🎴 ${fortune.card}</div>
+                            <div class="fortune-time">${fortune.time}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    fortunesList.innerHTML = '<div class="no-fortunes">No fortunes printed yet</div>';
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                document.getElementById('statusText').textContent = 'Error';
+            }
+        }
+
+        async function startSystem() {
+            try {
+                const response = await fetch('/api/start', { method: 'POST' });
+                const data = await response.json();
+                alert(data.message);
+                updateStatus();
+            } catch (error) {
+                alert('Error starting system');
+            }
+        }
+
+        async function stopSystem() {
+            try {
+                const response = await fetch('/api/stop', { method: 'POST' });
+                const data = await response.json();
+                alert(data.message);
+                updateStatus();
+            } catch (error) {
+                alert('Error stopping system');
+            }
+        }
+
+        async function restartSystem() {
+            try {
+                const response = await fetch('/api/restart', { method: 'POST' });
+                const data = await response.json();
+                alert(data.message);
+                updateStatus();
+            } catch (error) {
+                alert('Error restarting system');
+            }
+        }
+    </script>
+</body>
+</html>
