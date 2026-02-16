@@ -1,0 +1,16 @@
+[Unit]
+Description=Divinofax Web Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=oracle
+WorkingDirectory=/home/oracle/divinofax/worktrees/zealous-poincare
+ExecStart=/usr/bin/python3 /home/oracle/divinofax/worktrees/zealous-poincare/web_dashboard.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
