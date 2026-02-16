@@ -46,15 +46,15 @@ class LlamaConfig:
     repeat_penalty: float = 1.1
 
     # Haiku validation
-    strict_haiku_format: bool = True
-    allow_near_haiku: bool = True  # Allow 5-7-5 syllable variations
+    strict_haiku_format: bool = True  # Always require 3-line format
+    allow_near_haiku: bool = True  # Allow ±1 syllable tolerance (e.g., 4-7-5 or 6-7-5)
 
     # Claude API settings
     use_claude_api: bool = False  # Toggle between local Llama and Claude API
     claude_api_key: str = ""  # Claude API key (loaded from environment or config)
     claude_model: str = "claude-3-5-sonnet-20241022"  # Model selection
     claude_temperature: float = 0.8  # Generation temperature
-    claude_max_tokens: int = 150  # Max tokens for haiku
+    claude_max_tokens: int = 50  # Max tokens for haiku (reduced from 150 for speed)
 
     # Simulation mode
     simulation_mode: bool = False
@@ -94,6 +94,7 @@ class ClaudeAPIEngine:
     def __init__(self, config: LlamaConfig):
         self.config = config
         self.is_loaded = False
+        self._prompt_template = None
 
         # Validate API key
         if not self.config.claude_api_key or not self.config.claude_api_key.strip():
@@ -101,15 +102,17 @@ class ClaudeAPIEngine:
         else:
             self.is_loaded = True
             logger.info(f"Claude API engine initialized with model: {self.config.claude_model}")
+            # Pre-compile prompt template for efficiency
+            self._prompt_template = "Generate a haiku (5-7-5 syllables) that is a mystical oracle reading.\n\nOracle Message: {context}\n\nWrite only the haiku, nothing else. Each line should contain exactly the correct number of syllables."
 
     async def generate_haiku(self, inspiration_text: str, context: str = "", moon_context: dict = None, astro_context: dict = None) -> Optional[str]:
-        """Generate haiku using Claude API."""
+        """Generate haiku using Claude API (optimized)."""
         if not self.is_loaded or not self.config.claude_api_key:
             logger.error("Claude API key not configured")
             return None
 
-        # Create haiku generation prompt (reusing RealLlamaEngine logic)
-        prompt = self._create_haiku_prompt(inspiration_text, context, moon_context, astro_context)
+        # Create haiku generation prompt
+        prompt = self._create_haiku_prompt(inspiration_text, moon_context, astro_context)
 
         try:
             # Run API call in thread pool to avoid blocking
@@ -150,55 +153,21 @@ class ClaudeAPIEngine:
             logger.error(f"Claude API request failed: {e}")
             raise
 
-    def _create_haiku_prompt(self, inspiration_text: str, context: str, moon_context: dict = None, astro_context: dict = None) -> str:
-        """Create an enhanced prompt for haiku generation with richer context."""
+    def _create_haiku_prompt(self, inspiration_text: str, moon_context: dict = None, astro_context: dict = None) -> str:
+        """Create an optimized haiku prompt for Claude API (efficient, minimal tokens)."""
+        # Build context string minimally
+        context_parts = [inspiration_text]
 
-        # Parse context to extract card information if available
-        card_context = self._parse_card_context(context)
-
-        # Add moon context if provided
-        moon_addition = ""
         if moon_context and moon_context.get('prompt_addition'):
-            moon_addition = f"\nCELESTIAL TIMING: The seeker draws this card {moon_context['prompt_addition']}."
+            context_parts.append(moon_context['prompt_addition'])
 
-        # Add astrological context if provided
-        astro_addition = ""
         if astro_context and astro_context.get('prompt_addition'):
-            astro_addition = f"\nASTROLOGICAL INFLUENCE: {astro_context['prompt_addition']}."
+            context_parts.append(astro_context['prompt_addition'])
 
-        # Build the prompt with layered guidance
-        prompt = f"""You are a mystical oracle, channeling profound wisdom through the art of poetry. Your words reveal hidden truths and guide seekers toward their destiny.
+        context_str = " ".join(context_parts)
 
-ORACLE CARD GUIDANCE:
-{inspiration_text}{moon_addition}{astro_addition}
-
-INSTRUCTIONS FOR YOUR POEM:
-1. Form: Choose what fits best - haiku (5-7-5), couplet (2 lines), tercet (3 lines), or free verse
-2. Essence: Capture the deep truth within the oracle card's meaning
-3. Tone: {card_context.get('tone', 'mystical and prophetic')}
-4. Focus: Speak to the seeker's current transformation or revelation
-5. Language: Use vivid, poetic imagery; avoid clichés
-6. Length: Keep it concise (2-4 lines ideally) for a fortune slip
-
-POETIC FORM EXAMPLES:
-
-HAIKU (if it fits naturally):
-- "Signals pierce the dark / Lost voices find their echo / You are finally heard"
-
-COUPLET (2 lines):
-- "Your truth pierces the silence / Recognition floods in"
-
-TERCET (3 lines):
-- "What was hidden calls to you / Your signal grows stronger / The world begins to hear"
-
-FREE VERSE (2-4 lines):
-- "In the dark, a signal blazes forth— / your voice, finally reaching"
-
-Choose the form that best captures this seeker's oracle message. Let the card, the moon, and the stars guide your words.
-
-POEM:"""
-
-        return prompt
+        # Use pre-compiled template for efficiency
+        return self._prompt_template.format(context=context_str)
 
     def _parse_card_context(self, context: str) -> dict:
         """Parse RFID context to extract suit/card information."""
