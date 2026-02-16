@@ -390,14 +390,18 @@ class ThermalPrinter:
             await self.printer.print_text(timestamp, center=True)
             await self.printer.feed_lines(1)
 
-            # Print oracle card title
-            await self.printer.print_text(fortune_data['title'].upper(), center=True, bold=True)
+            # Print oracle card title with card number if available
+            card_title = fortune_data.get('title', 'Unknown Card')
+            if not card_title:
+                card_title = 'Unknown Card'
+
+            await self.printer.print_text(card_title.upper(), center=True, bold=True)
             await self.printer.feed_lines(1)
 
             # Print card description (short version)
             description = fortune_data.get('description', '')
             if description:
-                # Wrap description
+                # Wrap description to fit printer width
                 words = description.split()
                 lines = []
                 current_line = []
@@ -405,20 +409,26 @@ class ThermalPrinter:
                 max_length = self.config.line_width - 2
 
                 for word in words:
-                    if current_length + len(word) + 1 <= max_length:
+                    # Calculate if adding this word would exceed line width
+                    word_len = len(word)
+                    space_len = 1 if current_line else 0
+
+                    if current_length + space_len + word_len <= max_length:
                         current_line.append(word)
-                        current_length += len(word) + 1
+                        current_length += space_len + word_len
                     else:
                         if current_line:
                             lines.append(' '.join(current_line))
                         current_line = [word]
-                        current_length = len(word)
+                        current_length = word_len
 
                 if current_line:
                     lines.append(' '.join(current_line))
 
-                for line in lines[:2]:  # Limit to 2 lines for space
+                # Print up to 3 lines of description (was 2)
+                for line in lines[:3]:
                     await self.printer.print_text(line, center=True)
+                    await asyncio.sleep(0.05)
 
             await self.printer.feed_lines(1)
 

@@ -43,7 +43,25 @@ class MoonPhaseCalculator:
     def __init__(self):
         self.is_initialized = HAS_EPHEM
 
-    async def get_current_phase(self) -> Tuple[MoonPhase, float]:
+    def get_current_phase(self) -> Dict[str, str]:
+        """Get current moon phase with full guidance dictionary (synchronous)."""
+        phase, illumination = self._get_phase_tuple()
+        guidance = self.get_phase_guidance(phase)
+        guidance['illumination'] = illumination
+        return guidance
+
+    def _get_phase_tuple(self) -> Tuple[MoonPhase, float]:
+        """Get current moon phase as tuple. Internal method."""
+        if not HAS_EPHEM:
+            return self._calculate_phase_fallback()
+
+        try:
+            return self._calculate_phase_ephem()
+        except Exception as e:
+            logger.error(f"Error calculating moon phase: {e}")
+            return self._calculate_phase_fallback()
+
+    async def get_current_phase_async(self) -> Tuple[MoonPhase, float]:
         """Get current moon phase. Returns (MoonPhase enum, illumination %)"""
         if not HAS_EPHEM:
             return self._calculate_phase_fallback()

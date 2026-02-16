@@ -54,6 +54,11 @@ class AstrologyCalculator:
     def __init__(self):
         self.is_initialized = True
 
+    def get_current_zodiac(self) -> Dict[str, str]:
+        """Get current zodiac sign with full guidance dictionary."""
+        sign = self.get_current_sign()
+        return self.get_sign_guidance(sign)
+
     def get_current_sign(self) -> AstrologySign:
         """Get the current astrological sun sign."""
         today = datetime.now()
