@@ -1,77 +1,1060 @@
 {
-  "tel:001": "oracle_001_crystal_sync",
-  "tel:002": "oracle_002_quantum_buddy",
-  "tel:003": "oracle_003_flux_tower",
-  "tel:004": "oracle_004_404_identity_not_found",
-  "tel:005": "oracle_005_neon_tongue",
-  "tel:006": "oracle_006_mirror_port",
-  "tel:007": "oracle_007_voice_modulator",
-  "tel:008": "oracle_008_pride_transmitter",
-  "tel:009": "oracle_009_silent_channel",
-  "tel:010": "oracle_010_signal_jammer",
-  "tel:011": "oracle_011_love_pirate",
-  "tel:012": "oracle_012_sync_or_swim",
-  "tel:013": "oracle_013_data_leak",
-  "tel:014": "oracle_014_queer_ping",
-  "tel:015": "oracle_015_the_signal_beyond",
-  "tel:016": "oracle_016_haptic_bloom",
-  "tel:017": "oracle_017_copper_skin",
-  "tel:018": "oracle_018_silicon_pulse",
-  "tel:019": "oracle_019_voltage_drop",
-  "tel:020": "oracle_020_body_buffer",
-  "tel:021": "oracle_021_soft_shell_protocol",
-  "tel:022": "oracle_022_neurodivergent_loop",
-  "tel:023": "oracle_023_biotech_braid",
-  "tel:024": "oracle_024_chromatic_surge",
-  "tel:025": "oracle_025_queer_firmware",
-  "tel:026": "oracle_026_femme_armor",
-  "tel:027": "oracle_027_transistor_dance",
-  "tel:028": "oracle_028_overheat_warning",
-  "tel:029": "oracle_029_elastic_avatar",
-  "tel:030": "oracle_030_power_cord_cut",
-  "tel:031": "oracle_031_obsidian_drive",
-  "tel:032": "oracle_032_dream_cache",
-  "tel:033": "oracle_033_riot_exe",
-  "tel:034": "oracle_034_zine_cluster",
-  "tel:035": "oracle_035_velvet_drag_file",
-  "tel:036": "oracle_036_hard_reset",
-  "tel:037": "oracle_037_queer_zip",
-  "tel:038": "oracle_038_public_access_terminal",
-  "tel:039": "oracle_039_redacted_log",
-  "tel:040": "oracle_040_deadname_ghost",
-  "tel:041": "oracle_041_ancestral_playlist",
-  "tel:042": "oracle_042_pride_flag_fragment",
-  "tel:043": "oracle_043_404_club",
-  "tel:044": "oracle_044_echogem",
-  "tel:045": "oracle_045_open_source_kin",
-  "tel:046": "oracle_046_the_glitch_witch",
-  "tel:047": "oracle_047_cracked_lens",
-  "tel:048": "oracle_048_corrupted_blessing",
-  "tel:049": "oracle_049_jitter_loop",
-  "tel:050": "oracle_050_drag_signal",
-  "tel:051": "oracle_051_error_message_love",
-  "tel:052": "oracle_052_bug_report",
-  "tel:053": "oracle_053_patch_note",
-  "tel:054": "oracle_054_ctrl_z",
-  "tel:055": "oracle_055_overclocked",
-  "tel:056": "oracle_056_signal_spoof",
-  "tel:057": "oracle_057_broken_synth",
-  "tel:058": "oracle_058_dark_mode",
-  "tel:059": "oracle_059_zero_day_flare",
-  "tel:060": "oracle_060_queer_chaos_engine",
-  "tel:061": "oracle_061_dream_loader",
-  "tel:062": "oracle_062_moonbeam_modem",
-  "tel:063": "oracle_063_sugar_capacitor",
-  "tel:064": "oracle_064_soft_update",
-  "tel:065": "oracle_065_neon_prophet",
-  "tel:066": "oracle_066_starlink_locket",
-  "tel:067": "oracle_067_hologram_garden",
-  "tel:068": "oracle_068_glitter_code",
-  "tel:069": "oracle_069_vaporwave_oracle",
-  "tel:070": "oracle_070_pixel_portal",
-  "tel:071": "oracle_071_wishing_exe",
-  "tel:072": "oracle_072_crush_protocol",
-  "tel:073": "oracle_073_patchwork_prism",
-  "tel:074": "oracle_074_signal_to_self",
-  "tel:075": "oracle_075_utopia_buffer"
+  "version": "1.0",
+  "description": "RFID UID to Oracle Card Number Mapping for Protocol Drift",
+  "total_cards": 75,
+  "uid_format": "7-byte hex string (MIFARE Ultralight)",
+  "mapping": {
+    "04:26:9F:5A:06:1F:91": 1,
+    "04:26:A2:5A:06:1F:91": 4,
+    "04:26:B5:5A:06:1F:91": 23,
+    "04:26:A0:5A:06:1F:91": 2,
+    "04:26:A1:5A:06:1F:91": 3,
+    "04:26:A3:5A:06:1F:91": 5,
+    "04:26:A5:5A:06:1F:91": 6,
+    "04:26:A4:5A:06:1F:91": 7,
+    "04:26:A6:5A:06:1F:91": 8,
+    "04:26:A7:5A:06:1F:91": 9,
+    "04:26:A8:5A:06:1F:91": 10,
+    "04:26:A9:5A:06:1F:91": 11,
+    "04:26:AA:5A:06:1F:91": 12,
+    "04:26:AB:5A:06:1F:91": 13,
+    "04:26:AC:5A:06:1F:91": 14,
+    "04:26:AD:5A:06:1F:91": 15,
+    "04:26:AE:5A:06:1F:91": 16,
+    "04:26:AF:5A:06:1F:91": 17,
+    "04:25:B0:5A:06:1F:91": 18,
+    "04:26:B1:5A:06:1F:91": 19,
+    "04:26:B2:5A:06:1F:91": 20,
+    "04:26:B3:5A:06:1F:91": 21,
+    "04:26:B4:5A:06:1F:91": 22,
+    "04:26:B6:5A:06:1F:91": 24,
+    "04:26:B7:5A:06:1F:91": 25,
+    "04:26:B8:5A:06:1F:91": 26,
+    "04:26:B9:5A:06:1F:91": 27,
+    "04:26:BA:5A:06:1F:91": 28,
+    "04:26:BB:5A:06:1F:91": 29,
+    "04:26:BC:5A:06:1F:91": 30,
+    "04:26:BD:5A:06:1F:91": 31,
+    "04:26:BE:5A:06:1F:91": 32,
+    "04:26:BF:5A:06:1F:91": 33,
+    "04:26:C0:5A:06:1F:91": 34,
+    "04:26:C1:5A:06:1F:91": 35,
+    "04:26:C2:5A:06:1F:91": 36,
+    "04:26:C3:5A:06:1F:91": 37,
+    "04:26:C4:5A:06:1F:91": 38,
+    "04:26:C5:5A:06:1F:91": 39,
+    "04:26:C6:5A:06:1F:91": 40,
+    "04:26:C7:5A:06:1F:91": 41,
+    "04:26:C8:5A:06:1F:91": 42,
+    "04:26:C9:5A:06:1F:91": 43,
+    "04:26:83:5A:06:1F:91": 44,
+    "04:26:82:5A:06:1F:91": 45,
+    "04:26:81:5A:06:1F:91": 46,
+    "04:26:80:5A:06:1F:91": 47,
+    "04:26:6D:5A:06:1F:91": 66,
+    "04:26:7E:5A:06:1F:91": 48,
+    "04:26:7D:5A:06:1F:91": 49,
+    "04:26:7C:5A:06:1F:91": 50,
+    "04:26:7B:5A:06:1F:91": 51,
+    "04:26:7A:5A:06:1F:91": 52,
+    "04:26:9E:5A:06:1F:91": 53,
+    "04:26:9D:5A:06:1F:91": 54,
+    "04:26:79:5A:06:1F:91": 55,
+    "04:26:78:5A:06:1F:91": 56,
+    "04:26:77:5A:06:1F:91": 57,
+    "04:26:76:5A:06:1F:91": 58,
+    "04:26:75:5A:06:1F:91": 59,
+    "04:26:74:5A:06:1F:91": 60,
+    "04:26:6A:5A:06:1F:91": 69,
+    "04:26:6F:5A:06:1F:91": 70,
+    "04:26:69:5A:06:1F:91": 71,
+    "04:26:68:5A:06:1F:91": 72,
+    "04:26:67:5A:06:1F:91": 73,
+    "04:26:66:5A:06:1F:91": 74,
+    "04:26:65:5A:06:1F:91": 75,
+    "04:26:6B:5A:06:1F:91": 68,
+    "04:26:6C:5A:06:1F:91": 67,
+    "04:26:70:5A:06:1F:91": 64,
+    "04:26:71:5A:06:1F:91": 63,
+    "04:26:6E:5A:06:1F:91": 65,
+    "04:26:73:5A:06:1F:91": 61,
+    "04:26:72:5A:06:1F:91": 62
+  },
+  "detailed": [
+    {
+      "card_number": 1,
+      "uid_hex": "04:26:9F:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        159,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 2,
+      "uid_hex": "04:26:A0:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        160,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 3,
+      "uid_hex": "04:26:A1:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        161,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 4,
+      "uid_hex": "04:26:A2:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        162,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 5,
+      "uid_hex": "04:26:A3:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        163,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 6,
+      "uid_hex": "04:26:A5:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        165,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 7,
+      "uid_hex": "04:26:A4:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        164,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 8,
+      "uid_hex": "04:26:A6:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        166,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 9,
+      "uid_hex": "04:26:A7:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        167,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 10,
+      "uid_hex": "04:26:A8:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        168,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 11,
+      "uid_hex": "04:26:A9:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        169,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 12,
+      "uid_hex": "04:26:AA:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        170,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 13,
+      "uid_hex": "04:26:AB:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        171,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 14,
+      "uid_hex": "04:26:AC:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        172,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 15,
+      "uid_hex": "04:26:AD:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        173,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 16,
+      "uid_hex": "04:26:AE:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        174,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 17,
+      "uid_hex": "04:26:AF:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        175,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 18,
+      "uid_hex": "04:25:B0:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        37,
+        176,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 19,
+      "uid_hex": "04:26:B1:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        177,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 20,
+      "uid_hex": "04:26:B2:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        178,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 21,
+      "uid_hex": "04:26:B3:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        179,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 22,
+      "uid_hex": "04:26:B4:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        180,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 23,
+      "uid_hex": "04:26:B5:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        181,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 24,
+      "uid_hex": "04:26:B6:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        182,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 25,
+      "uid_hex": "04:26:B7:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        183,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 26,
+      "uid_hex": "04:26:B8:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        184,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 27,
+      "uid_hex": "04:26:B9:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        185,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 28,
+      "uid_hex": "04:26:BA:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        186,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 29,
+      "uid_hex": "04:26:BB:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        187,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 30,
+      "uid_hex": "04:26:BC:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        188,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 31,
+      "uid_hex": "04:26:BD:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        189,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 32,
+      "uid_hex": "04:26:BE:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        190,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 33,
+      "uid_hex": "04:26:BF:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        191,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 34,
+      "uid_hex": "04:26:C0:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        192,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 35,
+      "uid_hex": "04:26:C1:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        193,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 36,
+      "uid_hex": "04:26:C2:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        194,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 37,
+      "uid_hex": "04:26:C3:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        195,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 38,
+      "uid_hex": "04:26:C4:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        196,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 39,
+      "uid_hex": "04:26:C5:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        197,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 40,
+      "uid_hex": "04:26:C6:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        198,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 41,
+      "uid_hex": "04:26:C7:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        199,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 42,
+      "uid_hex": "04:26:C8:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        200,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 43,
+      "uid_hex": "04:26:C9:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        201,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 44,
+      "uid_hex": "04:26:83:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        131,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 45,
+      "uid_hex": "04:26:82:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        130,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 46,
+      "uid_hex": "04:26:81:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        129,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 47,
+      "uid_hex": "04:26:80:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        128,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 48,
+      "uid_hex": "04:26:7E:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        126,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 49,
+      "uid_hex": "04:26:7D:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        125,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 50,
+      "uid_hex": "04:26:7C:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        124,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 51,
+      "uid_hex": "04:26:7B:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        123,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 52,
+      "uid_hex": "04:26:7A:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        122,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 53,
+      "uid_hex": "04:26:9E:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        158,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 54,
+      "uid_hex": "04:26:9D:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        157,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 55,
+      "uid_hex": "04:26:79:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        121,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 56,
+      "uid_hex": "04:26:78:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        120,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 57,
+      "uid_hex": "04:26:77:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        119,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 58,
+      "uid_hex": "04:26:76:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        118,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 59,
+      "uid_hex": "04:26:75:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        117,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 60,
+      "uid_hex": "04:26:74:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        116,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 61,
+      "uid_hex": "04:26:73:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        115,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 62,
+      "uid_hex": "04:26:72:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        114,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 63,
+      "uid_hex": "04:26:71:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        113,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 64,
+      "uid_hex": "04:26:70:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        112,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 65,
+      "uid_hex": "04:26:6E:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        110,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 66,
+      "uid_hex": "04:26:6D:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        109,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 67,
+      "uid_hex": "04:26:6C:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        108,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 68,
+      "uid_hex": "04:26:6B:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        107,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 69,
+      "uid_hex": "04:26:6A:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        106,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 70,
+      "uid_hex": "04:26:6F:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        111,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 71,
+      "uid_hex": "04:26:69:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        105,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 72,
+      "uid_hex": "04:26:68:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        104,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 73,
+      "uid_hex": "04:26:67:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        103,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 74,
+      "uid_hex": "04:26:66:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        102,
+        90,
+        6,
+        31,
+        145
+      ]
+    },
+    {
+      "card_number": 75,
+      "uid_hex": "04:26:65:5A:06:1F:91",
+      "uid_bytes": [
+        4,
+        38,
+        101,
+        90,
+        6,
+        31,
+        145
+      ]
+    }
+  ]
 }
