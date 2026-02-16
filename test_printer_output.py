@@ -42,13 +42,19 @@ async def test_printer_output():
     suit_loader = SuitContext("data/suits.json")
     suit_context = suit_loader.get_suit_by_card(1)
 
-    # Create fortune data (simulating what would come from text_library)
+    # Load actual card data from oracle_cards.json
+    import json
+    with open('data/oracle_cards.json', 'r') as f:
+        all_cards = json.load(f)
+        card_1_data = all_cards[0]  # Card 1 is "Crystal Sync"
+
+    # Create fortune data with actual card information
     fortune_data = {
-        'haiku': 'Signals pierce the dark\nLost voices find their echo\nYou are finally heard',
-        'title': 'The Signal - Message',
-        'description': 'The first pulse of your existence. A declaration that you are here, that you matter. Listen for the quiet ping of recognition in the dark.',
-        'keywords': ['transmission', 'communication', 'visibility', 'identity', 'broadcast', 'recognition'],
-        'theme': 'Transmission. Recognition. Identity in broadcast.',
+        'haiku': 'Crystals hum below\nHeart syncs with Earth\'s steady beat\nAlignment flows',
+        'title': card_1_data['title'],
+        'description': card_1_data['description'],
+        'keywords': card_1_data['keywords'],
+        'theme': 'Alignment and Attunement',
         'suit': suit_context,
         'moon': moon_context,
         'zodiac': astro_context
