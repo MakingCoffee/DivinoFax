@@ -11,7 +11,7 @@ system:
   startup_timeout: 30.0
   shutdown_timeout: 10.0
   debug_mode: false
-  simulation_mode: false  # Global simulation override
+  simulation_mode: true  # Global simulation override - using mock hardware for testing
   save_rfid_history: true
   max_history_entries: 1000
 
