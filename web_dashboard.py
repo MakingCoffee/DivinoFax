@@ -9,8 +9,13 @@ from datetime import datetime
 import subprocess
 import os
 import re
+import logging
 
 app = Flask(__name__)
+
+# Configure logging for the dashboard
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def run_command(cmd):
     """Run a shell command and return output."""
@@ -25,22 +30,62 @@ def is_service_running():
     result = run_command("systemctl is-active divinofax")
     return result == "active"
 
+def find_log_file():
+    """Intelligently locate the DivinoFax log file.
+
+    Checks multiple possible locations:
+    1. Environment variable DIVINOFAX_LOG_FILE
+    2. Pi production path: /home/oracle/divinofax/divinofax.log
+    3. macOS development path: /Users/kathrynbennett/divinofax/divinofax.log
+    4. Relative path: ./divinofax.log
+
+    Returns the first path that exists, or None if no log file found.
+    """
+    # Check environment variable first
+    env_log = os.environ.get('DIVINOFAX_LOG_FILE')
+    if env_log and os.path.exists(env_log):
+        logger.info(f"Using log file from environment: {env_log}")
+        return env_log
+
+    # List of possible locations to check
+    possible_paths = [
+        "/home/oracle/divinofax/divinofax.log",  # Pi production
+        "/Users/kathrynbennett/divinofax/divinofax.log",  # macOS development
+        "./divinofax.log",  # Relative to current directory
+        os.path.expanduser("~/divinofax/divinofax.log"),  # Home directory
+    ]
+
+    for path in possible_paths:
+        if os.path.exists(path):
+            logger.info(f"Found log file at: {path}")
+            return path
+
+    # Log warning if no log file found
+    logger.warning(f"No log file found. Checked: {possible_paths}")
+    return None
+
 def get_recent_fortunes(lines=10):
     """Get recent fortunes from the log file."""
-    log_file = "/home/oracle/divinofax/divinofax.log"
     fortunes = []
+    log_file = find_log_file()
+
+    if not log_file:
+        logger.warning("Cannot read fortunes: log file not found")
+        return []
 
     try:
         with open(log_file, 'r') as f:
             log_lines = f.readlines()
 
         # Extract fortune titles from logs
-        for line in log_lines[-50:]:  # Check last 50 lines
+        for line in log_lines[-100:]:  # Check last 100 lines for more coverage
             if "Generated fortune for" in line:
-                # Extract card name from log line
-                match = re.search(r"Generated fortune for.*: (.*?)$", line)
+                # Extract card name from log line - handle multiple formats
+                # Format 1: "Generated fortune for: CardName"
+                # Format 2: "Generated fortune for: CardName (Card #X)"
+                match = re.search(r"Generated fortune for[:\s]+(.+?)(?:\s*\(Card|\s*$)", line)
                 if match:
-                    card_name = match.group(1)
+                    card_name = match.group(1).strip()
                     timestamp = line.split()[0] if line else ""
                     fortunes.append({
                         "card": card_name,
@@ -48,7 +93,11 @@ def get_recent_fortunes(lines=10):
                     })
 
         return list(reversed(fortunes))[:lines]
-    except:
+    except IOError as e:
+        logger.error(f"Error reading log file {log_file}: {e}")
+        return []
+    except Exception as e:
+        logger.error(f"Unexpected error processing fortunes: {e}")
         return []
 
 def get_system_stats():
