@@ -211,12 +211,12 @@ def api_wifi_networks():
         # Perform multiple rescans with slight delays to catch networks
         # that may be broadcasting at different intervals or have weak signals
         for attempt in range(3):
-            # Request a fresh WiFi scan
-            run_command("nmcli dev wifi rescan 2>/dev/null", timeout=10)
+            # Request a fresh WiFi scan (may need sudo)
+            run_command("sudo nmcli dev wifi rescan 2>/dev/null", timeout=10)
 
             # Small delay between scans to allow hardware to discover networks
             if attempt < 2:
-                time.sleep(1)
+                time.sleep(1.5)
 
             # Get current scan results
             result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null", timeout=15)
@@ -255,36 +255,40 @@ def api_wifi_connect():
             return jsonify({"error": "SSID required"}), 400
 
         # First, remove any existing connection with this SSID to avoid conflicts
-        run_command(f'nmcli connection delete "{ssid}" 2>/dev/null', timeout=5)
+        run_command(f'sudo nmcli connection delete "{ssid}" 2>/dev/null', timeout=5)
         time.sleep(0.5)
 
         # Connect using nmcli with proper security settings
         if password:
-            # Use --ask to avoid shell escaping issues with special characters
-            # Or use a more robust approach with 802-11-wireless-security settings
-            cmd = f'nmcli device wifi connect "{ssid}" password "{password}" 2>&1'
+            cmd = f'sudo nmcli device wifi connect "{ssid}" password "{password}" 2>&1'
         else:
-            cmd = f'nmcli device wifi connect "{ssid}" 2>&1'
+            cmd = f'sudo nmcli device wifi connect "{ssid}" 2>&1'
 
         result = run_command(cmd, timeout=15)
 
         if "successfully activated" in result.lower() or "activated" in result.lower():
             return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
         elif "error" in result.lower() or "failed" in result.lower():
-            # Try alternate connection method
-            logger.warning(f"First connection attempt failed for {ssid}, trying alternate method")
+            # Try alternate connection method with full parameters
+            logger.warning(f"First connection attempt failed for {ssid}, trying with explicit security parameters")
 
             # Escape password for shell safety
             safe_password = password.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
 
-            # Try using nmcli with full connection parameters
-            alt_cmd = f'nmcli connection add type wifi ifname "*" con-name "{ssid}" ssid "{ssid}" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "{safe_password}" 2>&1'
+            # Try using nmcli with full connection parameters (with sudo)
+            alt_cmd = f'sudo nmcli connection add type wifi ifname "*" con-name "{ssid}" ssid "{ssid}" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "{safe_password}" 2>&1'
             alt_result = run_command(alt_cmd, timeout=15)
 
-            if "error" not in alt_result.lower():
-                return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
+            if "added successfully" in alt_result.lower() or "error" not in alt_result.lower():
+                # Now activate the connection
+                activate_cmd = f'sudo nmcli connection up "{ssid}" 2>&1'
+                activate_result = run_command(activate_cmd, timeout=15)
+                if "activated" in activate_result.lower():
+                    return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
+                else:
+                    return jsonify({"error": f"Connection created but activation failed: {activate_result}"}), 500
             else:
-                return jsonify({"error": f"Connection failed: {result}\nAlternate: {alt_result}"}), 500
+                return jsonify({"error": f"Connection failed: {result}\nAlternate attempt: {alt_result}"}), 500
         else:
             return jsonify({"error": result}), 500
 
