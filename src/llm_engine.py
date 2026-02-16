@@ -67,7 +67,7 @@ class MockLlamaEngine:
         ]
         logger.info("Mock Llama engine initialized")
     
-    async def generate_haiku(self, inspiration_text: str, context: str = "", moon_context: dict = None) -> Optional[str]:
+    async def generate_haiku(self, inspiration_text: str, context: str = "", moon_context: dict = None, astro_context: dict = None) -> Optional[str]:
         """Generate a mock haiku."""
         await asyncio.sleep(2)  # Simulate processing time
 
@@ -120,13 +120,13 @@ class RealLlamaEngine:
         
         raise RuntimeError("Failed to load any Llama model")
     
-    async def generate_haiku(self, inspiration_text: str, context: str = "", moon_context: dict = None) -> Optional[str]:
+    async def generate_haiku(self, inspiration_text: str, context: str = "", moon_context: dict = None, astro_context: dict = None) -> Optional[str]:
         """Generate haiku using Llama model."""
         if not self.is_loaded:
             return None
 
         # Create haiku generation prompt
-        prompt = self._create_haiku_prompt(inspiration_text, context, moon_context)
+        prompt = self._create_haiku_prompt(inspiration_text, context, moon_context, astro_context)
         
         try:
             # Run generation in thread pool to avoid blocking
@@ -146,7 +146,7 @@ class RealLlamaEngine:
         
         return None
     
-    def _create_haiku_prompt(self, inspiration_text: str, context: str, moon_context: dict = None) -> str:
+    def _create_haiku_prompt(self, inspiration_text: str, context: str, moon_context: dict = None, astro_context: dict = None) -> str:
         """Create an enhanced prompt for haiku generation with richer context."""
 
         # Parse context to extract card information if available
@@ -157,11 +157,16 @@ class RealLlamaEngine:
         if moon_context and moon_context.get('prompt_addition'):
             moon_addition = f"\nCELESTIAL TIMING: The seeker draws this card {moon_context['prompt_addition']}."
 
+        # Add astrological context if provided
+        astro_addition = ""
+        if astro_context and astro_context.get('prompt_addition'):
+            astro_addition = f"\nASTROLOGICAL INFLUENCE: {astro_context['prompt_addition']}."
+
         # Build the prompt with layered guidance
         prompt = f"""You are a mystical oracle, channeling profound wisdom through the art of haiku. Your haikus reveal hidden truths and guide seekers toward their destiny.
 
 ORACLE CARD GUIDANCE:
-{inspiration_text}{moon_addition}
+{inspiration_text}{moon_addition}{astro_addition}
 
 INSTRUCTIONS FOR YOUR HAIKU:
 1. Structure: Exactly 3 lines with 5-7-5 syllables
@@ -370,8 +375,8 @@ class LlamaEngine:
             self.is_initialized = False
             logger.info("LLM engine shutdown complete")
     
-    async def generate_haiku(self, inspiration_text: str, rfid_code: str = "", moon_context: dict = None) -> Optional[str]:
-        """Generate a haiku based on inspiration text and optional moon phase context."""
+    async def generate_haiku(self, inspiration_text: str, rfid_code: str = "", moon_context: dict = None, astro_context: dict = None) -> Optional[str]:
+        """Generate a haiku based on inspiration text and optional celestial context."""
         if not self.is_initialized:
             await self.initialize()
 
@@ -380,7 +385,7 @@ class LlamaEngine:
 
         try:
             logger.info(f"Generating haiku for RFID {rfid_code}")
-            haiku = await self.engine.generate_haiku(inspiration_text, rfid_code, moon_context)
+            haiku = await self.engine.generate_haiku(inspiration_text, rfid_code, moon_context, astro_context)
             
             if haiku:
                 self.generation_stats["successful_generations"] += 1
