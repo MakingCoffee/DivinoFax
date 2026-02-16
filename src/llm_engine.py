@@ -147,21 +147,74 @@ class RealLlamaEngine:
         return None
     
     def _create_haiku_prompt(self, inspiration_text: str, context: str) -> str:
-        """Create a prompt for haiku generation."""
-        prompt = f"""You are a mystical fortune teller creating poetic haikus that reveal the future. 
+        """Create an enhanced prompt for haiku generation with richer context."""
 
-Write a haiku (exactly 3 lines, 5-7-5 syllables) inspired by this text:
-"{inspiration_text[:200]}..."
+        # Parse context to extract card information if available
+        card_context = self._parse_card_context(context)
 
-The haiku should be:
-- Mystical and fortune-telling in nature
-- Exactly 5 syllables, then 7 syllables, then 5 syllables
-- About destiny, future, or spiritual guidance
-- Beautiful and meaningful
+        # Build the prompt with layered guidance
+        prompt = f"""You are a mystical oracle, channeling profound wisdom through the art of haiku. Your haikus reveal hidden truths and guide seekers toward their destiny.
 
-Haiku:"""
-        
+ORACLE CARD GUIDANCE:
+{inspiration_text}
+
+INSTRUCTIONS FOR YOUR HAIKU:
+1. Structure: Exactly 3 lines with 5-7-5 syllables
+2. Essence: Capture the deep truth within the oracle card's meaning
+3. Tone: {card_context.get('tone', 'mystical and prophetic')}
+4. Focus: Speak to the seeker's current transformation or revelation
+5. Language: Use vivid, poetic imagery; avoid clichés
+
+HAIKU EXAMPLES (for style guidance):
+- "Signals pierce the dark / Lost voices find their echo / You are finally heard"
+- "Flesh remembers truth / Skin knows what mind denies / Feel your becoming"
+- "Archives pulse with time / Stories the world erased / Your ghosts are sacred"
+- "Glitches show the way / Error becomes doorway / Freedom in the break"
+- "Heartbeats synchronize / Your rhythm finds the pattern / Dance with what is true"
+
+Now create an original haiku for this seeker. Channel the oracle's wisdom. Your haiku should feel like a personal prophecy, specific and transformative.
+
+HAIKU:"""
+
         return prompt
+
+    def _parse_card_context(self, context: str) -> dict:
+        """Parse RFID context to extract suit/card information."""
+        card_info = {
+            'tone': 'mystical and prophetic',
+            'suit': None,
+            'card_number': None
+        }
+
+        # Try to extract card number from context
+        if context and isinstance(context, str):
+            # If context looks like a card number (001-075)
+            try:
+                # Extract number from context string
+                import re
+                match = re.search(r'(\d+)', context)
+                if match:
+                    num = int(match.group(1))
+                    card_info['card_number'] = num
+
+                    # Determine suit based on card number (1-15, 16-30, etc.)
+                    suit_num = (num - 1) // 15 + 1
+                    suits = {
+                        1: ('The Signal', 'transmission and communication - speak your truth with clarity'),
+                        2: ('The Circuit', 'embodiment and sensation - feel your transformation deeply'),
+                        3: ('The Archive', 'memory and witness - hold the wisdom of what came before'),
+                        4: ('The Glitch', 'disruption and revelation - embrace the beauty in breaking'),
+                        5: ('The Sync', 'resonance and harmony - align with the rhythm of becoming')
+                    }
+
+                    if suit_num in suits:
+                        suit_name, tone = suits[suit_num]
+                        card_info['suit'] = suit_name
+                        card_info['tone'] = tone
+            except:
+                pass
+
+        return card_info
     
     def _generate_text(self, prompt: str) -> str:
         """Generate text using Llama model (blocking call)."""
