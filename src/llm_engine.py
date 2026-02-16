@@ -163,28 +163,36 @@ class RealLlamaEngine:
             astro_addition = f"\nASTROLOGICAL INFLUENCE: {astro_context['prompt_addition']}."
 
         # Build the prompt with layered guidance
-        prompt = f"""You are a mystical oracle, channeling profound wisdom through the art of haiku. Your haikus reveal hidden truths and guide seekers toward their destiny.
+        prompt = f"""You are a mystical oracle, channeling profound wisdom through the art of poetry. Your words reveal hidden truths and guide seekers toward their destiny.
 
 ORACLE CARD GUIDANCE:
 {inspiration_text}{moon_addition}{astro_addition}
 
-INSTRUCTIONS FOR YOUR HAIKU:
-1. Structure: Exactly 3 lines with 5-7-5 syllables
+INSTRUCTIONS FOR YOUR POEM:
+1. Form: Choose what fits best - haiku (5-7-5), couplet (2 lines), tercet (3 lines), or free verse
 2. Essence: Capture the deep truth within the oracle card's meaning
 3. Tone: {card_context.get('tone', 'mystical and prophetic')}
 4. Focus: Speak to the seeker's current transformation or revelation
 5. Language: Use vivid, poetic imagery; avoid clichés
+6. Length: Keep it concise (2-4 lines ideally) for a fortune slip
 
-HAIKU EXAMPLES (for style guidance):
+POETIC FORM EXAMPLES:
+
+HAIKU (if it fits naturally):
 - "Signals pierce the dark / Lost voices find their echo / You are finally heard"
-- "Flesh remembers truth / Skin knows what mind denies / Feel your becoming"
-- "Archives pulse with time / Stories the world erased / Your ghosts are sacred"
-- "Glitches show the way / Error becomes doorway / Freedom in the break"
-- "Heartbeats synchronize / Your rhythm finds the pattern / Dance with what is true"
 
-Now create an original haiku for this seeker. Channel the oracle's wisdom. Your haiku should feel like a personal prophecy, specific and transformative.
+COUPLET (2 lines):
+- "Your truth pierces the silence / Recognition floods in"
 
-HAIKU:"""
+TERCET (3 lines):
+- "What was hidden calls to you / Your signal grows stronger / The world begins to hear"
+
+FREE VERSE (2-4 lines):
+- "In the dark, a signal blazes forth— / your voice, finally reaching"
+
+Choose the form that best captures this seeker's oracle message. Let the card, the moon, and the stars guide your words.
+
+POEM:"""
 
         return prompt
 
@@ -248,40 +256,41 @@ HAIKU:"""
         return ""
     
     def _extract_haiku(self, text: str) -> str:
-        """Extract haiku from generated text."""
+        """Extract poem from generated text - supports multiple poetic forms."""
         lines = [line.strip() for line in text.split('\n') if line.strip()]
-        
-        # Look for 3-line structure
-        if len(lines) >= 3:
-            # Take first 3 non-empty lines
-            haiku_lines = lines[:3]
-            return '\n'.join(haiku_lines)
+
+        # Try to get 2-4 lines (flexible poem form)
+        if len(lines) >= 2:
+            # Take first 2-4 non-empty lines
+            poem_lines = lines[:4] if len(lines) >= 4 else lines
+            return '\n'.join(poem_lines)
         elif len(lines) == 1:
             # Try to split on common separators
             for sep in [' / ', '/', ' | ', '|']:
                 if sep in lines[0]:
                     parts = lines[0].split(sep)
-                    if len(parts) >= 3:
-                        return '\n'.join(part.strip() for part in parts[:3])
-        
+                    if len(parts) >= 2:
+                        return '\n'.join(part.strip() for part in parts[:4])
+
         # Return what we have, even if not perfect
         return '\n'.join(lines) if lines else ""
     
     def _validate_haiku(self, haiku: str) -> bool:
-        """Validate haiku structure."""
-        if not haiku or haiku.count('\n') != 2:
+        """Validate poem structure - flexible across multiple forms."""
+        if not haiku:
             return False
-        
-        lines = haiku.split('\n')
-        if len(lines) != 3:
+
+        lines = [line.strip() for line in haiku.split('\n') if line.strip()]
+
+        # Accept any poem with 2-4 lines (couplet, tercet, haiku, or short verse)
+        if len(lines) < 2 or len(lines) > 4:
             return False
-        
-        # Check for reasonable line lengths (syllable estimation)
-        if self.config.strict_haiku_format:
+
+        # For strict haiku format validation (only if config requires it)
+        if self.config.strict_haiku_format and len(lines) == 3:
             syllable_counts = [self._estimate_syllables(line) for line in lines]
             target = [5, 7, 5]
-            
-            # Allow some variation if configured
+
             if self.config.allow_near_haiku:
                 tolerance = 1
                 for i, (actual, expected) in enumerate(zip(syllable_counts, target)):
@@ -290,7 +299,7 @@ HAIKU:"""
             else:
                 if syllable_counts != target:
                     return False
-        
+
         return True
     
     def _estimate_syllables(self, text: str) -> int:
