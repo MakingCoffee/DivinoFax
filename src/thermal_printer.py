@@ -390,12 +390,25 @@ class ThermalPrinter:
             await self.printer.print_text(timestamp, center=True)
             await self.printer.feed_lines(1)
 
-            # Print oracle card title with card number if available
+            # Print oracle card title - separate from suit
+            # Try to extract card number from rfid_code if available
+            card_num_text = ""
+            if rfid_code:
+                # Try to get card number from RFID mapper if accessible
+                try:
+                    from rfid_mapper import RFIDCardMapper
+                    mapper = RFIDCardMapper("data/rfid_mappings.json")
+                    card_num = mapper.uid_hex_to_card(rfid_code)
+                    if card_num:
+                        card_num_text = f" (CARD {card_num})"
+                except:
+                    pass
+
             card_title = fortune_data.get('title', 'Unknown Card')
             if not card_title:
                 card_title = 'Unknown Card'
 
-            await self.printer.print_text(card_title.upper(), center=True, bold=True)
+            await self.printer.print_text(f"{card_title.upper()}{card_num_text}", center=True, bold=True)
             await self.printer.feed_lines(1)
 
             # Print card description (short version)
