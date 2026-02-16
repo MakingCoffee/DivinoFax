@@ -11,7 +11,7 @@ system:
   startup_timeout: 30.0
   shutdown_timeout: 10.0
   debug_mode: false
-  simulation_mode: true  # Global simulation override - using mock hardware for testing
+  simulation_mode: false  # Allow individual component control (RFID/printer mock, LLM real)
   save_rfid_history: true
   max_history_entries: 1000
 
@@ -37,7 +37,7 @@ rfid:
   read_timeout: 1.0  # Seconds to wait for a card
   debounce_time: 2.0  # Seconds to wait before reading same card again
   retry_count: 3
-  simulation_mode: false
+  simulation_mode: true  # Use mock RFID reader (no hardware)
   simulation_cards:
     - "123456789012"
     - "987654321098" 
@@ -78,5 +78,5 @@ printer:
   font_size: normal  # normal, small, large
   use_decorations: true
   fortune_header: "🔮 YOUR FORTUNE 🔮"
-  simulation_mode: false
+  simulation_mode: true  # Use mock printer (no hardware)
   output_file: thermal_output.txt
