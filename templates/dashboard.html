@@ -423,6 +423,11 @@
                     </div>
 
                     <div class="input-group">
+                        <label for="wifiSSID">Network Name (SSID)</label>
+                        <input type="text" id="wifiSSID" placeholder="Enter network name or select below">
+                    </div>
+
+                    <div class="input-group">
                         <label>Available Networks</label>
                         <div id="networkList" class="network-list">
                             <div style="padding: 10px; text-align: center; color: #999;">Scanning...</div>
@@ -431,7 +436,10 @@
 
                     <div class="input-group">
                         <label for="wifiPassword">Password</label>
-                        <input type="password" id="wifiPassword" placeholder="Enter WiFi password">
+                        <div style="display: flex; gap: 10px;">
+                            <input type="password" id="wifiPassword" placeholder="Enter WiFi password" style="flex: 1;">
+                            <button style="padding: 10px 15px; background-color: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="togglePasswordVisibility()">👁️</button>
+                        </div>
                     </div>
 
                     <button class="btn-settings" onclick="connectWiFi()">🔗 Connect</button>
@@ -578,13 +586,30 @@
         }
 
         function selectNetwork(ssid) {
-            // This would be part of a more advanced UI
+            document.getElementById('wifiSSID').value = ssid;
             document.getElementById('wifiPassword').focus();
         }
 
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('wifiPassword');
+            const button = event.target;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
         async function connectWiFi() {
-            const ssid = document.querySelector('.network-item')?.querySelector('.network-name')?.textContent || 'Unknown';
+            const ssid = document.getElementById('wifiSSID').value.trim();
             const password = document.getElementById('wifiPassword').value;
+
+            if (!ssid) {
+                showMessage('wifiMessage', 'Please select or enter a network name', 'error');
+                return;
+            }
 
             if (!password) {
                 showMessage('wifiMessage', 'Please enter a password', 'error');
@@ -595,7 +620,7 @@
                 const response = await fetch('/api/config/wifi/connect', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ssid: ssid.replace('📶 ', ''), password: password })
+                    body: JSON.stringify({ ssid: ssid, password: password })
                 });
 
                 const data = await response.json();
