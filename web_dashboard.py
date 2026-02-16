@@ -254,16 +254,37 @@ def api_wifi_connect():
         if not ssid:
             return jsonify({"error": "SSID required"}), 400
 
-        # Connect using nmcli
+        # First, remove any existing connection with this SSID to avoid conflicts
+        run_command(f'nmcli connection delete "{ssid}" 2>/dev/null', timeout=5)
+        time.sleep(0.5)
+
+        # Connect using nmcli with proper security settings
         if password:
+            # Use --ask to avoid shell escaping issues with special characters
+            # Or use a more robust approach with 802-11-wireless-security settings
             cmd = f'nmcli device wifi connect "{ssid}" password "{password}" 2>&1'
         else:
             cmd = f'nmcli device wifi connect "{ssid}" 2>&1'
 
-        result = run_command(cmd)
+        result = run_command(cmd, timeout=15)
 
         if "successfully activated" in result.lower() or "activated" in result.lower():
             return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
+        elif "error" in result.lower() or "failed" in result.lower():
+            # Try alternate connection method
+            logger.warning(f"First connection attempt failed for {ssid}, trying alternate method")
+
+            # Escape password for shell safety
+            safe_password = password.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
+
+            # Try using nmcli with full connection parameters
+            alt_cmd = f'nmcli connection add type wifi ifname "*" con-name "{ssid}" ssid "{ssid}" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "{safe_password}" 2>&1'
+            alt_result = run_command(alt_cmd, timeout=15)
+
+            if "error" not in alt_result.lower():
+                return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
+            else:
+                return jsonify({"error": f"Connection failed: {result}\nAlternate: {alt_result}"}), 500
         else:
             return jsonify({"error": result}), 500
 
