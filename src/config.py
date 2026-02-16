@@ -9,6 +9,7 @@ Author: Kathryn Bennett
 """
 
 import logging
+import os
 from pathlib import Path
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, field
@@ -151,28 +152,36 @@ class DivinofaxConfig:
             logger.error(f"Failed to save configuration to {config_path}: {e}")
     
     def _update_from_dict(self, config_data: Dict[str, Any]):
-        """Update configuration from dictionary."""
-        
+        """Update configuration from dictionary with environment variable substitution."""
+
         # Update system config
         if 'system' in config_data:
             self._update_dataclass(self.system, config_data['system'])
-        
+
         # Update pico config
         if 'pico' in config_data:
             self._update_dataclass(self.pico, config_data['pico'])
-        
+
         # Update RFID config
         if 'rfid' in config_data:
             self._update_dataclass(self.rfid, config_data['rfid'])
-        
+
         # Update text library config
         if 'text_library' in config_data:
             self._update_dataclass(self.text_library, config_data['text_library'])
-        
-        # Update LLM config
+
+        # Update LLM config with environment variable substitution
         if 'llm' in config_data:
-            self._update_dataclass(self.llm, config_data['llm'])
-        
+            llm_data = config_data['llm']
+            # Substitute environment variables for sensitive fields
+            if 'claude_api_key' in llm_data and isinstance(llm_data['claude_api_key'], str):
+                if llm_data['claude_api_key'].startswith('${') and llm_data['claude_api_key'].endswith('}'):
+                    env_var_name = llm_data['claude_api_key'][2:-1]
+                    env_value = os.environ.get(env_var_name, '')
+                    if env_value:
+                        llm_data['claude_api_key'] = env_value
+            self._update_dataclass(self.llm, llm_data)
+
         # Update printer config
         if 'printer' in config_data:
             self._update_dataclass(self.printer, config_data['printer'])

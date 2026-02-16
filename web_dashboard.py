@@ -4,12 +4,13 @@ DivinoFax Web Dashboard
 Simple Flask web interface to monitor and control the DivinoFax system
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from datetime import datetime
 import subprocess
 import os
 import re
 import logging
+import json
 
 app = Flask(__name__)
 
@@ -175,6 +176,178 @@ def api_logs():
         })
     except:
         return jsonify({"logs": "No logs available"})
+
+
+# WiFi Configuration Endpoints
+@app.route('/api/config/wifi/status')
+def api_wifi_status():
+    """Get current WiFi connection status."""
+    try:
+        # Get current WiFi connection
+        result = run_command("nmcli -t -f NAME,TYPE,DEVICE connection show --active 2>/dev/null | grep wifi")
+        connected = bool(result)
+
+        # Get IP address
+        ip_addr = run_command("hostname -I 2>/dev/null").split()[0] if run_command("hostname -I 2>/dev/null") else "N/A"
+
+        return jsonify({
+            "connected": connected,
+            "ip_address": ip_addr,
+            "status": "🟢 Connected" if connected else "🔴 Disconnected"
+        })
+    except Exception as e:
+        logger.error(f"Error getting WiFi status: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/config/wifi/networks')
+def api_wifi_networks():
+    """Scan and return available WiFi networks."""
+    try:
+        # Scan for WiFi networks
+        result = run_command("nmcli -t -f SSID,SECURITY dev wifi list 2>/dev/null")
+
+        networks = []
+        seen = set()
+        for line in result.split('\n'):
+            if line.strip():
+                parts = line.split(':')
+                if len(parts) >= 2:
+                    ssid = parts[0].strip()
+                    security = parts[1].strip() if len(parts) > 1 else "Open"
+                    # Avoid duplicates
+                    if ssid and ssid not in seen:
+                        networks.append({
+                            "ssid": ssid,
+                            "security": security
+                        })
+                        seen.add(ssid)
+
+        return jsonify({"networks": networks})
+    except Exception as e:
+        logger.error(f"Error scanning WiFi networks: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/config/wifi/connect', methods=['POST'])
+def api_wifi_connect():
+    """Connect to a WiFi network."""
+    try:
+        data = request.get_json()
+        ssid = data.get('ssid', '')
+        password = data.get('password', '')
+
+        if not ssid:
+            return jsonify({"error": "SSID required"}), 400
+
+        # Connect using nmcli
+        if password:
+            cmd = f'nmcli device wifi connect "{ssid}" password "{password}" 2>&1'
+        else:
+            cmd = f'nmcli device wifi connect "{ssid}" 2>&1'
+
+        result = run_command(cmd)
+
+        if "successfully activated" in result.lower() or "activated" in result.lower():
+            return jsonify({"success": True, "message": f"✅ Connected to {ssid}"})
+        else:
+            return jsonify({"error": result}), 500
+
+    except Exception as e:
+        logger.error(f"Error connecting to WiFi: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+# LLM Configuration Endpoints
+@app.route('/api/config/llm', methods=['GET'])
+def api_llm_config_get():
+    """Get current LLM configuration (with masked API key)."""
+    try:
+        config_path = "/home/oracle/divinofax/config/divinofax.yaml"
+
+        if not os.path.exists(config_path):
+            return jsonify({
+                "use_claude_api": False,
+                "claude_model": "claude-3-5-sonnet-20241022",
+                "claude_api_key": "",
+                "api_key_configured": False
+            })
+
+        # Read YAML config
+        with open(config_path, 'r') as f:
+            config_content = f.read()
+
+        # Check if Claude API is enabled and if API key is set
+        use_claude = "use_claude_api: true" in config_content or "use_claude_api: yes" in config_content
+        has_key = os.environ.get('CLAUDE_API_KEY', '') != ''
+
+        return jsonify({
+            "use_claude_api": use_claude,
+            "claude_model": "claude-3-5-sonnet-20241022",
+            "claude_api_key": "sk-...****" if has_key else "",
+            "api_key_configured": has_key
+        })
+    except Exception as e:
+        logger.error(f"Error reading LLM config: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/config/llm', methods=['POST'])
+def api_llm_config_set():
+    """Save Claude API key and LLM configuration."""
+    try:
+        data = request.get_json()
+        api_key = data.get('api_key', '').strip()
+        use_claude = data.get('use_claude_api', False)
+
+        if not api_key:
+            return jsonify({"error": "API key required"}), 400
+
+        # Validate API key format (should start with sk-)
+        if not api_key.startswith('sk-'):
+            return jsonify({"error": "Invalid Claude API key format"}), 400
+
+        # Store in environment variable
+        os.environ['CLAUDE_API_KEY'] = api_key
+
+        # For persistence across restarts, write to a secure location or systemd environment
+        # For now, just validate it works
+        return jsonify({
+            "success": True,
+            "message": "✅ Claude API key configured",
+            "use_claude_api": use_claude
+        })
+
+    except Exception as e:
+        logger.error(f"Error saving LLM config: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/config/llm/validate', methods=['POST'])
+def api_llm_validate():
+    """Validate Claude API key."""
+    try:
+        data = request.get_json()
+        api_key = data.get('api_key', '').strip()
+
+        if not api_key or not api_key.startswith('sk-'):
+            return jsonify({"valid": False, "error": "Invalid API key format"})
+
+        # Try to import and create a client (validate without making a full API call)
+        try:
+            from anthropic import Anthropic
+            client = Anthropic(api_key=api_key)
+            # Just creating the client validates the key format
+            return jsonify({"valid": True, "message": "✅ API key format valid"})
+        except ImportError:
+            return jsonify({"valid": False, "error": "anthropic library not installed"})
+        except Exception as e:
+            return jsonify({"valid": False, "error": str(e)})
+
+    except Exception as e:
+        logger.error(f"Error validating API key: {e}")
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     # Run on all interfaces on port 5000

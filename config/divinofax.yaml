@@ -54,11 +54,21 @@ text_library:
   default_theme: oracle_deck
 
 llm:
+  # Local Llama settings (for offline use)
   model_path: models/llama-2-7b-chat.Q4_0.gguf  # Quantized for Pi
   backup_model_path: models/llama-2-7b.Q2_K.gguf  # Even smaller backup
   n_ctx: 1024      # Context window (smaller for Pi)
   n_threads: 4      # Pi 4 has 4 cores
   n_gpu_layers: 0   # No GPU on Pi
+
+  # Claude API settings (recommended for fast generation)
+  use_claude_api: true  # Use Claude API instead of local model
+  claude_api_key: ${CLAUDE_API_KEY}  # Load from environment variable
+  claude_model: claude-3-5-sonnet-20241022
+  claude_temperature: 0.8
+  claude_max_tokens: 150
+
+  # Common settings
   max_tokens: 150   # Haikus are short
   temperature: 0.8
   top_p: 0.9
