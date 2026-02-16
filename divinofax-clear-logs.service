@@ -1,0 +1,13 @@
+[Unit]
+Description=Clear DivinoFax fortunes log on startup
+After=network.target
+Before=divinofax.service
+
+[Service]
+Type=oneshot
+User=oracle
+ExecStart=/bin/bash -c 'echo "$(date) - System startup: clearing fortune log" > /home/oracle/divinofax/divinofax.log'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
