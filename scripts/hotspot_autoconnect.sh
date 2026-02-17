@@ -1,7 +1,7 @@
 #!/bin/bash
 # Hotspot Auto-Connect Script
 # Runs on boot to connect to saved hotspot before starting the main DivinoFax service
-# This allows the dashboard to be accessible via hotspot if no local WiFi is available
+# Supports both JSON config file AND environment variables from GitHub Secrets
 
 HOTSPOT_CONFIG="/home/oracle/divinofax/config/hotspot.json"
 LOG_FILE="/var/log/divinofax_hotspot.log"
@@ -9,15 +9,21 @@ LOG_FILE="/var/log/divinofax_hotspot.log"
 {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Hotspot auto-connect service started"
 
-    # Check if hotspot config exists
-    if [ ! -f "$HOTSPOT_CONFIG" ]; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - No hotspot configuration found. Skipping auto-connect."
+    # Priority 1: Check environment variables (set by GitHub Secrets during deployment)
+    if [ -n "$HOTSPOT_SSID" ]; then
+        SSID="$HOTSPOT_SSID"
+        PASSWORD="$HOTSPOT_PASSWORD"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Using hotspot credentials from environment variables (GitHub Secrets)"
+    # Priority 2: Check local JSON config file
+    elif [ -f "$HOTSPOT_CONFIG" ]; then
+        # Extract SSID and password from JSON
+        SSID=$(grep -o '"ssid":"[^"]*' "$HOTSPOT_CONFIG" | cut -d'"' -f4)
+        PASSWORD=$(grep -o '"password":"[^"]*' "$HOTSPOT_CONFIG" | cut -d'"' -f4)
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Using hotspot credentials from local config file"
+    else
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - No hotspot configuration found (no env vars, no config file). Skipping auto-connect."
         exit 0
     fi
-
-    # Extract SSID and password from JSON
-    SSID=$(grep -o '"ssid":"[^"]*' "$HOTSPOT_CONFIG" | cut -d'"' -f4)
-    PASSWORD=$(grep -o '"password":"[^"]*' "$HOTSPOT_CONFIG" | cut -d'"' -f4)
 
     if [ -z "$SSID" ]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Invalid hotspot configuration (missing SSID)"

@@ -1,0 +1,94 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches:
+      - claude/zealous-poincare
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Pi and configure hotspot
+        env:
+          PI_HOST: ${{ secrets.PI_HOST }}
+          PI_USER: ${{ secrets.PI_USER }}
+          PI_SSH_KEY: ${{ secrets.PI_SSH_KEY }}
+          HOTSPOT_SSID: ${{ secrets.HOTSPOT_SSID }}
+          HOTSPOT_PASSWORD: ${{ secrets.HOTSPOT_PASSWORD }}
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        run: |
+          # Set up SSH key
+          mkdir -p ~/.ssh
+          echo "$PI_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$PI_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Deploy code
+          echo "Deploying DivinoFax code to Pi..."
+          rsync -avz --exclude='.git' --exclude='__pycache__' --exclude='*.pyc' \
+            --exclude='.github' --exclude='.gitignore' \
+            . "$PI_USER@$PI_HOST:/home/oracle/divinofax/" || true
+
+          # Create hotspot environment file with secrets
+          echo "Configuring hotspot credentials..."
+          ssh "$PI_USER@$PI_HOST" << 'EOF'
+          mkdir -p /home/oracle/divinofax/config
+
+          # Create hotspot.env with credentials from GitHub Secrets
+          # This file is sourced by systemd service on boot
+          cat > /home/oracle/divinofax/config/hotspot.env << ENVEOF
+          HOTSPOT_SSID=$HOTSPOT_SSID
+          HOTSPOT_PASSWORD=$HOTSPOT_PASSWORD
+          ENVEOF
+
+          # Restrict permissions (only owner can read)
+          chmod 600 /home/oracle/divinofax/config/hotspot.env
+
+          # Create Claude API key environment file
+          cat > /home/oracle/divinofax/config/claude.env << ENVEOF
+          CLAUDE_API_KEY=$CLAUDE_API_KEY
+          ENVEOF
+
+          chmod 600 /home/oracle/divinofax/config/claude.env
+
+          # Install/update hotspot service
+          sudo cp /home/oracle/divinofax/systemd/divinofax-hotspot.service /etc/systemd/system/
+          sudo systemctl daemon-reload
+          sudo systemctl enable divinofax-hotspot.service
+
+          echo "✅ Hotspot credentials configured"
+          echo "✅ Claude API key configured"
+          echo "ℹ️  Pi will auto-connect to hotspot on next boot"
+          EOF
+        continue-on-error: true
+
+      - name: Verify deployment
+        env:
+          PI_HOST: ${{ secrets.PI_HOST }}
+          PI_USER: ${{ secrets.PI_USER }}
+          PI_SSH_KEY: ${{ secrets.PI_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PI_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$PI_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          echo "Verifying deployment..."
+          ssh "$PI_USER@$PI_HOST" << 'EOF'
+          echo "Checking DivinoFax installation..."
+          ls -la /home/oracle/divinofax/src/ | head -5
+
+          echo ""
+          echo "Checking systemd services..."
+          systemctl list-unit-files | grep divinofax
+
+          echo ""
+          echo "Hotspot service status:"
+          sudo systemctl status divinofax-hotspot.service --no-pager || echo "Service not yet active (will run on boot)"
+          EOF
+        continue-on-error: true

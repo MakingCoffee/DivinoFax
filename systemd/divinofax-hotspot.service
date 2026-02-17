@@ -11,6 +11,7 @@ RemainAfterExit=yes
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=divinofax-hotspot
+EnvironmentFile=/home/oracle/divinofax/config/hotspot.env
 
 [Install]
 WantedBy=multi-user.target
