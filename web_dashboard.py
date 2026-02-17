@@ -507,6 +507,36 @@ def api_hotspot_config_set():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/api/admin/update-dashboard', methods=['POST'])
+def api_admin_update_dashboard():
+    """Update dashboard HTML from latest code."""
+    try:
+        # Read the updated HTML file
+        dashboard_path = "/home/oracle/divinofax/templates/dashboard.html"
+        source_path = request.files.get('file')
+
+        if not source_path:
+            # If no file provided, just return current version info
+            return jsonify({
+                "message": "Dashboard update endpoint ready",
+                "current_path": dashboard_path
+            })
+
+        # Save the uploaded file
+        source_path.save(dashboard_path)
+        os.chmod(dashboard_path, 0o644)
+
+        logger.info("Dashboard HTML updated successfully")
+        return jsonify({
+            "success": True,
+            "message": "✅ Dashboard updated. Restart the Pi to apply changes."
+        })
+
+    except Exception as e:
+        logger.error(f"Error updating dashboard: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == '__main__':
     # Run on all interfaces on port 5000
     # This script is meant to run on the Raspberry Pi, not on macOS
