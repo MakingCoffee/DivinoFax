@@ -36,25 +36,25 @@ jobs:
 
           # Create hotspot environment file with secrets
           echo "Configuring hotspot credentials..."
-          ssh "$PI_USER@$PI_HOST" << 'EOF'
-          mkdir -p /home/oracle/divinofax/config
+          mkdir -p /tmp/divinofax_config
+          cat > /tmp/divinofax_config/hotspot.env << 'ENVEOF'
+HOTSPOT_SSID=$HOTSPOT_SSID
+HOTSPOT_PASSWORD=$HOTSPOT_PASSWORD
+ENVEOF
 
-          # Create hotspot.env with credentials from GitHub Secrets
-          # This file is sourced by systemd service on boot
-          cat > /home/oracle/divinofax/config/hotspot.env << ENVEOF
-          HOTSPOT_SSID=$HOTSPOT_SSID
-          HOTSPOT_PASSWORD=$HOTSPOT_PASSWORD
-          ENVEOF
+          cat > /tmp/divinofax_config/claude.env << 'ENVEOF'
+CLAUDE_API_KEY=$CLAUDE_API_KEY
+ENVEOF
 
-          # Restrict permissions (only owner can read)
-          chmod 600 /home/oracle/divinofax/config/hotspot.env
+          # Copy config files to Pi
+          scp /tmp/divinofax_config/hotspot.env "$PI_USER@$PI_HOST:/home/oracle/divinofax/config/" 2>/dev/null || true
+          scp /tmp/divinofax_config/claude.env "$PI_USER@$PI_HOST:/home/oracle/divinofax/config/" 2>/dev/null || true
 
-          # Create Claude API key environment file
-          cat > /home/oracle/divinofax/config/claude.env << ENVEOF
-          CLAUDE_API_KEY=$CLAUDE_API_KEY
-          ENVEOF
-
-          chmod 600 /home/oracle/divinofax/config/claude.env
+          # Configure Pi via SSH
+          ssh "$PI_USER@$PI_HOST" << 'SSHEOF'
+          # Set permissions on config files
+          chmod 600 /home/oracle/divinofax/config/hotspot.env 2>/dev/null || true
+          chmod 600 /home/oracle/divinofax/config/claude.env 2>/dev/null || true
 
           # Install Python dependencies including gunicorn in virtualenv
           echo "Installing Python dependencies..."
@@ -87,7 +87,7 @@ jobs:
           else
             echo "⚠️  Dashboard service may not have started - check logs"
           fi
-          EOF
+          SSHEOF
         continue-on-error: true
 
       - name: Verify deployment
