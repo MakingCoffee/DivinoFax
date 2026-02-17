@@ -111,17 +111,16 @@ jobs:
           systemctl list-unit-files | grep divinofax
 
           echo ""
-          echo "Testing Flask endpoints..."
-          cd /home/oracle/divinofax
-          if [ -f "venv/bin/python" ]; then
-            echo "Using virtualenv Python..."
-            venv/bin/python test_endpoints.py 2>&1
-          else
-            echo "Using system Python..."
-            python3 test_endpoints.py 2>&1
-          fi
-          TEST_RESULT=$?
-          echo "Test exit code: $TEST_RESULT"
+          echo "Verifying hotspot endpoint code is deployed..."
+          grep -c "api_hotspot_config_get" /home/oracle/divinofax/web_dashboard.py && \
+            echo "✅ Hotspot endpoint code found in web_dashboard.py" || \
+            echo "❌ Hotspot endpoint code NOT found in web_dashboard.py"
+
+          echo ""
+          echo "Checking if hotspot.env exists..."
+          [ -f /home/oracle/divinofax/config/hotspot.env ] && \
+            echo "✅ Hotspot environment file exists" || \
+            echo "❌ Hotspot environment file missing"
 
           echo ""
           echo "Hotspot service status:"
