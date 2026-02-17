@@ -38,13 +38,13 @@ jobs:
           echo "Configuring hotspot credentials..."
           mkdir -p /tmp/divinofax_config
           cat > /tmp/divinofax_config/hotspot.env << 'ENVEOF'
-HOTSPOT_SSID=$HOTSPOT_SSID
-HOTSPOT_PASSWORD=$HOTSPOT_PASSWORD
-ENVEOF
+          HOTSPOT_SSID=$HOTSPOT_SSID
+          HOTSPOT_PASSWORD=$HOTSPOT_PASSWORD
+          ENVEOF
 
           cat > /tmp/divinofax_config/claude.env << 'ENVEOF'
-CLAUDE_API_KEY=$CLAUDE_API_KEY
-ENVEOF
+          CLAUDE_API_KEY=$CLAUDE_API_KEY
+          ENVEOF
 
           # Copy config files to Pi
           scp /tmp/divinofax_config/hotspot.env "$PI_USER@$PI_HOST:/home/oracle/divinofax/config/" 2>/dev/null || true
