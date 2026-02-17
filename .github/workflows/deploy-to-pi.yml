@@ -76,6 +76,17 @@ jobs:
           echo "✅ Claude API key configured"
           echo "✅ Gunicorn installed for proper code reloading"
           echo "ℹ️  Pi will auto-connect to hotspot on next boot"
+
+          # Restart services to load new code
+          echo ""
+          echo "Restarting services to load new code..."
+          sudo systemctl restart divinofax-dashboard.service
+          sleep 2
+          if sudo systemctl is-active divinofax-dashboard.service > /dev/null; then
+            echo "✅ Dashboard service restarted successfully"
+          else
+            echo "⚠️  Dashboard service may not have started - check logs"
+          fi
           EOF
         continue-on-error: true
 
