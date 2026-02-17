@@ -100,6 +100,17 @@ def get_recent_fortunes(lines=10):
         logger.error(f"Unexpected error processing fortunes: {e}")
         return []
 
+def get_current_wifi():
+    """Get currently connected WiFi network."""
+    try:
+        # Use nmcli to get active WiFi connection
+        output = run_command("nmcli -t -f NAME,TYPE connection show --active 2>/dev/null | grep '802-11-wireless' | cut -d: -f1")
+        if output:
+            return output
+        return "Not connected"
+    except:
+        return "Unknown"
+
 def get_system_stats():
     """Get system statistics."""
     # Memory
@@ -134,13 +145,15 @@ def api_status():
     running = is_service_running()
     stats = get_system_stats()
     fortunes = get_recent_fortunes(5)
+    wifi = get_current_wifi()
 
     return jsonify({
         "running": running,
         "status": "🟢 Running" if running else "🔴 Stopped",
         "timestamp": datetime.now().isoformat(),
         "stats": stats,
-        "recent_fortunes": fortunes
+        "recent_fortunes": fortunes,
+        "wifi": wifi
     })
 
 @app.route('/api/start', methods=['POST'])

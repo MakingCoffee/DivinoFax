@@ -235,8 +235,8 @@
             </div>
 
             <div class="status-card">
-                <h3 style="margin-bottom: 15px; color: #333;">Last Updated</h3>
-                <div id="lastUpdate" style="font-size: 0.9em; color: #666; line-height: 1.6;">
+                <h3 style="margin-bottom: 15px; color: #333;">System Info</h3>
+                <div id="systemInfo" style="font-size: 0.9em; color: #666; line-height: 1.6;">
                     <div>Loading...</div>
                 </div>
             </div>
@@ -288,11 +288,12 @@
                     statusText.style.color = '#f44336';
                 }
 
-                // Update timestamp
-                const lastUpdate = document.getElementById('lastUpdate');
+                // Update system info
+                const systemInfo = document.getElementById('systemInfo');
                 const date = new Date(data.timestamp);
-                lastUpdate.innerHTML = `
+                systemInfo.innerHTML = `
                     <div>Status: ${data.status}</div>
+                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccc;">📡 WiFi: ${data.wifi}</div>
                     <div style="font-size: 0.9em; margin-top: 5px;">Updated: ${date.toLocaleTimeString()}</div>
                 `;
 
