@@ -56,9 +56,13 @@ jobs:
 
           chmod 600 /home/oracle/divinofax/config/claude.env
 
-          # Install Python dependencies including gunicorn
+          # Install Python dependencies including gunicorn in virtualenv
           echo "Installing Python dependencies..."
-          pip3 install --upgrade pip gunicorn flask 2>&1 | tail -5
+          if [ -d "/home/oracle/divinofax/venv" ]; then
+            /home/oracle/divinofax/venv/bin/pip install --upgrade pip gunicorn flask 2>&1 | tail -5
+          else
+            pip3 install --upgrade pip gunicorn flask 2>&1 | tail -5
+          fi
 
           # Install/update hotspot service
           sudo cp /home/oracle/divinofax/systemd/divinofax-hotspot.service /etc/systemd/system/
