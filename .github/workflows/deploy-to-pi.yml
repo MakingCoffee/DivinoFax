@@ -114,10 +114,14 @@ jobs:
           echo "Testing Flask endpoints..."
           cd /home/oracle/divinofax
           if [ -f "venv/bin/python" ]; then
-            venv/bin/python test_endpoints.py
+            echo "Using virtualenv Python..."
+            venv/bin/python test_endpoints.py 2>&1
           else
-            python3 test_endpoints.py
+            echo "Using system Python..."
+            python3 test_endpoints.py 2>&1
           fi
+          TEST_RESULT=$?
+          echo "Test exit code: $TEST_RESULT"
 
           echo ""
           echo "Hotspot service status:"
