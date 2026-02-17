@@ -321,21 +321,26 @@ def api_wifi_connect():
 def api_wifi_connection_status():
     """Check the status of the WiFi connection attempt (optimized)."""
     try:
-        # Quick check: read only last 300 bytes instead of entire file
+        # Quick check: read log file for connection result
         log_path = '/tmp/wifi_connect.log'
         if os.path.exists(log_path):
             try:
                 with open(log_path, 'r') as f:
-                    # Read only the end of the file for efficiency
-                    f.seek(0, 2)  # Seek to end
-                    file_size = f.tell()
-                    f.seek(max(0, file_size - 500))  # Read last 500 bytes
-                    log_content = f.read().lower()
+                    # Read the entire log to get full error message
+                    log_content = f.read()
+                    log_content_lower = log_content.lower()
 
-                if "activated" in log_content:
+                if "activated" in log_content_lower or "successfully" in log_content_lower:
                     return jsonify({"status": "connected", "message": "✅ Connected successfully"})
-                elif "error" in log_content or "failed" in log_content:
-                    return jsonify({"status": "failed", "message": "❌ Connection failed"})
+                elif "error" in log_content_lower or "failed" in log_content_lower or "connection refused" in log_content_lower:
+                    # Try to extract the actual error message
+                    lines = log_content.split('\n')
+                    error_msg = "❌ Connection failed"
+                    for line in lines:
+                        if 'error' in line.lower() or 'failed' in line.lower():
+                            error_msg = f"❌ {line.strip()}"
+                            break
+                    return jsonify({"status": "failed", "message": error_msg, "raw_log": log_content[-500:]})
                 else:
                     return jsonify({"status": "pending", "message": "🔄 Still connecting..."})
             except Exception as file_err:
