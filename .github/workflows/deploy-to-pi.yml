@@ -111,6 +111,15 @@ jobs:
           systemctl list-unit-files | grep divinofax
 
           echo ""
+          echo "Testing Flask endpoints..."
+          cd /home/oracle/divinofax
+          if [ -f "venv/bin/python" ]; then
+            venv/bin/python test_endpoints.py
+          else
+            python3 test_endpoints.py
+          fi
+
+          echo ""
           echo "Hotspot service status:"
           sudo systemctl status divinofax-hotspot.service --no-pager || echo "Service not yet active (will run on boot)"
           EOF
