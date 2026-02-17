@@ -1,0 +1,16 @@
+[Unit]
+Description=DivinoFax Hotspot Auto-Connect
+After=network-online.target NetworkManager.service
+Before=divinofax.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/oracle/divinofax/scripts/hotspot_autoconnect.sh
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=divinofax-hotspot
+
+[Install]
+WantedBy=multi-user.target

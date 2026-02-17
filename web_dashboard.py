@@ -438,6 +438,75 @@ def api_llm_validate():
         return jsonify({"error": str(e)}), 500
 
 
+# Hotspot Configuration Endpoints
+@app.route('/api/config/hotspot', methods=['GET'])
+def api_hotspot_config_get():
+    """Get saved hotspot configuration."""
+    try:
+        hotspot_config_path = "/home/oracle/divinofax/config/hotspot.json"
+
+        if not os.path.exists(hotspot_config_path):
+            return jsonify({
+                "configured": False,
+                "ssid": "",
+                "has_password": False
+            })
+
+        with open(hotspot_config_path, 'r') as f:
+            config = json.load(f)
+
+        return jsonify({
+            "configured": True,
+            "ssid": config.get('ssid', ''),
+            "has_password": bool(config.get('password', ''))
+        })
+    except Exception as e:
+        logger.error(f"Error reading hotspot config: {e}")
+        return jsonify({"error": str(e), "configured": False}), 500
+
+
+@app.route('/api/config/hotspot', methods=['POST'])
+def api_hotspot_config_set():
+    """Save hotspot configuration for auto-connect on boot."""
+    try:
+        data = request.get_json()
+        ssid = data.get('ssid', '').strip()
+        password = data.get('password', '').strip()
+
+        if not ssid:
+            return jsonify({"error": "SSID required"}), 400
+
+        # Ensure config directory exists
+        config_dir = "/home/oracle/divinofax/config"
+        os.makedirs(config_dir, exist_ok=True)
+
+        # Save hotspot configuration
+        hotspot_config_path = os.path.join(config_dir, "hotspot.json")
+        config = {
+            "ssid": ssid,
+            "password": password if password else None,
+            "auto_connect": True,
+            "created": datetime.now().isoformat()
+        }
+
+        with open(hotspot_config_path, 'w') as f:
+            json.dump(config, f)
+
+        # Set restrictive permissions (owner read/write only)
+        os.chmod(hotspot_config_path, 0o600)
+
+        logger.info(f"Saved hotspot configuration for {ssid}")
+
+        return jsonify({
+            "success": True,
+            "message": f"✅ Hotspot configured: {ssid}\n\nRestart the Pi to auto-connect on boot"
+        })
+
+    except Exception as e:
+        logger.error(f"Error saving hotspot config: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == '__main__':
     # Run on all interfaces on port 5000
     # This script is meant to run on the Raspberry Pi, not on macOS

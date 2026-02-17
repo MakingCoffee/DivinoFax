@@ -451,6 +451,32 @@
                     <button class="btn-settings" onclick="connectWiFi()">🔗 Connect</button>
                     <div id="wifiMessage"></div>
                 </div>
+
+                <!-- Hotspot Configuration -->
+                <div class="settings-card">
+                    <h3>📱 Hotspot Auto-Connect</h3>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">Configure your phone or laptop hotspot. Pi will auto-connect on boot, then you can use the dashboard to connect to local WiFi.</p>
+
+                    <div id="hotspotStatus" style="margin-bottom: 15px;">
+                        <span class="status-badge badge-disconnected">Loading...</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="hotspotSSID">Hotspot Network Name (SSID)</label>
+                        <input type="text" id="hotspotSSID" placeholder="e.g., MyPhone Hotspot">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="hotspotPassword">Hotspot Password</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="password" id="hotspotPassword" placeholder="Hotspot password" style="flex: 1;">
+                            <button style="padding: 10px 15px; background-color: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="toggleHotspotPasswordVisibility()">👁️</button>
+                        </div>
+                    </div>
+
+                    <button class="btn-settings" onclick="saveHotspot()">💾 Save & Auto-Connect</button>
+                    <div id="hotspotMessage"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -671,10 +697,74 @@
             setTimeout(() => { element.textContent = ''; }, 5000);
         }
 
+        function toggleHotspotPasswordVisibility() {
+            const passwordInput = document.getElementById('hotspotPassword');
+            const button = event.target;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        async function loadHotspotStatus() {
+            try {
+                const response = await fetch('/api/config/hotspot');
+                const data = await response.json();
+
+                const statusElement = document.getElementById('hotspotStatus');
+                if (data.configured) {
+                    statusElement.innerHTML = `<span class="status-badge" style="background-color: #d4edda; color: #155724;">✅ Configured: ${data.ssid}</span>`;
+                    document.getElementById('hotspotSSID').value = data.ssid;
+                    if (data.has_password) {
+                        document.getElementById('hotspotPassword').placeholder = '(Already configured)';
+                    }
+                } else {
+                    statusElement.innerHTML = '<span class="status-badge badge-disconnected">❌ Not Configured</span>';
+                }
+            } catch (error) {
+                console.error('Error loading hotspot status:', error);
+            }
+        }
+
+        async function saveHotspot() {
+            const ssid = document.getElementById('hotspotSSID').value.trim();
+            const password = document.getElementById('hotspotPassword').value;
+
+            if (!ssid) {
+                showMessage('hotspotMessage', 'Please enter hotspot network name', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/config/hotspot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ssid: ssid, password: password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage('hotspotMessage', data.message, 'success');
+                    document.getElementById('hotspotPassword').value = '';
+                    document.getElementById('hotspotPassword').placeholder = '(Already configured)';
+                    loadHotspotStatus();
+                } else {
+                    showMessage('hotspotMessage', data.error || 'Failed to save', 'error');
+                }
+            } catch (error) {
+                showMessage('hotspotMessage', 'Error saving hotspot config: ' + error, 'error');
+            }
+        }
+
         // Initialize settings on load
         window.addEventListener('DOMContentLoaded', () => {
             loadWiFiStatus();
             scanNetworks();
+            loadHotspotStatus();
 
             // Refresh WiFi status every 30 seconds
             setInterval(loadWiFiStatus, 30000);
