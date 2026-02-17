@@ -270,11 +270,8 @@ def api_wifi_networks():
 
 @app.route('/api/config/wifi/connect', methods=['POST'])
 def api_wifi_connect():
-    """Connect to a WiFi network."""
+    """Connect to a WiFi network (synchronous with detailed error capture)."""
     try:
-        import subprocess
-        import threading
-
         data = request.get_json()
         ssid = data.get('ssid', '')
         password = data.get('password', '')
@@ -282,101 +279,144 @@ def api_wifi_connect():
         if not ssid:
             return jsonify({"error": "SSID required"}), 400
 
-        logger.info(f"Initiating WiFi connection to {ssid}")
+        logger.info(f"Connecting to WiFi network: {ssid}")
 
-        # Function to run connection in background thread
-        def connect_wifi():
-            try:
-                # Build command with arguments as list (no shell interpretation)
-                # Try without sudo first - nmcli device wifi can work for non-root users
-                if password:
-                    cmd = ['nmcli', 'device', 'wifi', 'connect', ssid, 'password', password]
-                else:
-                    cmd = ['nmcli', 'device', 'wifi', 'connect', ssid]
+        # Build command with arguments as list (no shell interpretation)
+        if password:
+            cmd = ['nmcli', 'device', 'wifi', 'connect', ssid, 'password', password]
+        else:
+            cmd = ['nmcli', 'device', 'wifi', 'connect', ssid]
 
-                # Run with timeout and capture output
-                result = subprocess.run(
-                    cmd,
-                    timeout=25,
-                    capture_output=True,
-                    text=True
-                )
+        try:
+            # Run synchronously and capture full output
+            result = subprocess.run(
+                cmd,
+                timeout=30,
+                capture_output=True,
+                text=True
+            )
 
-                # Write result to log file
-                with open('/tmp/wifi_connect.log', 'w') as f:
-                    f.write(f"Command: {' '.join(cmd)}\n")
-                    f.write(f"Return code: {result.returncode}\n")
-                    f.write(f"Stdout:\n{result.stdout}\n")
-                    f.write(f"Stderr:\n{result.stderr}\n")
+            # Write complete result to log file for diagnostics
+            with open('/tmp/wifi_connect.log', 'w') as f:
+                f.write(f"Command: {' '.join(cmd)}\n")
+                f.write(f"Return code: {result.returncode}\n")
+                f.write(f"STDOUT:\n{result.stdout}\n")
+                f.write(f"STDERR:\n{result.stderr}\n")
 
-                if result.returncode == 0:
-                    logger.info(f"✅ Connected to {ssid}")
-                else:
-                    logger.warning(f"Connection attempt returned {result.returncode}: {result.stderr}")
+            if result.returncode == 0:
+                logger.info(f"✅ Successfully connected to {ssid}")
+                return jsonify({
+                    "success": True,
+                    "message": f"✅ Connected to {ssid}",
+                    "status": "connected"
+                })
+            else:
+                error_msg = result.stderr.strip() if result.stderr else result.stdout.strip() if result.stdout else "Unknown error"
+                logger.warning(f"WiFi connection failed: {error_msg}")
+                return jsonify({
+                    "success": False,
+                    "message": f"❌ Connection failed: {error_msg}",
+                    "status": "failed",
+                    "nmcli_error": error_msg
+                }), 400
 
-            except subprocess.TimeoutExpired:
-                with open('/tmp/wifi_connect.log', 'w') as f:
-                    f.write("ERROR: Connection timeout after 25 seconds\n")
-                logger.error(f"Connection timeout for {ssid}")
-            except Exception as e:
-                with open('/tmp/wifi_connect.log', 'w') as f:
-                    f.write(f"ERROR: {str(e)}\n")
-                logger.error(f"Error connecting to {ssid}: {e}")
-
-        # Start connection in background thread
-        thread = threading.Thread(target=connect_wifi, daemon=True)
-        thread.start()
-
-        # Return immediately with status message
-        return jsonify({
-            "success": True,
-            "message": f"🔄 Connecting to {ssid}... (check status in 30 seconds)",
-            "status": "pending"
-        })
+        except subprocess.TimeoutExpired:
+            error_msg = "Connection attempt timed out after 30 seconds"
+            with open('/tmp/wifi_connect.log', 'w') as f:
+                f.write(f"ERROR: {error_msg}\n")
+            logger.error(error_msg)
+            return jsonify({
+                "success": False,
+                "message": f"❌ {error_msg}",
+                "status": "failed"
+            }), 400
 
     except Exception as e:
-        logger.error(f"Error initiating WiFi connection: {e}")
+        logger.error(f"Error connecting to WiFi: {e}")
         return jsonify({"error": str(e)}), 500
 
 
 @app.route('/api/config/wifi/connection-status', methods=['GET'])
 def api_wifi_connection_status():
-    """Check the status of the WiFi connection attempt (optimized)."""
+    """Check the status of the WiFi connection attempt with detailed error messages."""
     try:
-        # Quick check: read log file for connection result
+        # Check log file for connection result (with actual nmcli output)
         log_path = '/tmp/wifi_connect.log'
         if os.path.exists(log_path):
             try:
                 with open(log_path, 'r') as f:
-                    # Read the entire log to get full error message
                     log_content = f.read()
-                    log_content_lower = log_content.lower()
 
-                if "activated" in log_content_lower or "successfully" in log_content_lower:
-                    return jsonify({"status": "connected", "message": "✅ Connected successfully"})
-                elif "error" in log_content_lower or "failed" in log_content_lower or "connection refused" in log_content_lower:
-                    # Try to extract the actual error message
-                    lines = log_content.split('\n')
-                    error_msg = "❌ Connection failed"
-                    for line in lines:
-                        if 'error' in line.lower() or 'failed' in line.lower():
-                            error_msg = f"❌ {line.strip()}"
-                            break
-                    return jsonify({"status": "failed", "message": error_msg, "raw_log": log_content[-500:]})
+                # Check return code from log file
+                if 'Return code: 0' in log_content:
+                    return jsonify({
+                        "status": "connected",
+                        "message": "✅ Connected successfully",
+                        "log": log_content
+                    })
+
+                # Extract actual nmcli error from log
+                stderr_section = ""
+                stdout_section = ""
+
+                if 'STDERR:' in log_content:
+                    stderr_section = log_content.split('STDERR:')[1].strip()
+                if 'STDOUT:' in log_content:
+                    stdout_section = log_content.split('STDOUT:')[1].strip()
+
+                # Prefer stderr (contains actual errors), fall back to stdout
+                error_detail = stderr_section if stderr_section and stderr_section != "None" else stdout_section
+
+                if 'ERROR:' in log_content or 'timeout' in log_content.lower():
+                    # Timeout or other hard error
+                    error_msg = log_content.split('ERROR:')[1].strip() if 'ERROR:' in log_content else "Connection timeout"
+                    return jsonify({
+                        "status": "failed",
+                        "message": f"❌ {error_msg}",
+                        "nmcli_stderr": error_detail,
+                        "full_log": log_content
+                    })
+                elif error_detail:
+                    # Connection returned non-zero with nmcli output
+                    return jsonify({
+                        "status": "failed",
+                        "message": f"❌ Connection failed",
+                        "nmcli_error": error_detail.split('\n')[0] if error_detail else "Unknown error",
+                        "nmcli_stderr": error_detail,
+                        "full_log": log_content
+                    })
                 else:
-                    return jsonify({"status": "pending", "message": "🔄 Still connecting..."})
+                    # Generic failure
+                    return jsonify({
+                        "status": "failed",
+                        "message": "❌ Connection failed (no error details captured)",
+                        "full_log": log_content
+                    })
+
             except Exception as file_err:
                 logger.debug(f"Error reading log file: {file_err}")
 
-        # If no log file, do a quick nmcli check (simpler command = faster)
-        status_result = run_command("nmcli -t -f TYPE connection show --active 2>/dev/null | grep -c wifi", timeout=3)
+        # If no log file, check actual WiFi connection status
         try:
-            if status_result and int(status_result) > 0:
-                return jsonify({"status": "connected", "message": "✅ WiFi connected"})
-        except ValueError:
-            pass
+            status_result = subprocess.run(
+                ['nmcli', '-t', '-f', 'TYPE', 'connection', 'show', '--active'],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            if 'wifi' in status_result.stdout:
+                return jsonify({
+                    "status": "connected",
+                    "message": "✅ WiFi connected"
+                })
+        except Exception as e:
+            logger.debug(f"Error checking WiFi status: {e}")
 
-        return jsonify({"status": "disconnected", "message": "❌ Not connected"})
+        return jsonify({
+            "status": "disconnected",
+            "message": "❌ Not connected"
+        })
+
     except Exception as e:
         logger.error(f"Error checking WiFi status: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
