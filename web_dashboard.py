@@ -272,6 +272,9 @@ def api_wifi_networks():
 def api_wifi_connect():
     """Connect to a WiFi network."""
     try:
+        import subprocess
+        import threading
+
         data = request.get_json()
         ssid = data.get('ssid', '')
         password = data.get('password', '')
@@ -279,31 +282,49 @@ def api_wifi_connect():
         if not ssid:
             return jsonify({"error": "SSID required"}), 400
 
-        # Connection request received - start async connection attempt in background
-        # This prevents the request from timing out during nmcli operations
         logger.info(f"Initiating WiFi connection to {ssid}")
 
-        # Write connection script to file to avoid shell escaping issues
-        # nmcli will receive arguments directly without shell interpretation
-        import subprocess
-        import tempfile
+        # Function to run connection in background thread
+        def connect_wifi():
+            try:
+                # Build command with arguments as list (no shell interpretation)
+                if password:
+                    cmd = ['sudo', 'nmcli', 'device', 'wifi', 'connect', ssid, 'password', password]
+                else:
+                    cmd = ['sudo', 'nmcli', 'device', 'wifi', 'connect', ssid]
 
-        script_path = '/tmp/wifi_connect.sh'
-        with open(script_path, 'w') as f:
-            f.write('#!/bin/bash\n')
-            if password:
-                # Use printf to safely escape the password
-                f.write(f'sudo nmcli device wifi connect -- "{ssid}" password "{password}" > /tmp/wifi_connect.log 2>&1\n')
-            else:
-                f.write(f'sudo nmcli device wifi connect "{ssid}" > /tmp/wifi_connect.log 2>&1\n')
+                # Run with timeout and capture output
+                result = subprocess.run(
+                    cmd,
+                    timeout=25,
+                    capture_output=True,
+                    text=True
+                )
 
-        # Make script executable
-        import os
-        os.chmod(script_path, 0o755)
+                # Write result to log file
+                with open('/tmp/wifi_connect.log', 'w') as f:
+                    f.write(f"Command: {' '.join(cmd)}\n")
+                    f.write(f"Return code: {result.returncode}\n")
+                    f.write(f"Stdout:\n{result.stdout}\n")
+                    f.write(f"Stderr:\n{result.stderr}\n")
 
-        # Run with timeout in background
-        cmd = f'timeout 25 {script_path} &'
-        run_command(cmd, timeout=2)
+                if result.returncode == 0:
+                    logger.info(f"✅ Connected to {ssid}")
+                else:
+                    logger.warning(f"Connection attempt returned {result.returncode}: {result.stderr}")
+
+            except subprocess.TimeoutExpired:
+                with open('/tmp/wifi_connect.log', 'w') as f:
+                    f.write("ERROR: Connection timeout after 25 seconds\n")
+                logger.error(f"Connection timeout for {ssid}")
+            except Exception as e:
+                with open('/tmp/wifi_connect.log', 'w') as f:
+                    f.write(f"ERROR: {str(e)}\n")
+                logger.error(f"Error connecting to {ssid}: {e}")
+
+        # Start connection in background thread
+        thread = threading.Thread(target=connect_wifi, daemon=True)
+        thread.start()
 
         # Return immediately with status message
         return jsonify({
