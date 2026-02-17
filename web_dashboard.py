@@ -288,10 +288,11 @@ def api_wifi_connect():
         def connect_wifi():
             try:
                 # Build command with arguments as list (no shell interpretation)
+                # Try without sudo first - nmcli device wifi can work for non-root users
                 if password:
-                    cmd = ['sudo', 'nmcli', 'device', 'wifi', 'connect', ssid, 'password', password]
+                    cmd = ['nmcli', 'device', 'wifi', 'connect', ssid, 'password', password]
                 else:
-                    cmd = ['sudo', 'nmcli', 'device', 'wifi', 'connect', ssid]
+                    cmd = ['nmcli', 'device', 'wifi', 'connect', ssid]
 
                 # Run with timeout and capture output
                 result = subprocess.run(
