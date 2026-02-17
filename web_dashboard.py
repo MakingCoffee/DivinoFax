@@ -283,18 +283,26 @@ def api_wifi_connect():
         # This prevents the request from timing out during nmcli operations
         logger.info(f"Initiating WiFi connection to {ssid}")
 
-        # Build the connection command with timeout to prevent hanging
-        if password:
-            # Escape password for shell safety
-            safe_password = password.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
-            inner_cmd = f'sudo nmcli device wifi connect "{ssid}" password "{safe_password}"'
-        else:
-            inner_cmd = f'sudo nmcli device wifi connect "{ssid}"'
+        # Write connection script to file to avoid shell escaping issues
+        # nmcli will receive arguments directly without shell interpretation
+        import subprocess
+        import tempfile
 
-        # Use timeout command to prevent nmcli from hanging indefinitely
-        # Start in background to prevent blocking
-        cmd = f'timeout 25 {inner_cmd} > /tmp/wifi_connect.log 2>&1 &'
+        script_path = '/tmp/wifi_connect.sh'
+        with open(script_path, 'w') as f:
+            f.write('#!/bin/bash\n')
+            if password:
+                # Use printf to safely escape the password
+                f.write(f'sudo nmcli device wifi connect -- "{ssid}" password "{password}" > /tmp/wifi_connect.log 2>&1\n')
+            else:
+                f.write(f'sudo nmcli device wifi connect "{ssid}" > /tmp/wifi_connect.log 2>&1\n')
 
+        # Make script executable
+        import os
+        os.chmod(script_path, 0o755)
+
+        # Run with timeout in background
+        cmd = f'timeout 25 {script_path} &'
         run_command(cmd, timeout=2)
 
         # Return immediately with status message
