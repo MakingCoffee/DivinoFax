@@ -77,11 +77,18 @@ jobs:
           echo "✅ Gunicorn installed for proper code reloading"
           echo "ℹ️  Pi will auto-connect to hotspot on next boot"
 
+          # Clear Python cache to force module reload
+          echo "Clearing Python bytecode cache..."
+          find /home/oracle/divinofax -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+          find /home/oracle/divinofax -name "*.pyc" -delete 2>/dev/null || true
+
           # Restart services to load new code
           echo ""
           echo "Restarting services to load new code..."
-          sudo systemctl restart divinofax-dashboard.service
+          sudo systemctl stop divinofax-dashboard.service 2>/dev/null || true
           sleep 2
+          sudo systemctl start divinofax-dashboard.service
+          sleep 3
           if sudo systemctl is-active divinofax-dashboard.service > /dev/null; then
             echo "✅ Dashboard service restarted successfully"
           else
