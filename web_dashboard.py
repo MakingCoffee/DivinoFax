@@ -281,6 +281,19 @@ def api_wifi_connect():
 
         logger.info(f"Connecting to WiFi network: {ssid}")
 
+        # First, delete any old/broken connection profiles for this network
+        # This fixes "key-mgmt: property is missing" errors
+        try:
+            subprocess.run(
+                ['nmcli', 'connection', 'delete', ssid],
+                timeout=5,
+                capture_output=True,
+                text=True
+            )
+            logger.info(f"Cleaned up old connection profile for {ssid}")
+        except Exception as cleanup_err:
+            logger.debug(f"No old connection to clean up: {cleanup_err}")
+
         # Build command with arguments as list (no shell interpretation)
         if password:
             cmd = ['nmcli', 'device', 'wifi', 'connect', ssid, 'password', password]
