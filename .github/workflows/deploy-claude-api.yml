@@ -130,25 +130,25 @@ jobs:
 
             # Quick test of config loading
             python3 << 'PYTEST'
-import sys
-sys.path.insert(0, 'src')
-from config import DivinofaxConfig
+            import sys
+            sys.path.insert(0, 'src')
+            from config import DivinofaxConfig
 
-# Load config
-config = DivinofaxConfig('config/divinofax.yaml')
+            # Load config
+            config = DivinofaxConfig('config/divinofax.yaml')
 
-# Check Claude API is enabled
-if config.llm.use_claude_api:
-  print("✓ Claude API is enabled")
-  if config.llm.claude_api_key:
-    print(f"✓ API key loaded: {config.llm.claude_api_key[:20]}...")
-  else:
-    print("⚠️  API key not loaded from environment")
-else:
-  print("⚠️  Claude API is disabled in config")
+            # Check Claude API is enabled
+            if config.llm.use_claude_api:
+              print("✓ Claude API is enabled")
+              if config.llm.claude_api_key:
+                print(f"✓ API key loaded: {config.llm.claude_api_key[:20]}...")
+              else:
+                print("⚠️  API key not loaded from environment")
+            else:
+              print("⚠️  Claude API is disabled in config")
 
-print(f"✓ Model: {config.llm.claude_model}")
-PYTEST
+            print(f"✓ Model: {config.llm.claude_model}")
+            PYTEST
           EOF
 
       - name: Deployment success
