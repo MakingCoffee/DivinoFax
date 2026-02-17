@@ -15,6 +15,9 @@ import time
 
 app = Flask(__name__)
 
+# Dashboard version - update when making changes
+DASHBOARD_VERSION = "2.0.1-wifi-fix"
+
 # Configure logging for the dashboard
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -176,6 +179,20 @@ def api_restart():
     """Restart the DivinoFax service."""
     run_command("sudo systemctl restart divinofax")
     return jsonify({"success": True, "message": "🔄 DivinoFax restarted"})
+
+@app.route('/api/version')
+def api_version():
+    """Get dashboard version."""
+    return jsonify({"version": DASHBOARD_VERSION})
+
+@app.route('/api/restart-dashboard', methods=['POST'])
+def api_restart_dashboard():
+    """Restart the dashboard service to reload code."""
+    try:
+        run_command("sudo systemctl restart divinofax-dashboard.service")
+        return jsonify({"success": True, "message": "🔄 Dashboard restarting... (page will refresh in 5 seconds)"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/logs')
 def api_logs():
