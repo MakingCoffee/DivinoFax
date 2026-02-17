@@ -507,6 +507,20 @@ def api_hotspot_config_set():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/api/admin/systemctl-restart', methods=['POST'])
+def api_admin_systemctl_restart():
+    """Force restart the dashboard service via systemctl."""
+    try:
+        run_command("sudo systemctl restart divinofax-dashboard")
+        return jsonify({
+            "success": True,
+            "message": "🔄 Dashboard service restarting via systemctl..."
+        })
+    except Exception as e:
+        logger.error(f"Error restarting service: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/api/admin/update-dashboard', methods=['POST'])
 def api_admin_update_dashboard():
     """Update dashboard HTML from latest code."""
