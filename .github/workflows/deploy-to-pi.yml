@@ -56,13 +56,21 @@ jobs:
 
           chmod 600 /home/oracle/divinofax/config/claude.env
 
+          # Install Python dependencies including gunicorn
+          echo "Installing Python dependencies..."
+          pip3 install --upgrade pip gunicorn flask 2>&1 | tail -5
+
           # Install/update hotspot service
           sudo cp /home/oracle/divinofax/systemd/divinofax-hotspot.service /etc/systemd/system/
+          sudo cp /home/oracle/divinofax/systemd/divinofax-dashboard.service /etc/systemd/system/
           sudo systemctl daemon-reload
           sudo systemctl enable divinofax-hotspot.service
+          sudo systemctl enable divinofax-dashboard.service
 
+          # Ensure hotspot auto-connects on boot
           echo "✅ Hotspot credentials configured"
           echo "✅ Claude API key configured"
+          echo "✅ Gunicorn installed for proper code reloading"
           echo "ℹ️  Pi will auto-connect to hotspot on next boot"
           EOF
         continue-on-error: true

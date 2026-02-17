@@ -540,4 +540,31 @@ def api_admin_update_dashboard():
 if __name__ == '__main__':
     # Run on all interfaces on port 5000
     # This script is meant to run on the Raspberry Pi, not on macOS
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Use gunicorn in production for proper module reloading
+    try:
+        from gunicorn.app.base import BaseApplication
+
+        class GunicornApp(BaseApplication):
+            def __init__(self, app, options=None):
+                self.application = app
+                self.options = options or {}
+                super().__init__()
+
+            def load_config(self):
+                for key, value in self.options.items():
+                    self.cfg.set(key.lower(), value)
+
+            def load(self):
+                return self.application
+
+        options = {
+            'bind': '0.0.0.0:5000',
+            'workers': 1,
+            'threads': 4,
+            'timeout': 120,
+        }
+        GunicornApp(app, options).run()
+    except ImportError:
+        # Fallback to development server if gunicorn not available
+        logger.warning("Gunicorn not installed, falling back to development server")
+        app.run(host='0.0.0.0', port=5000, debug=False)

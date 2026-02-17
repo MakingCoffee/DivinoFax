@@ -1,0 +1,21 @@
+[Unit]
+Description=DivinoFax Web Dashboard
+After=network-online.target divinofax-hotspot.service
+Wants=network-online.target
+
+[Service]
+Type=notify
+User=oracle
+WorkingDirectory=/home/oracle/divinofax
+Environment="PATH=/home/oracle/divinofax/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+EnvironmentFile=/home/oracle/divinofax/config/hotspot.env
+EnvironmentFile=/home/oracle/divinofax/config/claude.env
+ExecStart=/home/oracle/divinofax/venv/bin/python web_dashboard.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=divinofax-dashboard
+
+[Install]
+WantedBy=multi-user.target
